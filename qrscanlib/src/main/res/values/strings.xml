@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QRScan</string>
+    <string name="scan_tip">将二维码放在取景框中，即可自动扫描</string>
+    <string name="title_scan">扫一扫</string>
+    <string name="open_camera_permission_tip"><![CDATA[请在手机的\"设置>应用>权限>拍照和录像\",设置为\"允许\"后再试试]]></string>
+    <string name="open_camera_failed">打开摄像头失败</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="corner">#ffcd00</color>
+    <color name="translate">@android:color/transparent</color>
+    <color name="shadow">#88000000</color>
+    <color name="white">#ffffff</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="blacktext">#000</color>
+    <color name="transparent">#00000000</color>
+</resources>
