@@ -15,9 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "isSystemApp = " + PackageUtil.isSystemApp(this, "com.android.email"));
-        Log.d(TAG, "isPreloaded = " + PackageUtil.isAppPreLoaded(this, "com.android.email"));
-        Log.d(TAG, "isSystemApp = " + PackageUtil.isSystemApp(this, "com.littlejie.sqlite"));
-        Log.d(TAG, "isPreloaded = " + PackageUtil.isAppPreLoaded(this, "com.littlejie.sqlite"));
+        Log.d(TAG, "isSystemApp = " + PackageUtil.isSystemApp(this, "com.google.android.apps.maps"));
+        Log.d(TAG, "isSystemApp = " + PackageUtil.isSystemApp(this, "com.nero.htcsenselink"));
     }
 }
