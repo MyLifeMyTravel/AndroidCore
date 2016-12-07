@@ -65,6 +65,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
@@ -72,7 +73,6 @@ public class BaseApplication extends Application {
         }
         LeakCanary.install(this);
         Core.init();
-        mInstance = this;
 
         uiThread = Thread.currentThread();
         uiThreadHandler = new Handler();

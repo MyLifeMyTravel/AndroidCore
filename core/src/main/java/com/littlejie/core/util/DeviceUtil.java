@@ -18,6 +18,8 @@ import android.telephony.gsm.GsmCellLocation;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.littlejie.core.reveiver.USBStateReceiver;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -379,9 +381,25 @@ public class DeviceUtil {
      * @param context
      * @return
      */
-    public static boolean isConnected(Context context) {
-        Intent intent = context.registerReceiver(null, new IntentFilter("android.hardware.usb.action.USB_STATE"));
+    public static boolean isUSBConnected(Context context) {
+        Intent intent = context.registerReceiver(null, new IntentFilter(Constant.Action.USB_STATE));
         return intent.getExtras().getBoolean("connected");
+    }
+
+    /**
+     * 注册USB链接广播
+     *
+     * @param context
+     * @param receiver
+     */
+    public static void registerUSBStateReceiver(Context context, USBStateReceiver receiver) {
+        Log.d(TAG,"register USBStateReceiver");
+        context.registerReceiver(receiver, new IntentFilter(Constant.Action.USB_STATE));
+    }
+
+    public static void unregisterUSBStateReceiver(Context context, USBStateReceiver receiver) {
+        Log.d(TAG,"unregister USBStateReceiver");
+        context.unregisterReceiver(receiver);
     }
 
     /**
