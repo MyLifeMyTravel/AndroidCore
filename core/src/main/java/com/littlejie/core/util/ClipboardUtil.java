@@ -44,6 +44,16 @@ public class ClipboardUtil {
         return text;
     }
 
+    /**
+     * 将文本拷贝至剪贴板
+     *
+     * @param text
+     */
+    public void copyText(String text) {
+        ClipData myClip = ClipData.newPlainText("text", text);
+        clipboard.setPrimaryClip(myClip);
+    }
+
     public void clearTextClip() {
         ClipData data = ClipData.newPlainText("", "");
         clipboard.setPrimaryClip(data);
