@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.littlejie.core.util.ClipboardUtil;
+
 /**
  * Created by littlejie on 2016/12/1.
  */
@@ -13,6 +15,7 @@ import android.widget.Toast;
 public class Core {
 
     private static Context mContext;
+    private static ClipboardUtil mClipboardManager;
 
     public static Context getApplicationContext() {
         return BaseApplication.getInstance();
@@ -20,6 +23,7 @@ public class Core {
 
     public static void init() {
         mContext = getApplicationContext();
+        mClipboardManager = ClipboardUtil.getInstance(mContext);
     }
 
     // 执行异步任务
@@ -76,5 +80,9 @@ public class Core {
         toast.setGravity(gravity, 0, 0);
         toast.setDuration(duration);
         toast.show();
+    }
+
+    public static ClipboardUtil getClipboardManager() {
+        return mClipboardManager;
     }
 }

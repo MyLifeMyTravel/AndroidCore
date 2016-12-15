@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.littlejie.core.base.Core;
+import com.littlejie.core.util.FileUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -59,8 +60,8 @@ public final class CrashHandler implements UncaughtExceptionHandler {
         return instance;
     }
 
-    public void init(String path) {
-        this.path = path;
+    public void init(String crashFolder) {
+        this.path = crashFolder;
 
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
 
@@ -131,6 +132,8 @@ public final class CrashHandler implements UncaughtExceptionHandler {
         sb.append(result);
         try {
             // TODO write crash log to file
+            boolean suffix = path.endsWith("/");
+            FileUtil.write(path + (suffix ? "" : "/") + formatter.format(new Date()), result);
         } catch (Exception e) {
             Log.e(TAG, "an error occur while writing file...", e);
         }

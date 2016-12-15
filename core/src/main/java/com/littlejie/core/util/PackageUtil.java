@@ -27,6 +27,16 @@ public class PackageUtil {
     }
 
     /**
+     * 包名
+     *
+     * @param context
+     * @return
+     */
+    public static String getPackageName(Context context) {
+        return getPackageInfo(context).packageName;
+    }
+
+    /**
      * 判断是否为系统应用
      *
      * @param context
