@@ -119,6 +119,16 @@ public class ClipboardUtil {
     }
 
     /**
+     * 将文本拷贝至剪贴板
+     *
+     * @param text
+     */
+    public void copyText(String text) {
+        ClipData myClip = ClipData.newPlainText("text", text);
+        clipboard.setPrimaryClip(myClip);
+    }
+
+    /**
      * 清空剪贴板
      */
     public void clearTextClip() {
