@@ -1,5 +1,6 @@
 package com.littlejie.core.manager;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -30,10 +31,22 @@ public class TintManager {
      * 给 drawable 着色
      *
      * @param drawable 需要着色的 drawable 对象
-     * @param color   ColorStateList 对象，代表需要着色的颜色
+     * @param color    代表需要着色的颜色
      * @return
      */
     public static Drawable tintDrawable(Drawable drawable, int color) {
         return tintDrawable(drawable, ColorStateList.valueOf(color));
+    }
+
+    /**
+     * 给 drawable 着色
+     *
+     * @param drawable 需要着色的 drawable 资源文件 ID
+     * @param color    代表需要着色的颜色
+     * @return
+     */
+    public static Drawable tintDrawable(Context context, int drawable, int color) {
+        Drawable d = context.getResources().getDrawable(drawable);
+        return tintDrawable(d, color);
     }
 }

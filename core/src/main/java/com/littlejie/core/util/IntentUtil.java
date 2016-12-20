@@ -19,11 +19,11 @@ public class IntentUtil {
      * 异步扫描指定文件
      *
      * @param context
-     * @param file    文件路径
+     * @param path    文件路径
      */
-    public static void scanFileAsync(Context context, String file) {
+    public static void scanFileAsync(Context context, String path) {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(Uri.fromFile(new File(file)));
+        intent.setData(Uri.fromFile(new File(path)));
         context.sendBroadcast(intent);
     }
 
@@ -67,5 +67,17 @@ public class IntentUtil {
         } catch (Exception e) {
             Toast.makeText(activity, "您没有安装应用市场", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * 调用系统浏览器打开指定网址
+     *
+     * @param context
+     * @param url
+     */
+    public static void openBrowser(Context context, String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        context.startActivity(intent);
     }
 }
