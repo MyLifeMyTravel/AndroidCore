@@ -23,7 +23,7 @@ public class Core {
 
     public static void init() {
         mContext = getApplicationContext();
-        mClipboardManager = ClipboardUtil.getInstance(mContext);
+        mClipboardManager = ClipboardUtil.init(mContext);
     }
 
     // 执行异步任务

@@ -80,4 +80,15 @@ public class IntentUtil {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         context.startActivity(intent);
     }
+
+    /**
+     * 打开设置界面
+     *
+     * @param context
+     * @param action  查看{@link android.provider.Settings}
+     */
+    public static void openSetting(Context context, String action) {
+        Intent intent = new Intent(action);
+        context.startActivity(intent);
+    }
 }
