@@ -1,4 +1,4 @@
-package com.littlejie.test;
+package com.littlejie.demo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.littlejie.test", appContext.getPackageName());
+        assertEquals("com.littlejie.demo", appContext.getPackageName());
     }
 }

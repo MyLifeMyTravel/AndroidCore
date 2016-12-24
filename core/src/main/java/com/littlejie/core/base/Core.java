@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.littlejie.core.net.HttpManager;
 import com.littlejie.core.util.ClipboardUtil;
 
 /**
@@ -24,6 +25,7 @@ public class Core {
     public static void init() {
         mContext = getApplicationContext();
         mClipboardManager = ClipboardUtil.init(mContext);
+        HttpManager.init();
     }
 
     // 执行异步任务

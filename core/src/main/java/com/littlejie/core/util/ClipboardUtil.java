@@ -1,5 +1,6 @@
 package com.littlejie.core.util;
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -7,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ public class ClipboardUtil {
      */
     private static final int THRESHOLD = 100;
 
-    private Context mContext;
     private static ClipboardUtil mInstance;
     private ClipboardManager mClipboardManager;
 
@@ -103,7 +104,6 @@ public class ClipboardUtil {
     }
 
     private ClipboardUtil(Context context) {
-        mContext = context;
         mClipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         mClipboardManager.addPrimaryClipChangedListener(onPrimaryClipChangedListener);
     }
@@ -209,6 +209,7 @@ public class ClipboardUtil {
      * @param text
      * @param htmlText
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void copyHtmlText(String label, String text, String htmlText) {
         ClipData clip = ClipData.newHtmlText(label, text, htmlText);
         mClipboardManager.setPrimaryClip(clip);

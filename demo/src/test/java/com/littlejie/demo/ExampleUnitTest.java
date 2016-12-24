@@ -1,4 +1,4 @@
-package com.littlejie.test;
+package com.littlejie.demo;
 
 import org.junit.Test;
 

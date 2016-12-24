@@ -1,1 +1,1 @@
-include ':core', ':qrscanlib', ':test'
+include ':core', ':qrscanlib', ':demo'
