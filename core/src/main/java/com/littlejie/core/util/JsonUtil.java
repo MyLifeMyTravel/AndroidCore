@@ -9,7 +9,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 实体类与Json互转
@@ -18,6 +22,47 @@ import java.util.List;
 public class JsonUtil {
 
     private static Gson gson = new Gson();
+
+    /**
+     * 将 Map 转换成 Json
+     *
+     * @param map
+     * @return
+     */
+    public static String map2Json(Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject();
+        Set<String> keySet = map.keySet();
+        for (String key : keySet) {
+            try {
+                jsonObject.put(key, map.get(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonObject.toString();
+    }
+
+    /**
+     * Json 字符串转化成 map
+     *
+     * @param json
+     * @return
+     */
+    public static Map<String, Object> json2Map(String json) {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            JSONObject jsonObject = new JSONObject(json);
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                map.put(key, jsonObject.get(key));
+            }
+            return map;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 实体对象转Json字符串
@@ -63,8 +108,8 @@ public class JsonUtil {
      * @return
      */
     public static <T> List<T> fromJsonArray(String json, Class<T> klass) {
-        if(TextUtils.isEmpty(json)){
-            return  null;
+        if (TextUtils.isEmpty(json)) {
+            return null;
         }
         return gson.fromJson(json, new GsonList<T>(klass));
     }

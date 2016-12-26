@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ import java.util.regex.Pattern;
 public class DeviceUtil {
 
     private static final String TAG = DeviceUtil.class.getSimpleName();
-    private static final String PREF_DEVICE = "com.kuaidi.daijia.driver.device_pref";
+    private static final String PREF_DEVICE = "device_pref";
     private static final String KEY_UUID = "key_uuid";
     private static ThreadLocal<String> sDeviceUIID = new ThreadLocal<String>();
 
@@ -130,6 +131,12 @@ public class DeviceUtil {
         return getSystemProperty("ro.serialno");
     }
 
+    /**
+     * 获取设备 UUID
+     *
+     * @param context
+     * @return
+     */
     public synchronized static String getDeviceUUID(Context context) {
         String uuid = sDeviceUIID.get();
         if (TextUtils.isEmpty(uuid)) {
@@ -146,7 +153,18 @@ public class DeviceUtil {
     }
 
     /**
-     * @return imei
+     * 获取手机厂商
+     *
+     * @return 手机厂商
+     */
+    public static String getDeviceBrand() {
+        return android.os.Build.BRAND;
+    }
+
+    /**
+     * 获取手机IMEI(需要“android.permission.READ_PHONE_STATE”权限)
+     *
+     * @return 手机IMEI
      */
     public static String getIMEI(Context context) {
         TelephonyManager tm = (TelephonyManager) context
@@ -393,13 +411,58 @@ public class DeviceUtil {
      * @param receiver
      */
     public static void registerUSBStateReceiver(Context context, USBStateReceiver receiver) {
-        Log.d(TAG,"register USBStateReceiver");
+        Log.d(TAG, "register USBStateReceiver");
         context.registerReceiver(receiver, new IntentFilter(Constant.Action.USB_STATE));
     }
 
     public static void unregisterUSBStateReceiver(Context context, USBStateReceiver receiver) {
-        Log.d(TAG,"unregister USBStateReceiver");
+        Log.d(TAG, "unregister USBStateReceiver");
         context.unregisterReceiver(receiver);
+    }
+
+    /**
+     * 获取当前系统语言
+     *
+     * @return
+     */
+    public static String getSystemLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
+
+    /**
+     * 获取当前系统国家
+     *
+     * @return
+     */
+    public static String getSystemCountry() {
+        return Locale.getDefault().getCountry();
+    }
+
+    /**
+     * 获取当前系统上的语言列表(Locale列表)
+     *
+     * @return 语言列表
+     */
+    public static Locale[] getSystemLanguageList() {
+        return Locale.getAvailableLocales();
+    }
+
+    /**
+     * 获取当前手机系统版本号
+     *
+     * @return 系统版本号
+     */
+    public static String getSystemVersion() {
+        return android.os.Build.VERSION.RELEASE;
+    }
+
+    /**
+     * 获取手机型号
+     *
+     * @return 手机型号
+     */
+    public static String getSystemModel() {
+        return android.os.Build.MODEL;
     }
 
     /**
