@@ -6,11 +6,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.littlejie.core.base.Core;
 import com.littlejie.core.net.HttpManager;
 import com.littlejie.core.net.RequestCallback;
+import com.littlejie.core.util.DeviceUtil;
+import com.littlejie.core.util.JsonUtil;
+import com.littlejie.core.util.PackageUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Headers;
@@ -27,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d(TAG, "language = " + DeviceUtil.getSystemLanguage()
+                + "\ncountry = " + DeviceUtil.getSystemCountry()
+                + "\nbrand = " + DeviceUtil.getDeviceBrand()
+                + "\nos version = " + DeviceUtil.getSystemVersion()
+                + "\napp version = " + PackageUtil.getVersionName(this));
+        List<String> lst = new ArrayList<>();
+        lst.add("123");
+        Log.d(TAG, JsonUtil.toJsonString(lst));
         HttpManager.init();
         mTv = (TextView) findViewById(R.id.tv);
         findViewById(R.id.btn_get).setOnClickListener(new View.OnClickListener() {
@@ -115,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Request request, IOException e) {
-
+                            Core.showDefautToast("请求失败");
                         }
 
                         @Override
