@@ -12,6 +12,7 @@ import com.littlejie.core.net.RequestCallback;
 import com.littlejie.core.util.DeviceUtil;
 import com.littlejie.core.util.JsonUtil;
 import com.littlejie.core.util.PackageUtil;
+import com.littlejie.core.util.RegexUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d(TAG, "is ip = " + RegexUtil.isIPV4("192.168.7.229"));
         Log.d(TAG, "language = " + DeviceUtil.getSystemLanguage()
                 + "\ncountry = " + DeviceUtil.getSystemCountry()
                 + "\nbrand = " + DeviceUtil.getDeviceBrand()
