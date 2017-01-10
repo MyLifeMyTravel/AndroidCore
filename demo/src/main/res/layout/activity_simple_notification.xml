@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_remove_all_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="清除所有 Notification" />
+
+        <Button
+            android:id="@+id/btn_send_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送 id = 1 的通知" />
+
+        <Button
+            android:id="@+id/btn_remove_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="移除 id = 1 的通知" />
+
+        <Button
+            android:id="@+id/btn_send_notification_with_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送 ID = 1,TAG = 'littlejie' 的通知" />
+
+        <Button
+            android:id="@+id/btn_remove_notification_with_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="移除 ID = 1,TAG = 'littlejie' 的通知" />
+
+        <Button
+            android:id="@+id/btn_send_ten_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我要一口气发十个通知" />
+
+        <Button
+            android:id="@+id/btn_send_flag_no_clear_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送一个 FLAG_NO_CLEAR 的通知,不能被移除" />
+
+        <Button
+            android:id="@+id/btn_send_flag_ongoing_event_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送一个 FLAG_ONGONG_EVENT 的通知,不能被移除" />
+
+        <Button
+            android:id="@+id/btn_send_flag_auto_cancecl_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送一个 FLAG_AUTO_CANCEL 的通知,能移除" />
+
+    </LinearLayout>
+
+</ScrollView>

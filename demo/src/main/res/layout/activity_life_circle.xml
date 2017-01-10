@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_life_circle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.littlejie.demo.modules.base.fragment.lifecircle.LifeCircleWithViewPagerActivity">
+
+    <TextView
+        android:id="@+id/tv_activity_created"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <fragment
+        android:name="com.littlejie.demo.modules.base.fragment.LifeCircleFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

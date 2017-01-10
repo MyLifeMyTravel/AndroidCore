@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="j04">#959cab</color>
+    <color name="j04_alpha_30">#4d959cab</color>
+    <color name="j06">#0de6e8</color>
+    <color name="j06_alpha_30">#4d0de6e8</color>
+    <color name="j09">#3cbcb7</color>
+    <color name="j15">@color/white</color>
+    <color name="alpha_white">#A0FFFFFF</color>
 </resources>

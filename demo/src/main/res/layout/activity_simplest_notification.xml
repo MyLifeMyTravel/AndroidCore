@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_simplest_notification"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.notification.SimplestNotificationActivity">
+
+    <Button
+        android:id="@+id/btn_send_simplest_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="发送一个最简单的Notification" />
+
+    <Button
+        android:id="@+id/btn_send_simplest_notification_with_large_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="发送一个具有大图标的Notification" />
+
+    <Button
+        android:id="@+id/btn_send_simplest_notification_with_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个简单Action的Notification" />
+</LinearLayout>

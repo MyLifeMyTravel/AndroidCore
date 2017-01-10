@@ -1,13 +1,10 @@
 package com.littlejie.core.base;
 
 import android.content.Context;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
 
 import com.littlejie.core.net.HttpManager;
 import com.littlejie.core.util.ClipboardUtil;
+import com.littlejie.core.util.ToastUtil;
 
 /**
  * Created by littlejie on 2016/12/1.
@@ -22,10 +19,11 @@ public class Core {
         return BaseApplication.getInstance();
     }
 
-    public static void init() {
+    static void init() {
         mContext = getApplicationContext();
         mClipboardManager = ClipboardUtil.init(mContext);
         HttpManager.init();
+        ToastUtil.init(mContext);
     }
 
     // 执行异步任务
@@ -53,35 +51,6 @@ public class Core {
 
     public static String getString(int resId, String arg1) {
         return mContext.getResources().getString(resId, arg1);
-    }
-
-    public static void showDefautToast(String s) {
-        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showDefautToast(int resId) {
-        Toast.makeText(mContext, getString(resId), Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showCustomToast(int layout, int gravity, int duration) {
-        View customView = LayoutInflater.from(mContext).inflate(layout, null);
-        showCustomToast(customView, gravity, duration);
-    }
-
-    public static void showCustomToast(int layout) {
-        showCustomToast(layout, Gravity.CENTER, Toast.LENGTH_SHORT);
-    }
-
-    public static void showCustomToast(View view) {
-        showCustomToast(view, Gravity.CENTER, Toast.LENGTH_SHORT);
-    }
-
-    public static void showCustomToast(View view, int gravity, int duration) {
-        Toast toast = new Toast(view.getContext());
-        toast.setView(view);
-        toast.setGravity(gravity, 0, 0);
-        toast.setDuration(duration);
-        toast.show();
     }
 
     public static ClipboardUtil getClipboardManager() {

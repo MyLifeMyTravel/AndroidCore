@@ -11,6 +11,9 @@ import okhttp3.Response;
 
 public interface RequestCallback {
 
+    /**
+     * 网络请求前需要做的工作，如显示加载效果
+     */
     void before();
 
     /**
@@ -32,6 +35,9 @@ public interface RequestCallback {
      */
     void onFailure(Request request, IOException e);
 
+    /**
+     * 网络请求后需要做的工作，如取消加载效果
+     */
     void after();
 
     class SimpleRequestCallback implements RequestCallback {

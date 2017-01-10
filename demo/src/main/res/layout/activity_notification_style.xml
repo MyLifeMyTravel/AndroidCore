@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_notification_style"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.notification.NotificationStyleActivity">
+
+    <Button
+        android:id="@+id/btn_big_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个BigTextStyle的通知" />
+
+    <Button
+        android:id="@+id/btn_inbox_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个InboxStyle的通知" />
+
+    <Button
+        android:id="@+id/btn_big_picture_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个BigPictureStyle的通知" />
+
+    <Button
+        android:id="@+id/btn_media_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个MediaStyle的通知" />
+
+    <Button
+        android:id="@+id/btn_messaging_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送一个MessagingStyle的通知" />
+</LinearLayout>

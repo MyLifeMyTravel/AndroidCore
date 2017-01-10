@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_device"
+            android:checked="true"
+            android:icon="@mipmap/ic_storage_black_24dp"
+            android:title="@string/nav_menu_storage" />
+
+        <item
+            android:id="@+id/menu_photo"
+            android:icon="@mipmap/ic_photo_library_black_24dp"
+            android:title="@string/nav_menu_photo" />
+
+        <item
+            android:id="@+id/menu_music"
+            android:icon="@mipmap/ic_library_music_black_24dp"
+            android:title="@string/nav_menu_music" />
+
+        <item
+            android:id="@+id/menu_video"
+            android:checked="true"
+            android:icon="@mipmap/ic_video_library_black_24dp"
+            android:title="@string/nav_menu_video" />
+
+        <item
+            android:id="@+id/menu_setting"
+            android:icon="@mipmap/ic_settings_black_24dp"
+            android:title="@string/nav_menu_settings" />
+
+        <item
+            android:id="@+id/menu_feedback"
+            android:icon="@mipmap/ic_feedback_black_24dp"
+            android:title="@string/nav_menu_feedback" />
+
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@mipmap/ic_info_black_24dp"
+            android:title="@string/nav_menu_about" />
+    </group>
+
+</menu>

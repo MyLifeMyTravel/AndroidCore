@@ -6,9 +6,5 @@ package com.littlejie.demo;
 
 public class Constant {
 
-    public static final String HOST = "http://192.168.199.209:8080";
-    public static final String API_GREETING = HOST + "/greeting";
-    public static final String API_PARSE = HOST + "/parse";
-    public static final String API_PERSON_PARSE = HOST + "/person/parse";
-    public static final String API_DATA = HOST + "/person/data";
+    public static final String PARAM_TITLE = "title";
 }

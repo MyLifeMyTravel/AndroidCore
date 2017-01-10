@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_scan_file"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.demo.modules.base.media.activity.MediaObserverActivity">
+
+    <Button
+        android:id="@+id/btn_scan_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫描根目录" />
+
+    <Button
+        android:id="@+id/btn_scan_root_without_db"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫描根目录，不用数据库" />
+
+    <Button
+        android:id="@+id/btn_create_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建文件" />
+
+    <Button
+        android:id="@+id/btn_delete_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除文件" />
+
+    <Button
+        android:id="@+id/btn_delete_file_without_broad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除文件,不发广播" />
+
+    <Button
+        android:id="@+id/btn_ignore_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建不被MediaScanner扫描的文件目录"
+        android:textAllCaps="false" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

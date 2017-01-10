@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_life_circle_with_back_stack"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.fragment.lifecircle.LifeCircleWithBackStackActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_add_back_stack_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/txt_add_to_back_stack" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/widget_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_to_back_stack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="用 add 将 Fragment 添加进回退栈" />
+
+    <Button
+        android:id="@+id/btn_replace_to_back_stack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="用 replace 将 Fragment 添加进回退栈" />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

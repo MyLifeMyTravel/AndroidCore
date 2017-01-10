@@ -1,16 +1,18 @@
 package com.littlejie.core.base;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by littlejie on 2016/4/6.
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     public final String TAG = this.getClass().getSimpleName();
 
@@ -20,6 +22,7 @@ public abstract class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getPageLayoutID());
+        ButterKnife.bind(this);
         initData();
         initView();
         initViewListener();
@@ -49,36 +52,6 @@ public abstract class BaseActivity extends Activity {
     protected abstract void initViewListener();
 
     protected abstract void process();
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     protected void requestPermission(final String permission, String reason, final int requestCode) {
         this.requestCode = requestCode;

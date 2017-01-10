@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_base"
+            android:icon="@mipmap/icon_fab_repair"
+            android:title="Android 入门" />
+
+        <item
+            android:id="@+id/menu_advanced"
+            android:checked="true"
+            android:icon="@mipmap/icon_fab_repair"
+            android:title="Android 进阶" />
+
+        <item
+            android:id="@+id/menu_give_up"
+            android:icon="@mipmap/icon_fab_repair"
+            android:title="Android 放弃" />
+
+    </group>
+
+    <item android:title="更多">
+
+        <menu>
+
+            <item
+                android:id="@+id/menu_setting"
+                android:icon="@mipmap/icon_fab_repair"
+                android:title="设置" />
+
+            <item
+                android:id="@+id/menu_feedback"
+                android:icon="@mipmap/icon_fab_repair"
+                android:title="反馈" />
+
+            <item
+                android:id="@+id/menu_about"
+                android:icon="@mipmap/icon_fab_repair"
+                android:title="关于" />
+        </menu>
+
+    </item>
+</menu>

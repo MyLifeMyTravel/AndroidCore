@@ -1,6 +1,5 @@
 package com.littlejie.core.util;
 
-import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -8,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ public class ClipboardUtil {
      */
     private static final int THRESHOLD = 100;
 
+    private Context mContext;
     private static ClipboardUtil mInstance;
     private ClipboardManager mClipboardManager;
 
@@ -104,6 +103,7 @@ public class ClipboardUtil {
     }
 
     private ClipboardUtil(Context context) {
+        mContext = context;
         mClipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         mClipboardManager.addPrimaryClipChangedListener(onPrimaryClipChangedListener);
     }
@@ -156,6 +156,9 @@ public class ClipboardUtil {
      * @return
      */
     public String getClipText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         ClipData data = mClipboardManager.getPrimaryClip();
         if (data != null
                 && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
@@ -182,6 +185,9 @@ public class ClipboardUtil {
      * @return
      */
     public String getClipText(Context context, int index) {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         ClipData data = mClipboardManager.getPrimaryClip();
         if (data == null) {
             return null;
@@ -209,7 +215,6 @@ public class ClipboardUtil {
      * @param text
      * @param htmlText
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void copyHtmlText(String label, String text, String htmlText) {
         ClipData clip = ClipData.newHtmlText(label, text, htmlText);
         mClipboardManager.setPrimaryClip(clip);
@@ -265,12 +270,36 @@ public class ClipboardUtil {
         mClipboardManager.setPrimaryClip(clip);
     }
 
+    public CharSequence coercePrimaryClipToText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToText(mContext);
+    }
+
+    public CharSequence coercePrimaryClipToStyledText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToStyledText(mContext);
+    }
+
+    public CharSequence coercePrimaryClipToHtmlText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToHtmlText(mContext);
+    }
+
     /**
      * 获取当前剪贴板内容的MimeType
      *
      * @return 当前剪贴板内容的MimeType
      */
     public String getPrimaryClipMimeType() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         return mClipboardManager.getPrimaryClipDescription().getMimeType(0);
     }
 

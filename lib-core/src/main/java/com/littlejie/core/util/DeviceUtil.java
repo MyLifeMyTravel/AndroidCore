@@ -11,6 +11,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.telephony.CellLocation;
 import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
@@ -18,6 +20,7 @@ import android.telephony.gsm.GsmCellLocation;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.littlejie.core.base.Core;
 import com.littlejie.core.reveiver.USBStateReceiver;
 
 import java.io.BufferedReader;
@@ -25,6 +28,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -197,12 +203,62 @@ public class DeviceUtil {
     }
 
     /**
+     * 判断wifi是否开启
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isWifiEnabled(Context context) {
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        return (wm != null) && (wm.getWifiState() == WifiManager.WIFI_STATE_ENABLED || wm.getWifiState() == WifiManager.WIFI_STATE_ENABLING);
+    }
+
+    /**
+     * Is wifi connected
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetInfo != null && activeNetInfo.isConnected()
+                && (activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI);
+    }
+
+    /**
+     * If wifi connected, disconnect
+     *
+     * @param context
+     */
+    public static void disconnectWifi(Context context) {
+        if (isWifiConnected(context)) {
+            WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            if (wm != null) {
+                List<WifiConfiguration> configs = wm.getConfiguredNetworks();
+                if (wm.getConnectionInfo() != null && configs != null) {
+                    Iterator<WifiConfiguration> iter = configs.iterator();
+                    while (iter.hasNext()) {
+                        WifiConfiguration config = iter.next();
+                        if (config.networkId == wm.getConnectionInfo().getNetworkId()) {
+                            wm.disableNetwork(wm.getConnectionInfo().getNetworkId());
+                            return;
+                        }
+                    }
+
+                }
+                wm.disconnect();
+            }
+        }
+    }
+
+    /**
      * @return 手机链接wifi的路由器的名字
      */
     public static String getWifiSSID(Context context) {
-        WifiManager mWifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (mWifi.isWifiEnabled()) {
-            WifiInfo wifiInfo = mWifi.getConnectionInfo();
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
             return wifiInfo.getSSID();
         }
         return "";
@@ -212,12 +268,85 @@ public class DeviceUtil {
      * @return 手机链接wifi的路由器的mac地址
      */
     public static String getWifiBSSID(Context context) {
-        WifiManager mWifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (mWifi.isWifiEnabled()) {
-            WifiInfo wifiInfo = mWifi.getConnectionInfo();
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
             return wifiInfo.getBSSID();
         }
         return "";
+    }
+
+    /**
+     * 获取 wifi 的ip
+     *
+     * @param context
+     * @return
+     */
+    public static String getWifiIp(Context context) {
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
+            int ip = wifiInfo.getIpAddress();
+            return (ip & 0xff) + "." + (ip >> 8 & 0xff) + "."
+                    + (ip >> 16 & 0xff) + "." + (ip >> 24 & 0xff);
+        }
+        return "";
+    }
+
+    /**
+     * 获取wifi的mac地址
+     *
+     * @param context
+     * @return
+     */
+    public static String getWifiMacAddress(Context context) {
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
+            return wifiInfo.getMacAddress();
+        }
+        return "";
+    }
+
+    /**
+     * 获取wifi连接速度
+     *
+     * @param context
+     * @return
+     */
+    public static int getWifiLinkSpeed(Context context) {
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
+            return wifiInfo.getLinkSpeed();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取 Wifi 信号强度
+     * <p>
+     * 得到的值是一个0到-100的区间值，是一个int型数据，
+     * 其中0到-50表示信号最好，
+     * -50到-70表示信号偏差，
+     * 小于-70表示最差，
+     * 有可能连接不上或者掉线，
+     * 一般Wifi已断则值为-200。
+     * </p>
+     *
+     * @param context
+     * @return
+     */
+    public static int getWifiRssi(Context context) {
+        WifiInfo wifiInfo = getWifiInfo(context);
+        if (wifiInfo != null) {
+            return wifiInfo.getRssi();
+        }
+        return 0;
+    }
+
+    public static WifiInfo getWifiInfo(Context context) {
+        WifiManager mWifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (mWifi.isWifiEnabled()) {
+            return mWifi.getConnectionInfo();
+        }
+        return null;
     }
 
     /**
@@ -280,57 +409,6 @@ public class DeviceUtil {
             return wifiInfo.getMacAddress();
         }
         return "";
-    }
-
-    /**
-     * 判断wifi是否开启
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isWifiEnabled(Context context) {
-        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        return (wm != null) && (wm.getWifiState() == WifiManager.WIFI_STATE_ENABLED || wm.getWifiState() == WifiManager.WIFI_STATE_ENABLING);
-    }
-
-    /**
-     * Is wifi connected
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetInfo != null && activeNetInfo.isConnected()
-                && (activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI);
-    }
-
-    /**
-     * If wifi connected, disconnect
-     *
-     * @param context
-     */
-    public static void disconnectWifi(Context context) {
-        if (isWifiConnected(context)) {
-            WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            if (wm != null) {
-                List<WifiConfiguration> configs = wm.getConfiguredNetworks();
-                if (wm.getConnectionInfo() != null && configs != null) {
-                    Iterator<WifiConfiguration> iter = configs.iterator();
-                    while (iter.hasNext()) {
-                        WifiConfiguration config = iter.next();
-                        if (config.networkId == wm.getConnectionInfo().getNetworkId()) {
-                            wm.disableNetwork(wm.getConnectionInfo().getNetworkId());
-                            return;
-                        }
-                    }
-
-                }
-                wm.disconnect();
-            }
-        }
     }
 
     /**
@@ -463,6 +541,51 @@ public class DeviceUtil {
      */
     public static String getSystemModel() {
         return android.os.Build.MODEL;
+    }
+
+    /**
+     * 获取存储路径
+     */
+    public static String[] getStoragePath() {
+        StorageManager storageManager = (StorageManager) Core.getApplicationContext().getSystemService(Context
+                .STORAGE_SERVICE);
+        try {
+            Class<?>[] paramClasses = {};
+            Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths", paramClasses);
+            getVolumePathsMethod.setAccessible(true);
+            Object[] params = {};
+            Object invoke = getVolumePathsMethod.invoke(storageManager, params);
+            return (String[]) invoke;
+        } catch (NoSuchMethodException e1) {
+            e1.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取除内置存储以外的所有存储路径
+     *
+     * @return
+     */
+    public static List<String> getExtSDCardPath() {
+        String[] paths = getStoragePath();
+        if (paths == null || paths.length == 0) {
+            return null;
+        }
+        List<String> lstPath = new ArrayList<>();
+        for (String path : paths) {
+            if (Environment.getExternalStorageDirectory().getAbsolutePath().equals(path)) {
+                continue;
+            }
+            lstPath.add(path);
+        }
+        return lstPath;
     }
 
     /**

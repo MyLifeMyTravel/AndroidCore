@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edt_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入过滤条件(以,分隔)" />
+
+    <Button
+        android:id="@+id/btn_filter_by_suffix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按后缀过滤,如：txt,jpg"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_filter_by_mimetype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按文件的MimeType过滤,如：text/plain,image/jpeg"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_new_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建File" />
+
+    <Button
+        android:id="@+id/btn_not_new_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="不创建File" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

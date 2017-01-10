@@ -1,1 +1,1 @@
-include ':lib-core', ':lib-qrscan', ':demo', ':tools', ':flashlight', ':footprint', ':lib-share', ':filemanager'
+include ':lib-core', ':lib-qrscan', ':demo', ':flashlight', ':footprint', ':lib-share', ':filemanager', ':lib-dialog', ':news'

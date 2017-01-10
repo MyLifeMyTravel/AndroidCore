@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.demo.modules.base.system.ClipboardActivity">
+
+    <Button
+        android:id="@+id/btn_copy_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拷贝文本" />
+
+    <Button
+        android:id="@+id/btn_copy_rich_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拷贝富文本" />
+
+    <Button
+        android:id="@+id/btn_copy_intent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拷贝 Intent" />
+
+    <Button
+        android:id="@+id/btn_copy_uri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拷贝 Uri" />
+
+    <Button
+        android:id="@+id/btn_copy_multiple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拷贝多组数据" />
+
+    <TextView
+        android:id="@+id/tv_copied"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+</LinearLayout>

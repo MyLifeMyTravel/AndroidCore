@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_notification_effect"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.notification.NotificationEffectActivity">
+
+    <Button
+        android:id="@+id/btn_notify_only_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="仅显示消息标题、内容、图标、时间" />
+
+    <Button
+        android:id="@+id/btn_notify_with_ring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="通知时伴随铃声" />
+
+    <Button
+        android:id="@+id/btn_notify_with_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="通知时伴随震动" />
+
+    <Button
+        android:id="@+id/btn_notify_with_lights"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="通知时伴随呼吸灯" />
+
+    <Button
+        android:id="@+id/btn_notify_with_mix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="通知伴随铃声、震动、呼吸灯" />
+
+    <Button
+        android:id="@+id/btn_notify_with_insistent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="循环通知(响铃、震动、呼吸灯)" />
+
+    <Button
+        android:id="@+id/btn_notify_with_alert_once"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="我只通知一次(效果跟默认一样)" />
+
+    <Button
+        android:id="@+id/btn_clear_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清空所有消息" />
+
+</LinearLayout>
