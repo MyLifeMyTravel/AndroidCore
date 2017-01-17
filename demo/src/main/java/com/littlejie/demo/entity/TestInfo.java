@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 
 public class TestInfo {
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose
     private String path;
     private String name;
 

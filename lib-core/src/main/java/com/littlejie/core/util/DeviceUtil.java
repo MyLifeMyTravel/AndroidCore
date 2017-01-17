@@ -51,6 +51,8 @@ public class DeviceUtil {
 
     /**
      * 获取CPU个数
+     *
+     * @return CPU个数
      */
     public static int getCoreNum() {
         class CpuFilter implements FileFilter {
@@ -104,8 +106,10 @@ public class DeviceUtil {
     }
 
     /**
+     * 获取手机可用内存
+     *
      * @param context
-     * @return 手机当前可用内存(兆)
+     * @return 手机当前可用内存(MB)
      */
     public static long getAvailMemory(Context context) {// 获取android当前可用内存大小
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -133,6 +137,11 @@ public class DeviceUtil {
         return propertyValue;
     }
 
+    /**
+     * 获取设备序列号
+     *
+     * @return
+     */
     public static String getDeviceSerial() {
         return getSystemProperty("ro.serialno");
     }
@@ -431,15 +440,6 @@ public class DeviceUtil {
         return result;
     }
 
-    public static boolean isProductInBrands(String... brands) {
-        for (String brand : brands) {
-            if (isProduceByBrand(brand)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean isSimReady(Context context) {
         try {
             TelephonyManager mgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -598,33 +598,31 @@ public class DeviceUtil {
                 || Build.MODEL.equals("Android SDK built for x86"));
     }
 
-    public static String getSysInfo() {
-        StringBuffer sysInfo = new StringBuffer();
-        sysInfo.append("ID " + Build.ID + ";");
-        sysInfo.append("DISPLAY " + Build.DISPLAY + ";");
-        sysInfo.append("PRODUCT " + Build.PRODUCT + ";");
-        sysInfo.append("DEVICE " + Build.DEVICE + ";");
-        sysInfo.append("BOARD " + Build.BOARD + ";");
-        sysInfo.append("MODEL " + Build.MODEL + ";");
-        sysInfo.append("BRAND " + Build.BRAND + ";");
-        sysInfo.append("MANUFACTURER " + Build.MANUFACTURER + ";");
+    /**
+     * 手机制造商
+     *
+     * @return
+     */
+    public static String getManufacturer() {
+        return Build.MANUFACTURER;
+    }
 
-        sysInfo.append("HARDWARE " + Build.HARDWARE + ";");
-        sysInfo.append("SERIAL " + Build.SERIAL + ";");
+    /**
+     * 获取手机型号，可能为unknown
+     *
+     * @return
+     */
+    public static String getMobileModel() {
+        return Build.MODEL;
+    }
 
-        sysInfo.append("VERSION.INCREMENTAL " + Build.VERSION.INCREMENTAL + ";");
-        sysInfo.append("VERSION.RELEASE " + Build.VERSION.RELEASE + ";");
-        sysInfo.append("VERSION.SDK " + Build.VERSION.SDK_INT + ";");
-        sysInfo.append("VERSION.CODENAME " + Build.VERSION.CODENAME + ";");
-
-        sysInfo.append("TYPE " + Build.TYPE + ";");
-        sysInfo.append("TAGS " + Build.TAGS + ";");
-        sysInfo.append("FINGERPRINT " + Build.FINGERPRINT + ";");
-
-        //用于内部开发
-        sysInfo.append("USER " + Build.USER + ";");
-        sysInfo.append("HOST " + Build.HOST);
-        return sysInfo.toString();
+    /**
+     * 获取手机品牌
+     *
+     * @return
+     */
+    public static String getMobileBrand() {
+        return Build.BRAND;
     }
 
 }

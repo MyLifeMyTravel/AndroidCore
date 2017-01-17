@@ -7,23 +7,19 @@
     android:layout_height="match_parent"
     tools:context="com.littlejie.filemanager.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include layout="@layout/toolbar_bar" />
-        </android.support.design.widget.AppBarLayout>
+        <include layout="@layout/toolbar_bar" />
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
     <!--Navigation item 选中颜色可以去主题中设置-->
     <!--正常状态下字体颜色和icon颜色-->

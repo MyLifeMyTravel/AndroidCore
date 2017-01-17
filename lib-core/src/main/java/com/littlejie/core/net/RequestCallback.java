@@ -12,15 +12,14 @@ import okhttp3.Response;
 public interface RequestCallback {
 
     /**
-     * 网络请求前需要做的工作，如显示加载效果
-     */
-    void before();
-
-    /**
      * HTTP请求成功
      * 由于在主线程中调用 response.body().string() 会抛出 NetworkOnMainThreadException
      * 故，直接在子线程中直接取出 body 回调
-     * 补充：此处未考虑 body 中的数据过大的情况
+     * <p>
+     * 补充：
+     * 1.此处未考虑 body 中的数据过大的情况
+     * 2.由于body已经获取过response.body.string()，所以跟body()内容相关的都不能再次使用
+     * </p>
      *
      * @param response
      * @param body
@@ -35,31 +34,4 @@ public interface RequestCallback {
      */
     void onFailure(Request request, IOException e);
 
-    /**
-     * 网络请求后需要做的工作，如取消加载效果
-     */
-    void after();
-
-    class SimpleRequestCallback implements RequestCallback {
-
-        @Override
-        public void before() {
-
-        }
-
-        @Override
-        public void onResponse(Response response, String body) {
-
-        }
-
-        @Override
-        public void onFailure(Request request, IOException e) {
-
-        }
-
-        @Override
-        public void after() {
-
-        }
-    }
 }

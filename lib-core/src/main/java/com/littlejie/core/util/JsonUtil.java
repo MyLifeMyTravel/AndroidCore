@@ -3,7 +3,6 @@ package com.littlejie.core.util;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +22,7 @@ import java.util.Set;
  */
 public class JsonUtil {
 
-    private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private static Gson gson = new Gson();
 
     /**
      * 将 Map 转换成 Json
@@ -40,10 +39,17 @@ public class JsonUtil {
                 if (value instanceof List) {
                     JSONArray array = new JSONArray(JsonUtil.toJsonString(value));
                     jsonObject.put(key, array);
-                } else {
-                    jsonObject.put(key, map.get(key));
+                } else if (value instanceof String
+                        || value instanceof Integer
+                        || value instanceof Boolean
+                        || value instanceof Long
+                        || value instanceof Double
+                        || value instanceof Float) {
+                    jsonObject.put(key, value);
+                } else if (value != null) {
+                    JSONObject object = new JSONObject(JsonUtil.toJsonString(value));
+                    jsonObject.put(key, object);
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

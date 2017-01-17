@@ -2,14 +2,10 @@ package com.littlejie.demo.modules;
 
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.littlejie.core.base.BaseActivity;
-import com.littlejie.core.util.DeviceUtil;
-import com.littlejie.core.util.FileUtil;
+import com.littlejie.core.util.SignalStrengthUtil;
 import com.littlejie.demo.R;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +25,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
         ButterKnife.bind(this);
+        SignalStrengthUtil.init(this);
     }
 
     @Override
@@ -42,14 +39,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void process() {
-        String[] files = DeviceUtil.getStoragePath();
-//        List<String> sets = DeviceUtil.getExternalMounts();
-        for (String path : files) {
-            File file = new File(path);
-            Log.d(TAG, "device files  = " + file.list());
-            Log.d(TAG, "device storage = " + file.getTotalSpace());
-        }
-        Log.d(TAG, "mime type = " + FileUtil.getMimeType("/storage/emulated/0/DCIM/100MEDIA/IMAG0922.jpg"));
+        //99 0 -120 -160 -120 -1 -1 19 -105 -10 74 2147483647 2147483647
+        SignalStrengthUtil.getRawSignalStrength();
     }
 
     private void initToolbar() {

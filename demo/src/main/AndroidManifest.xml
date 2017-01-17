@@ -7,8 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 监听网络状态改变 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- 读写权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 联系人读写权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
         android:name="com.littlejie.core.base.BaseApplication"
@@ -18,19 +24,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".modules.MainActivity"></activity>
-        <activity android:name=".modules.base.receiver.BatteryReceiverActivity" />
+        <activity android:name=".modules.base.receiver.BatteryReceiverActivity"></activity>
         <activity android:name=".modules.base.receiver.WifiStateActivity" />
         <activity android:name=".modules.base.system.ConnectiveActivity" />
-        <activity android:name=".modules.base.system.ClipboardActivity" />
-        <activity android:name=".modules.base.media.activity.MediaObserverActivity" />
-        <activity android:name=".modules.base.notification.NotificationListActivity">
+        <activity android:name=".modules.base.system.ClipboardActivity"></activity>
+        <activity android:name=".modules.base.media.activity.MediaObserverActivity">
+
+        </activity>
+        <activity android:name=".modules.base.notification.NotificationListActivity"></activity>
+        <activity android:name=".modules.base.notification.ProgressNotifyActivity" />
+        <activity android:name=".modules.base.system.RuntimePermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modules.base.notification.ProgressNotifyActivity"></activity>
     </application>
 
 </manifest>

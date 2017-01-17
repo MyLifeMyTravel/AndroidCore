@@ -9,6 +9,7 @@ import android.widget.Toast;
 import static com.littlejie.core.base.Core.getString;
 
 /**
+ * Toast工具类
  * Created by littlejie on 2017/1/5.
  */
 
@@ -25,11 +26,11 @@ public class ToastUtil {
         mContext = context;
     }
 
-    public static void showDefautToast(String s) {
+    public static void showDefaultToast(String s) {
         Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showDefautToast(int resId) {
+    public static void showDefaultToast(int resId) {
         Toast.makeText(mContext, getString(resId), Toast.LENGTH_SHORT).show();
     }
 

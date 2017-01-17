@@ -37,7 +37,7 @@ public class ClipboardActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_clipboard);
 
         //ClipboardUtil在Application的onCreate中调用init初始化
         mClipboard = ClipboardUtil.getInstance();

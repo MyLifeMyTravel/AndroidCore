@@ -1,7 +1,9 @@
 package com.littlejie.demo.modules.base.notification;
 
+import android.app.DownloadManager;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -67,16 +69,24 @@ public class ProgressNotifyActivity extends BaseActivity implements View.OnClick
                 startDownload();
                 break;
             case R.id.btn_pause:
-                HttpManager.downloadBySystem("http://img1.niutuku.com/design/1207/2339/ntk-2339-435vnvwllr4xg.jpg", "/a.jpg",
-                        new HttpManager.OnDownloadCompleteListener() {
+                HttpManager.downloadBySystem("http://img1.niutuku.com/design/1207/2339/ntk-2339-435vnvwllr4xg.jpg",
+                        Environment.DIRECTORY_DCIM, "a.jpg", DownloadManager.Request.NETWORK_WIFI, DownloadManager.Request.VISIBILITY_HIDDEN,
+                        null, new HttpManager.OnDownloadCompleteListener() {
                             @Override
-                            public void onDownloadComplete() {
-                                ToastUtil.showDefautToast("下载完成");
+                            public void onDownloadComplete(long id, boolean success) {
+                                ToastUtil.showDefaultToast(success ? "下载完成" : "下载失败");
                             }
                         });
+//                HttpManager.downloadFileAsync("http://img1.niutuku.com/design/1207/2339/ntk-2339-435vnvwllr4xg.jpg",
+//                        Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/a.jpg", new HttpManager.OnDownloadCompleteListener() {
+//                            @Override
+//                            public void onDownloadComplete(boolean success) {
+//                                ToastUtil.showDefautToast(success ? "下载完成" : "下载失败");
+//                            }
+//                        });
                 break;
             case R.id.btn_cancel:
-
+                DeviceUtil.getExtSDCardPath();
                 break;
         }
     }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * 获取应用相关属性，如版本、包名
@@ -11,6 +13,8 @@ import android.content.pm.PackageManager;
  */
 
 public class PackageUtil {
+
+    private static final String TAG = PackageUtil.class.getSimpleName();
 
     /**
      * 版本名
@@ -54,6 +58,30 @@ public class PackageUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * 获取APK图标
+     *
+     * @param context
+     * @param apkPath apk文件所在路径
+     * @return
+     */
+    public static Drawable getApkIcon(Context context, String apkPath) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(apkPath,
+                PackageManager.GET_ACTIVITIES);
+        if (info != null) {
+            ApplicationInfo appInfo = info.applicationInfo;
+            appInfo.sourceDir = apkPath;
+            appInfo.publicSourceDir = apkPath;
+            try {
+                return appInfo.loadIcon(pm);
+            } catch (OutOfMemoryError e) {
+                Log.e("ApkIconLoader", e.toString());
+            }
+        }
+        return null;
     }
 
     private static PackageInfo getPackageInfo(Context context) {

@@ -3,23 +3,21 @@ package com.littlejie.filemanager.entity;
 import java.io.File;
 
 /**
+ * 数据格式请参照Android多媒体库
+ * <p>/data/data/com.android.providers.media/databases/external.db</p>
  * Created by littlejie on 2016/12/28.
  */
 
 public class FileInfo {
 
-    protected String id;
-    protected String path;
-    protected String name;
+    private String id;
+    private String path;
+    private String name;
     private long lastModify;
-    protected int parent;
+    private int parent;
     private long size;
-    protected File file;
+    private File file;
     private String mimeType;
-
-    public boolean isDirectory() {
-        return file != null && file.isDirectory();
-    }
 
     public String getId() {
         return id;
@@ -35,7 +33,6 @@ public class FileInfo {
 
     public void setPath(String path) {
         this.path = path;
-        file = new File(path);
     }
 
     public String getName() {
