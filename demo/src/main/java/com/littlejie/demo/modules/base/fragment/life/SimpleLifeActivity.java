@@ -1,4 +1,4 @@
-package com.littlejie.demo.modules.base.fragment.lifecircle;
+package com.littlejie.demo.modules.base.fragment.life;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 
-public class SimpleLifeCircleActivity extends BaseActivity {
+public class SimpleLifeActivity extends BaseActivity {
 
     private TextView mTvActivityCreated;
 

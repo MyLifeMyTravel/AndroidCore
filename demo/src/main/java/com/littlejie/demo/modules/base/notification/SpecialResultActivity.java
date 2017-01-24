@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.littlejie.demo.R;
 
-public class SpecailResultActivity extends Activity {
+public class SpecialResultActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

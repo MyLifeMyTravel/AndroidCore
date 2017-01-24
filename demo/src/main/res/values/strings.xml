@@ -3,4 +3,12 @@
 
     <string name="txt_add_to_back_stack">addToBackStack() : %s</string>
     <string name="set_notification_access">设置Notification access(%s)</string>
+    <string name="menu_base">Android 入门</string>
+    <string name="menu_advanced">Android 进阶</string>
+    <string name="menu_give_up">Android 放弃</string>
+    <string name="menu_setting">设置</string>
+    <string name="menu_feedback">反馈</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_subtitle_catalog">目录</string>
+    <string name="menu_subtitle_more">更多</string>
 </resources>

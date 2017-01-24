@@ -68,13 +68,17 @@ public class BaseApplication extends Application {
         mInstance = this;
         uiThread = Thread.currentThread();
         uiThreadHandler = new Handler();
+        initLeakCanary();
+        Core.init();
+    }
+
+    private void initLeakCanary() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);
-        Core.init();
     }
 
     public static void addActivity(Activity activity) {

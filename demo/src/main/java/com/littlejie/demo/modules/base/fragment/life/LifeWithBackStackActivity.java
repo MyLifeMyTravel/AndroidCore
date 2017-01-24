@@ -1,4 +1,4 @@
-package com.littlejie.demo.modules.base.fragment.lifecircle;
+package com.littlejie.demo.modules.base.fragment.life;
 
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
-import com.littlejie.demo.modules.base.fragment.LifeCircleFragment;
 
 /**
  * 如果 Fragment 通过 addToBackStack() 加入回退栈
@@ -17,7 +16,7 @@ import com.littlejie.demo.modules.base.fragment.LifeCircleFragment;
  * 2. 进行 popBackStack() 时不会再次调用 onAttach() 和 onCreate()
  * 3. add() 和 replace() 方法对 Fragment 的生命周期没有影响，但 add() 方法会造成 Fragment 叠加显示
  */
-public class LifeCircleWithBackStackActivity extends BaseActivity {
+public class LifeWithBackStackActivity extends BaseActivity {
 
     private TextView mTvAddToBackStackTip;
     private SwitchCompat mSwitch;
@@ -48,7 +47,7 @@ public class LifeCircleWithBackStackActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.content_frame, LifeCircleFragment.newInstance("Tab" + mCount++));
+                transaction.add(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
                 if (mSwitch.isChecked()) {
                     transaction.addToBackStack(null);
                 }
@@ -59,7 +58,7 @@ public class LifeCircleWithBackStackActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, LifeCircleFragment.newInstance("Tab" + mCount++));
+                transaction.replace(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
                 if (mSwitch.isChecked()) {
                     transaction.addToBackStack(null);
                 }

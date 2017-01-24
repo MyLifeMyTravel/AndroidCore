@@ -15,6 +15,8 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment extends Fragment {
 
+    protected final String TAG = this.getClass().getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

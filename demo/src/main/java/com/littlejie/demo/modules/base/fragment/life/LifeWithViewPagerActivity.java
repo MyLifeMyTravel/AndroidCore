@@ -1,4 +1,4 @@
-package com.littlejie.demo.modules.base.fragment.lifecircle;
+package com.littlejie.demo.modules.base.fragment.life;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
-import com.littlejie.demo.modules.base.fragment.LifeCircleFragment;
 import com.littlejie.demo.modules.adapter.TabAdapter;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
  * 测试 Fragment 与 ViewPager 结合使用时的生命周期。
  * ViewPager 的加载机制会导致 Fragment 的销毁(onDestroy)与重新创建(onCreateView)
  */
-public class LifeCircleWithViewPagerActivity extends BaseActivity {
+public class LifeWithViewPagerActivity extends BaseActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -36,7 +35,7 @@ public class LifeCircleWithViewPagerActivity extends BaseActivity {
         mFragments = new ArrayList<>();
         int size = mTitles.length;
         for (int i = 0; i < size; i++) {
-            mFragments.add(LifeCircleFragment.newInstance(mTitles[i]));
+            mFragments.add(LifeFragment.newInstance(mTitles[i]));
         }
     }
 

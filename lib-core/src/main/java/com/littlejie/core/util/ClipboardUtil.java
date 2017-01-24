@@ -7,7 +7,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -284,6 +286,7 @@ public class ClipboardUtil {
         return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToStyledText(mContext);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public CharSequence coercePrimaryClipToHtmlText() {
         if (!hasPrimaryClip()) {
             return null;

@@ -1,11 +1,12 @@
 package com.littlejie.demo.modules;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.base.BaseFragment;
 import com.littlejie.core.manager.ActivityManager;
 import com.littlejie.demo.R;
 import com.littlejie.demo.entity.ItemInfo;
@@ -16,11 +17,10 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 简单 ListView Activity 封装
- * Created by littlejie on 2016/12/30.
+ * Created by littlejie on 2017/1/23.
  */
 
-public class BaseListActivity extends BaseActivity {
+public class BaseListFragment extends BaseFragment {
 
     @BindView(R.id.lv)
     ListView mLv;
@@ -29,7 +29,7 @@ public class BaseListActivity extends BaseActivity {
 
     @Override
     protected int getPageLayoutID() {
-        return R.layout.activity_list;
+        return R.layout.fragment_list;
     }
 
     @Override
@@ -38,8 +38,8 @@ public class BaseListActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
-        mArrayAdapter = new ArrayAdapter<ItemInfo>(this, android.R.layout.simple_list_item_1);
+    protected void initView(View view, Bundle savedInstanceState) {
+        mArrayAdapter = new ArrayAdapter<ItemInfo>(getContext(), android.R.layout.simple_list_item_1);
         mLv.setAdapter(mArrayAdapter);
     }
 
@@ -51,13 +51,13 @@ public class BaseListActivity extends BaseActivity {
                 if (mLstItem == null || mLstItem.size() == 0) {
                     return;
                 }
-                ActivityManager.startActivity(BaseListActivity.this, mLstItem.get(position).getClz());
+                ActivityManager.startActivity(getContext(), mLstItem.get(position).getClz());
             }
         });
     }
 
     @Override
-    protected void process() {
+    protected void process(Bundle savedInstanceState) {
 
     }
 
@@ -65,5 +65,4 @@ public class BaseListActivity extends BaseActivity {
         mArrayAdapter.addAll(mLstItem);
         mArrayAdapter.notifyDataSetChanged();
     }
-
 }

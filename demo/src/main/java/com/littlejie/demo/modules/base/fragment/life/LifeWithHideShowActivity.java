@@ -1,20 +1,19 @@
-package com.littlejie.demo.modules.base.fragment.lifecircle;
+package com.littlejie.demo.modules.base.fragment.life;
 
 import android.view.View;
 import android.widget.Button;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
-import com.littlejie.demo.modules.base.fragment.LifeCircleFragment;
 
 /**
  * 简单测试通过 hide() 、 show() 方法时 Fragment 的回调。
  * 为排除干扰，在 initData() 时把需要的 Fragment 先创建完成。
  * 通过 hide() 、 show() 可以发现，此时 Fragment 只改变了可见性，并不涉及生命周期的改变
  */
-public class LifeCircleWithHideShowActivity extends BaseActivity implements View.OnClickListener {
+public class LifeWithHideShowActivity extends BaseActivity implements View.OnClickListener {
 
-    private LifeCircleFragment mFragment1, mFragment2;
+    private LifeFragment mFragment1, mFragment2;
     private Button mBtnShowOneHideTwo, mBtnShowTwoHideOne;
 
     @Override
@@ -24,8 +23,8 @@ public class LifeCircleWithHideShowActivity extends BaseActivity implements View
 
     @Override
     protected void initData() {
-        mFragment1 = LifeCircleFragment.newInstance("Tab1");
-        mFragment2 = LifeCircleFragment.newInstance("Tab2");
+        mFragment1 = LifeFragment.newInstance("Tab1");
+        mFragment2 = LifeFragment.newInstance("Tab2");
     }
 
     @Override

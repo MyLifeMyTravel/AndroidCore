@@ -59,10 +59,7 @@ public class DeviceUtil {
             @Override
             public boolean accept(File pathname) {
                 // Check if filename is "cpu", followed by a single digit number
-                if (Pattern.matches("cpu[0-9]", pathname.getName())) {
-                    return true;
-                }
-                return false;
+                return Pattern.matches("cpu[0-9]", pathname.getName());
             }
         }
 
@@ -458,12 +455,8 @@ public class DeviceUtil {
     public static boolean isRoot() {
         boolean bool = false;
         try {
-            if ((!new File("/system/bin/su").exists())
-                    && (!new File("/system/xbin/su").exists())) {
-                bool = false;
-            } else {
-                bool = true;
-            }
+            bool = !((!new File("/system/bin/su").exists())
+                    && (!new File("/system/xbin/su").exists()));
 
         } catch (Exception e) {
 

@@ -1,4 +1,4 @@
-package com.littlejie.demo.modules.base.fragment;
+package com.littlejie.demo.modules.base.fragment.life;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,18 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.littlejie.demo.Constant;
 import com.littlejie.demo.R;
-import com.littlejie.demo.modules.base.fragment.lifecircle.SimpleLifeCircleActivity;
+import com.littlejie.demo.utils.Constant;
 
 /**
  * 测试 Fragment 生命周期，setUserVisibleHint 初始进来时只有默认 Tab
  * Created by littlejie on 2016/12/30.
  */
 
-public class LifeCircleFragment extends Fragment {
+public class LifeFragment extends Fragment {
 
-    private final String TAG = LifeCircleFragment.class.getSimpleName();
+    private final String TAG = LifeFragment.class.getSimpleName();
     //截取 Fragment.toString() 方法中的标识数字
     private final String ID = this.toString().substring(this.toString().indexOf("{") + 1, this.toString().length() - 1);
     private TextView mTvContent;
@@ -29,11 +28,11 @@ public class LifeCircleFragment extends Fragment {
     //默认 Title 值
     private String mTitle = "Tab";
 
-    public static LifeCircleFragment newInstance(String title) {
+    public static LifeFragment newInstance(String title) {
         Bundle args = new Bundle();
 
-        LifeCircleFragment fragment = new LifeCircleFragment();
-        args.putString(Constant.PARAM_TITLE, title);
+        LifeFragment fragment = new LifeFragment();
+        args.putString(Constant.EXTRA_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +45,9 @@ public class LifeCircleFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         Log.i(TAG, "Fragment id = " + ID + "," + mTitle + " is onHiddenChanged.hidden = " + hidden);
         super.onHiddenChanged(hidden);
+        isVisible();
+        isHidden();
+        isAdded();
     }
 
     /**
@@ -88,7 +90,7 @@ public class LifeCircleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (getArguments() != null) {
-            mTitle = getArguments().getString(Constant.PARAM_TITLE);
+            mTitle = getArguments().getString(Constant.EXTRA_TITLE);
         }
         //测试 onCreate() 是 Activity 的 UI 是否初始化完成
         //if (getContext() instanceof LifeCircleActivity) {
@@ -140,8 +142,8 @@ public class LifeCircleFragment extends Fragment {
         Log.i(TAG, "Fragment id = " + ID + "," + mTitle + " is onActivityCreated.");
         super.onActivityCreated(savedInstanceState);
         //测试 onCreate() 是 Activity 的 UI 是否初始化完成
-        if (getContext() instanceof SimpleLifeCircleActivity) {
-            ((SimpleLifeCircleActivity) getContext()).setActivityCreated("Fragment 进行 onActivityCreated() 时 Activity UI 已初始化完成。"
+        if (getContext() instanceof SimpleLifeActivity) {
+            ((SimpleLifeActivity) getContext()).setActivityCreated("Fragment 进行 onActivityCreated() 时 Activity UI 已初始化完成。"
                     + "\n你能看到我。");
         }
     }
@@ -183,7 +185,7 @@ public class LifeCircleFragment extends Fragment {
      * 不一定在 Activity 的 onDestroy() 方法中调用
      * 如：Fragment 与 ViewPager 结合使用时
      *
-     * @see com.littlejie.demo.modules.base.fragment.lifecircle.LifeCircleWithViewPagerActivity
+     * @see LifeWithViewPagerActivity
      */
     @Override
     public void onDestroyView() {

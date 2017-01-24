@@ -1,6 +1,9 @@
 package com.littlejie.core.util;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -21,7 +24,7 @@ import static org.apache.commons.io.FilenameUtils.getExtension;
 
 public class FileUtil {
 
-    private static final String[][] MIMETYPE = new String[][]{
+    private static final String[][] MIME_TYPE = new String[][]{
             {".3gp", "video/3gpp"},
             {".apk", "application/vnd.android.package-archive"},
             {".asf", "video/x-ms-asf"},
@@ -93,8 +96,8 @@ public class FileUtil {
     private static Map<String, String> mMimeTypeMap = new HashMap<>();
 
     static {
-        for (int i = 0; i < MIMETYPE.length; i++) {
-            mMimeTypeMap.put(MIMETYPE[i][0], MIMETYPE[i][1]);
+        for (int i = 0; i < MIME_TYPE.length; i++) {
+            mMimeTypeMap.put(MIME_TYPE[i][0], MIME_TYPE[i][1]);
         }
     }
 
@@ -133,6 +136,7 @@ public class FileUtil {
 
     /**
      * 获取 mimeType
+     * 如果mimeType为null，分享的时候可能出现没有可以处理该Intent的app
      *
      * @param url
      * @return
@@ -153,6 +157,45 @@ public class FileUtil {
             type = mMimeTypeMap.get(suffix);
         }
         return type;
+    }
+
+    /**
+     * 根据 Uri 获取对应文件路径
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
+    public static String getPathFromUri(Context context, Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        //如果uri的scheme为file，则直接返回path
+        String scheme = uri.getScheme();
+        if (scheme.equals("file")) {
+            return uri.getPath();
+        }
+        String[] projection = new String[]{MediaStore.Files.FileColumns.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        if (cursor.moveToFirst()) {
+            String path = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+            cursor.close();
+            return path;
+        }
+        return null;
+    }
+
+    /**
+     * 获取文件的Uri
+     *
+     * @param file
+     * @return
+     */
+    public static Uri getUriFromFile(File file) {
+        return Uri.fromFile(file);
     }
 
     public enum FileType {
@@ -201,6 +244,9 @@ public class FileUtil {
 
             if (mime.startsWith("application/zip"))
                 return FileType.ZIP;
+
+            if (mime.startsWith("application/vnd.android.package-archive"))
+                return APK;
 
             return FileType.MISC_FILE;
         }

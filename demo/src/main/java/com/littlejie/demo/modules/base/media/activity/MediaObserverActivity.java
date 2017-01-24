@@ -216,4 +216,5 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
             mAdapter.setData(lstFile);
         }
     }
+
 }

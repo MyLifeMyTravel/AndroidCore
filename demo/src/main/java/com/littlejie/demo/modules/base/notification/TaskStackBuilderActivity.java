@@ -69,7 +69,7 @@ public class TaskStackBuilderActivity extends Activity implements View.OnClickLi
         builder.setAutoCancel(true);
         // Creates an Intent for the Activity
         Intent notifyIntent =
-                new Intent(this, SpecailResultActivity.class);
+                new Intent(this, SpecialResultActivity.class);
         // Sets the Activity to start in a new, empty task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

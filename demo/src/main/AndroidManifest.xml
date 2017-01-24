@@ -15,6 +15,9 @@
     <!-- 联系人读写权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <!-- 绑定系统通知服务 -->
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <application
         android:name="com.littlejie.core.base.BaseApplication"
@@ -23,23 +26,80 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.MainActivity"></activity>
-        <activity android:name=".modules.base.receiver.BatteryReceiverActivity"></activity>
-        <activity android:name=".modules.base.receiver.WifiStateActivity" />
-        <activity android:name=".modules.base.system.ConnectiveActivity" />
-        <activity android:name=".modules.base.system.ClipboardActivity"></activity>
-        <activity android:name=".modules.base.media.activity.MediaObserverActivity">
-
-        </activity>
-        <activity android:name=".modules.base.notification.NotificationListActivity"></activity>
-        <activity android:name=".modules.base.notification.ProgressNotifyActivity" />
-        <activity android:name=".modules.base.system.RuntimePermissionActivity">
+        <activity android:name=".modules.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".modules.base.media.activity.MediaObserverActivity" />
+        <activity android:name=".modules.base.media.activity.SDCardActivity" />
+        <!-- Android 入门 -->
+        <!-- Fragment 生命周期 -->
+        <activity android:name=".modules.base.fragment.life.FragmentLifeListActivity" />
+        <activity android:name=".modules.base.fragment.life.SimpleLifeActivity" />
+        <activity android:name=".modules.base.fragment.life.LifeWithBackStackActivity" />
+        <activity android:name=".modules.base.fragment.life.LifeWithHideShowActivity" />
+        <activity android:name=".modules.base.fragment.life.LifeWithViewPagerActivity" />
+        <!-- Fragment 菜单 -->
+        <activity android:name=".modules.base.fragment.menu.FragmentMenuActivity" />
+        <!-- Fragment 可见性 -->
+        <activity android:name=".modules.base.fragment.visible.FragmentVisibleListActivity" />
+        <activity android:name=".modules.base.fragment.create.FragmentCreateListActivity" />
+        <activity android:name=".modules.base.fragment.create.StaticCreateActivity" />
+        <activity android:name=".modules.base.fragment.create.DynamicCreateActivity" />
+
+        <!-- Notification -->
+        <activity android:name=".modules.base.notification.NotificationListActivity" />
+        <activity android:name=".modules.base.notification.SimplestNotificationActivity" />
+        <activity android:name=".modules.base.notification.SimpleNotificationActivity" />
+        <activity android:name=".modules.base.notification.NotificationEffectActivity" />
+        <activity android:name=".modules.base.notification.NotificationStyleActivity" />
+        <activity android:name=".modules.base.notification.TaskStackBuilderActivity" />
+        <activity android:name=".modules.base.notification.NotificationListenerServiceActivity" />
+        <activity android:name=".modules.base.notification.ProgressNotifyActivity" />
+        <activity android:name=".modules.base.notification.NormalResultActivity" />
+        <activity android:name=".modules.base.notification.SpecialResultActivity" />
+        <activity android:name=".modules.base.notification.NotificationPriorityActivity" />
+
+        <!-- 系统 -->
+        <activity android:name=".modules.base.receiver.BatteryReceiverActivity" />
+        <activity android:name=".modules.base.system.RuntimePermissionActivity" />
+        <activity android:name=".modules.base.receiver.WifiStateActivity" />
+        <activity android:name=".modules.base.system.ConnectiveActivity" />
+        <activity android:name=".modules.base.system.ClipboardActivity" />
+        <!-- 注册分享 -->
+        <!-- singleTask 可以防止打开多个分享页面 -->
+        <activity
+            android:name=".modules.base.system.ShareIntentActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <!-- 发送多个数据 -->
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <!--<data android:mimeType="image/*" />-->
+                <!--<data android:mimeType="video/*" />-->
+                <!--<data android:mimeType="audio/*" />-->
+                <!--<data android:mimeType="text/*" />-->
+                <!-- 接受所有类型的意图 -->
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+
+        <!-- Service -->
+        <service
+            android:name=".modules.base.notification.MyNotificationListenerService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
