@@ -11,9 +11,10 @@ import java.util.List;
 /**
  * Android 权限相关工具类，如：Android 6.0 之后的运行时权限
  * 完善中...
+ *
  * Created by littlejie on 2016/12/1.
  */
-
+//Todo 学习注解，通过注解优化运行时权限申请步骤
 public class PermissionUtil {
 
     /**

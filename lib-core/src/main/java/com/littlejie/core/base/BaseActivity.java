@@ -10,6 +10,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 
 /**
+ * BaseActivity，所有子类 Activity 都应继承该类，封装 ButterKnife
  * Created by littlejie on 2016/4/6.
  */
 public abstract class BaseActivity extends AppCompatActivity {

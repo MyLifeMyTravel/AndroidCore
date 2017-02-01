@@ -13,6 +13,7 @@ public class MiscUtil {
 
     /**
      * 根据URL获取网站的icon
+     * <p>默认为网站 scheme://host/favicon.ico</p>
      *
      * @param url
      * @return
