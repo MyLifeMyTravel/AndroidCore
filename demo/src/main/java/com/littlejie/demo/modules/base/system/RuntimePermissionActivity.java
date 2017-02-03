@@ -15,6 +15,9 @@ import com.littlejie.demo.R;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * Android 6.0 运行时权限申请 Demo
+ */
 public class RuntimePermissionActivity extends BaseActivity {
 
     @BindView(R.id.btn_check_write_external_storage)

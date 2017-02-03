@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
+ * 处理使用注解的类，代码来自互联网，尚未理解
  * Created by littlejie on 2017/1/18.
  */
 public class ClassUtil {

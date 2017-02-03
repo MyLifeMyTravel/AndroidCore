@@ -51,16 +51,16 @@ public class SimpleFileInfoAdapter extends BaseAdapter {
         if (convertView == null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_simple_file_info, null);
-            vh.tvConetnt = (TextView) convertView.findViewById(R.id.tv_content);
+            vh.tvContent = (TextView) convertView.findViewById(R.id.tv_content);
             convertView.setTag(vh);
         }
         vh = (ViewHolder) convertView.getTag();
         FileInfo info = (FileInfo) getItem(position);
-        vh.tvConetnt.setText(info.toString());
+        vh.tvContent.setText(info.toString());
         return convertView;
     }
 
     private class ViewHolder {
-        TextView tvConetnt;
+        TextView tvContent;
     }
 }

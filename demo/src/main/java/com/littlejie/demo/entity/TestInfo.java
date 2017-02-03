@@ -3,6 +3,7 @@ package com.littlejie.demo.entity;
 import com.google.gson.annotations.Expose;
 
 /**
+ * 测试 Gson 序列号和反序列化字段过滤
  * Created by littlejie on 2017/1/10.
  */
 

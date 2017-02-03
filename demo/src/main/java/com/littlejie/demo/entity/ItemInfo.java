@@ -1,6 +1,7 @@
 package com.littlejie.demo.entity;
 
 /**
+ * Demo 专用，保存 ListView 中 Item 的描述和对应的 Activity 类
  * Created by littlejie on 16/9/10.
  */
 public class ItemInfo {
