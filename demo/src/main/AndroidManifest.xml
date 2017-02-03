@@ -34,8 +34,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".modules.base.media.activity.MediaObserverActivity" />
-        <activity android:name=".modules.base.media.activity.SDCardActivity" />
         <!-- Android 入门 -->
         <!-- Fragment 生命周期 -->
         <activity android:name=".modules.base.fragment.life.FragmentLifeListActivity" />
@@ -63,6 +61,13 @@
         <activity android:name=".modules.base.notification.NormalResultActivity" />
         <activity android:name=".modules.base.notification.SpecialResultActivity" />
         <activity android:name=".modules.base.notification.NotificationPriorityActivity" />
+
+        <!-- 多媒体 -->
+        <activity android:name=".modules.base.media.FilterFileActivity" />
+        <activity android:name=".modules.base.media.SDCardActivity" />
+        <activity android:name=".modules.base.media.MediaObserverActivity" />
+        <activity android:name=".modules.base.media.SimpleFileManagerActivity" />
+        <activity android:name=".modules.base.media.MediaLibraryActivity" />
 
         <!-- 系统 -->
         <activity android:name=".modules.base.receiver.BatteryReceiverActivity" />

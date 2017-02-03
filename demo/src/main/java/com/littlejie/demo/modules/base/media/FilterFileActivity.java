@@ -1,19 +1,16 @@
-package com.littlejie.demo.modules.base.media.activity;
+package com.littlejie.demo.modules.base.media;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
 
@@ -21,64 +18,76 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * 扫描指定类型文件，这里简单扫描 MimeType = text/plain 或者 image/jpeg 的文件
  * Created by littlejie on 2016/12/28.
  */
-
-public class ScanFileActivity extends AppCompatActivity implements View.OnClickListener {
+@Description(description = "扫描指定类型的文件，这里简单扫描数据库中 MimeType = text/plain 或者 image/jpeg 的文件")
+public class FilterFileActivity extends BaseActivity {
 
     //CONTENT_URI 具体使用见 MediaObserverActivity
     private static final Uri CONTENT_URI = MediaStore.Files.getContentUri("external");
 
-    private EditText mEdtFilter;
-    private Button mBtnFilterSuffix;
-    private Button mBtnFilterMimeType;
-    private ListView mLv;
+    @BindView(R.id.edt_filter)
+    EditText mEdtFilter;
+    @BindView(R.id.lv)
+    ListView mLv;
     private SimpleFileInfoAdapter mAdapter;
 
     private boolean isNewFile;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
-
-        mEdtFilter = (EditText) findViewById(R.id.edt_filter);
-        mBtnFilterSuffix = (Button) findViewById(R.id.btn_filter_by_suffix);
-        mBtnFilterMimeType = (Button) findViewById(R.id.btn_filter_by_mimetype);
-        mLv = (ListView) findViewById(R.id.lv);
-        mAdapter = new SimpleFileInfoAdapter(this);
-        mLv.setAdapter(mAdapter);
-
-        mBtnFilterSuffix.setOnClickListener(this);
-        mBtnFilterMimeType.setOnClickListener(this);
-        findViewById(R.id.btn_new_file).setOnClickListener(this);
-        findViewById(R.id.btn_not_new_file).setOnClickListener(this);
+    protected int getPageLayoutID() {
+        return R.layout.activity_scan;
     }
-
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_filter_by_suffix:
-                startFilter(MediaStore.Files.FileColumns.DATA);
-                break;
-            case R.id.btn_filter_by_mimetype:
-                startFilter(MediaStore.Files.FileColumns.MIME_TYPE);
-                break;
-            case R.id.btn_new_file:
-                isNewFile = true;
-                startFilter("");
-                break;
-            case R.id.btn_not_new_file:
-                isNewFile = false;
-                startFilter("");
-                break;
-        }
+    protected void initData() {
+
     }
 
-    private void startFilter(String arg) {
+    @Override
+    protected void initView() {
+        mAdapter = new SimpleFileInfoAdapter(this);
+        mLv.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initViewListener() {
+
+    }
+
+    @OnClick(R.id.btn_filter_by_suffix)
+    void filterFileBySuffix() {
+        startFilter(MediaStore.Files.FileColumns.DATA);
+    }
+
+    @OnClick(R.id.btn_filter_by_mimetype)
+    void filterFileByMimeType() {
+        startFilter(MediaStore.Files.FileColumns.MIME_TYPE);
+    }
+
+    @OnClick(R.id.btn_new_file)
+    void filterNewFile() {
+        isNewFile = true;
+        startFilter("");
+    }
+
+    @OnClick(R.id.btn_not_new_file)
+    void filterOldFile() {
+        isNewFile = false;
+        startFilter("");
+    }
+
+    @Override
+    protected void process() {
+
+    }
+
+    public void startFilter(String arg) {
         String[] filters = null;
         //TODO 优化生成 filter 的方法
         if (MediaStore.Files.FileColumns.MIME_TYPE.equals(arg)) {//根据文件的 MimeType 字段进行过滤
@@ -151,9 +160,9 @@ public class ScanFileActivity extends AppCompatActivity implements View.OnClickL
         if (filters == null || filters.length == 0) {
             return null;
         }
-        StringBuffer selection = new StringBuffer();
+        StringBuilder selection = new StringBuilder();
         for (int i = 0; i < filters.length; i++) {
-            selection.append(arg + " like ?");
+            selection.append(arg).append(" like ?");
             if (i < filters.length - 1) {
                 selection.append(" or ");
             }

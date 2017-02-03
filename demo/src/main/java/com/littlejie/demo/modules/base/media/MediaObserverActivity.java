@@ -1,20 +1,19 @@
-package com.littlejie.demo.modules.base.media.activity;
+package com.littlejie.demo.modules.base.media;
 
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
 
@@ -28,10 +27,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
- * 多媒体文件观察
+ * 检测文件的创建、删除、修改
  */
-public class MediaObserverActivity extends AppCompatActivity implements View.OnClickListener {
+@Description(description = "检测文件的创建、删除、修改;ContentObserver")
+public class MediaObserverActivity extends BaseActivity {
 
     private static final String TAG = MediaObserverActivity.class.getSimpleName();
     private static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -53,24 +56,97 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
     private Handler mHandler = new Handler();
     private MediaStoreObserver mMediaStoreObserver = new MediaStoreObserver(mHandler);
 
-    private ListView mLv;
+    @BindView(R.id.lv)
+    ListView mLv;
     private SimpleFileInfoAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_observer);
+    protected int getPageLayoutID() {
+        return R.layout.activity_media_observer;
+    }
 
-        mLv = (ListView) findViewById(R.id.lv);
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initView() {
         mAdapter = new SimpleFileInfoAdapter(this);
         mLv.setAdapter(mAdapter);
+    }
 
-        findViewById(R.id.btn_scan_root).setOnClickListener(this);
-        findViewById(R.id.btn_scan_root_without_db).setOnClickListener(this);
-        findViewById(R.id.btn_create_file).setOnClickListener(this);
-        findViewById(R.id.btn_delete_file).setOnClickListener(this);
-        findViewById(R.id.btn_delete_file_without_broad).setOnClickListener(this);
-        findViewById(R.id.btn_ignore_scan).setOnClickListener(this);
+    @Override
+    protected void initViewListener() {
+
+    }
+
+    @OnClick(R.id.btn_scan_root)
+    void scanRootPath() {
+        sendScanFileBroadcast(ROOT);
+    }
+
+    @OnClick(R.id.btn_scan_root_path_with_file_api)
+    void scanRootPathWithFileApi() {
+//      Collection<File> files = FileUtils.listFilesAndDirs(Environment.getExternalStorageDirectory(),
+//      TrueFileFilter.TRUE, TrueFileFilter.INSTANCE);
+        File[] files = Environment.getExternalStorageDirectory().listFiles();
+        List<FileInfo> lstFile = new ArrayList<>();
+        for (File file : files) {
+            FileInfo info = new FileInfo();
+            info.setId(0);
+            info.setModify(file.lastModified() / 1000);
+            info.setName(file.getName());
+            info.setPath(file.getAbsolutePath());
+            info.setParent(0);
+            lstFile.add(info);
+        }
+        Collections.sort(lstFile, new MyComparator());
+        mAdapter.setData(lstFile);
+    }
+
+    @OnClick(R.id.btn_create_file)
+    void createFile() {
+        try {
+            //记得添加文件读写权限，此处使用 Apache commons-io 库来实现文件读写
+            FileUtils.write(new File(FILE_TMP), "test", Charset.forName("UTF-8"));
+            Toast.makeText(this, "创建文件成功", Toast.LENGTH_SHORT).show();
+            sendScanFileBroadcast(FILE_TMP);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "创建文件失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.btn_delete_file)
+    void deleteFile() {
+        try {
+            FileUtils.forceDelete(new File(FILE_TMP));
+            Toast.makeText(this, "删除文件成功", Toast.LENGTH_SHORT).show();
+            sendScanFileBroadcast(FILE_TMP);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "删除文件失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.btn_ignore_scan)
+    void ignoreScan() {
+        try {
+            FileUtils.forceMkdir(new File(DIR_IGNORED));
+            FileUtils.forceMkdir(new File(DIR_NO_MEDIA));
+            FileUtils.write(new File(FILE_IGNORED1), "ignore", Charset.forName("UTF-8"));
+            FileUtils.write(new File(FILE_IGNORED2), "ignore", Charset.forName("UTF-8"));
+            Toast.makeText(this, "创建文件夹成功，但是系统不会扫描该目录", Toast.LENGTH_SHORT).show();
+            sendScanFileBroadcast(DIR_IGNORED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "创建文件夹失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void process() {
         getContentResolver().registerContentObserver(CONTENT_URI, false, mMediaStoreObserver);
     }
 
@@ -80,7 +156,7 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
         getContentResolver().unregisterContentObserver(mMediaStoreObserver);
     }
 
-    class MyCo implements Comparator<FileInfo> {
+    class MyComparator implements Comparator<FileInfo> {
 
         @Override
         public int compare(FileInfo o1, FileInfo o2) {
@@ -88,75 +164,6 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
                 return -1;
             }
             return 1;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_scan_root:
-                sendScanFileBroadcast(ROOT);
-                break;
-            case R.id.btn_scan_root_without_db:
-//                Collection<File> files = FileUtils.listFilesAndDirs(Environment.getExternalStorageDirectory(),
-//                TrueFileFilter.TRUE, TrueFileFilter.INSTANCE);
-                File[] files = Environment.getExternalStorageDirectory().listFiles();
-                List<FileInfo> lstFile = new ArrayList<>();
-                for (File file : files) {
-                    FileInfo info = new FileInfo();
-                    info.setId(0);
-                    info.setModify(file.lastModified() / 1000);
-                    info.setName(file.getName());
-                    info.setPath(file.getAbsolutePath());
-                    info.setParent(0);
-                    lstFile.add(info);
-                }
-                Collections.sort(lstFile, new MyCo());
-                mAdapter.setData(lstFile);
-                break;
-            case R.id.btn_create_file:
-                try {
-                    //记得添加文件读写权限，此处使用 Apache commons-io 库来实现文件读写
-                    FileUtils.write(new File(FILE_TMP), "test", Charset.forName("UTF-8"));
-                    Toast.makeText(this, "创建文件成功", Toast.LENGTH_SHORT).show();
-                    sendScanFileBroadcast(FILE_TMP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "创建文件失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.btn_delete_file:
-                try {
-                    FileUtils.forceDelete(new File(FILE_TMP));
-                    Toast.makeText(this, "删除文件成功", Toast.LENGTH_SHORT).show();
-                    sendScanFileBroadcast(FILE_TMP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "删除文件失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.btn_delete_file_without_broad:
-                try {
-                    FileUtils.forceDelete(new File(FILE_TMP));
-                    Toast.makeText(this, "删除文件成功", Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "删除文件失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.btn_ignore_scan:
-                try {
-                    FileUtils.forceMkdir(new File(DIR_IGNORED));
-                    FileUtils.forceMkdir(new File(DIR_NO_MEDIA));
-                    FileUtils.write(new File(FILE_IGNORED1), "ignore", Charset.forName("UTF-8"));
-                    FileUtils.write(new File(FILE_IGNORED2), "ignore", Charset.forName("UTF-8"));
-                    Toast.makeText(this, "创建文件夹成功，但是系统不会扫描该目录", Toast.LENGTH_SHORT).show();
-                    sendScanFileBroadcast(DIR_IGNORED);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "创建文件夹失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
         }
     }
 

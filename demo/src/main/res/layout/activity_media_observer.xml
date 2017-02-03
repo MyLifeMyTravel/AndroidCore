@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.littlejie.demo.modules.base.media.activity.MediaObserverActivity">
+    tools:context="com.littlejie.demo.modules.base.media.MediaObserverActivity">
 
     <Button
         android:id="@+id/btn_scan_root"
@@ -14,7 +14,7 @@
         android:text="扫描根目录" />
 
     <Button
-        android:id="@+id/btn_scan_root_without_db"
+        android:id="@+id/btn_scan_root_path_with_file_api"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="扫描根目录，不用数据库" />

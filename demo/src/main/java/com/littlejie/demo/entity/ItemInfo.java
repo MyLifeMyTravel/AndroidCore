@@ -4,6 +4,7 @@ package com.littlejie.demo.entity;
  * Demo 专用，保存 ListView 中 Item 的描述和对应的 Activity 类
  * Created by littlejie on 16/9/10.
  */
+//Todo 废弃 ItemInfo， 默认使用 Description 注解，item 的描述从注解中读取
 public class ItemInfo {
     private String item;
     private Class clz;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_get_image_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取图片目录" />
+
+    <Button
+        android:id="@+id/btn_get_audio_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取音频目录" />
+
+    <Button
+        android:id="@+id/btn_get_video_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取视频目录" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

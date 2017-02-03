@@ -10,6 +10,7 @@ import com.littlejie.core.base.BaseFragment;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.adapter.TabAdapter;
 import com.littlejie.demo.modules.base.fragment.DemoFragment;
+import com.littlejie.demo.modules.base.media.MediaDemoFragment;
 import com.littlejie.demo.modules.base.notification.NotificationListFragment;
 import com.littlejie.demo.modules.base.system.SystemDemoFragment;
 
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class AndroidBaseFragment extends BaseFragment {
 
-    private static final String[] TITLES = new String[]{"Fragment", "通知", "系统"};
+    private static final String[] TITLES = new String[]{"Fragment", "通知", "多媒体", "系统"};
     private TabLayout mTabLayout;
     private TabAdapter mAdapter;
     private ViewPager mViewPager;
@@ -66,6 +67,7 @@ public class AndroidBaseFragment extends BaseFragment {
     protected void process(Bundle savedInstanceState) {
         mFragmentList.add(DemoFragment.newInstance());
         mFragmentList.add(NotificationListFragment.newInstance());
+        mFragmentList.add(MediaDemoFragment.newInstance());
         mFragmentList.add(SystemDemoFragment.newInstance());
         mAdapter.setData(mFragmentList, Arrays.asList(TITLES));
     }

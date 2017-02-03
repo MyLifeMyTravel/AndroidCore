@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.littlejie.demo.modules.base.media.activity.SelectActivity">
+    tools:context="com.littlejie.demo.modules.base.media.SimpleFileManagerActivity">
 
     <ListView
-        android:id="@+id/lv_file_item"
+        android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
