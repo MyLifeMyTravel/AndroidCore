@@ -7,12 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
 import butterknife.OnClick;
 
-/**
- * 动态添加 Fragment
- */
+@Description(description = "动态添加 Fragment")
 public class DynamicCreateActivity extends BaseActivity {
 
     @Override

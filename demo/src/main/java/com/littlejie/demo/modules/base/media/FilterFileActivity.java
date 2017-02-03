@@ -25,7 +25,7 @@ import butterknife.OnClick;
  * 扫描指定类型文件，这里简单扫描 MimeType = text/plain 或者 image/jpeg 的文件
  * Created by littlejie on 2016/12/28.
  */
-@Description(description = "扫描指定类型的文件，这里简单扫描数据库中 MimeType = text/plain 或者 image/jpeg 的文件")
+@Description(description = "过滤指定类型的文件")
 public class FilterFileActivity extends BaseActivity {
 
     //CONTENT_URI 具体使用见 MediaObserverActivity

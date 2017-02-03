@@ -8,7 +8,7 @@ import android.widget.ListView;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.ActivityManager;
 import com.littlejie.demo.R;
-import com.littlejie.demo.entity.ItemInfo;
+import com.littlejie.demo.annotation.AnnotationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class BaseListActivity extends BaseActivity {
 
     @BindView(R.id.lv)
     ListView mLv;
-    private ArrayAdapter<ItemInfo> mArrayAdapter;
-    protected List<ItemInfo> mLstItem;
+    private ArrayAdapter<String> mArrayAdapter;
+    protected List<Class<?>> mLstItem;
 
     @Override
     protected int getPageLayoutID() {
@@ -39,7 +39,7 @@ public class BaseListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mArrayAdapter = new ArrayAdapter<ItemInfo>(this, android.R.layout.simple_list_item_1);
+        mArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         mLv.setAdapter(mArrayAdapter);
     }
 
@@ -51,7 +51,7 @@ public class BaseListActivity extends BaseActivity {
                 if (mLstItem == null || mLstItem.size() == 0) {
                     return;
                 }
-                ActivityManager.startActivity(BaseListActivity.this, mLstItem.get(position).getClz());
+                ActivityManager.startActivity(BaseListActivity.this, mLstItem.get(position));
             }
         });
     }
@@ -62,7 +62,7 @@ public class BaseListActivity extends BaseActivity {
     }
 
     protected void notifyDataChanged() {
-        mArrayAdapter.addAll(mLstItem);
+        mArrayAdapter.addAll(AnnotationUtil.getDescriptions(mLstItem));
         mArrayAdapter.notifyDataSetChanged();
     }
 

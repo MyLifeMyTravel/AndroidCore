@@ -13,6 +13,6 @@ import java.util.List;
 public class ClassDesc {
 
     public static void init(Context context) {
-        List<Class> clazzList = ClassUtil.getAllClassByAnnotation(Description.class);
+        List<Class> clazzList = AnnotationUtil.getAllClassByAnnotation(Description.class);
     }
 }

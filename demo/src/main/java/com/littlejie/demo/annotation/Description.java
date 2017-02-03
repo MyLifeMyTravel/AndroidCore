@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Description {
-
-    public String description() default "no description";
+    //不设置默认值，使用时必须填写默认值
+    public String description();
 }

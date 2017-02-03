@@ -2,7 +2,6 @@ package com.littlejie.demo.modules.base.media;
 
 import android.os.Bundle;
 
-import com.littlejie.demo.entity.ItemInfo;
 import com.littlejie.demo.modules.BaseListFragment;
 
 /**
@@ -23,11 +22,11 @@ public class MediaDemoFragment extends BaseListFragment {
     @Override
     protected void process(Bundle savedInstanceState) {
         super.process(savedInstanceState);
-        mLstItem.add(new ItemInfo("文件过滤", FilterFileActivity.class));
-        mLstItem.add(new ItemInfo("SD卡 测试", SDCardActivity.class));
-        mLstItem.add(new ItemInfo("监听文件的创建、删除、修改", MediaObserverActivity.class));
-        mLstItem.add(new ItemInfo("简单文件管理器", SimpleFileManagerActivity.class));
-        mLstItem.add(new ItemInfo("获取多媒体文件(图片、音频、视频)所在的目录", MediaLibraryActivity.class));
+        mLstItem.add(FilterFileActivity.class);
+        mLstItem.add(SDCardActivity.class);
+        mLstItem.add(MediaObserverActivity.class);
+        mLstItem.add(SimpleFileManagerActivity.class);
+        mLstItem.add(MediaLibraryActivity.class);
         notifyDataChanged();
     }
 }

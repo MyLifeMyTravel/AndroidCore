@@ -12,12 +12,14 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.MainActivity;
 
 /**
  * 这是一个最简单的通知例子,该通知只有必要的三个属性:
  * 小图标、标题、内容
  */
+@Description(description = "一个最简单的Notification Demo")
 public class SimplestNotificationActivity extends Activity implements View.OnClickListener {
 
     private NotificationManager mNotifyManager;
@@ -73,8 +75,8 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
                 .setContentTitle("最简单的Notification")
                 //设置通知内容
                 .setContentText("只有小图标、标题、内容");
-                //设置通知时间，默认为系统发出通知的时间，通常不用设置
-                //.setWhen(System.currentTimeMillis());
+        //设置通知时间，默认为系统发出通知的时间，通常不用设置
+        //.setWhen(System.currentTimeMillis());
         //通过builder.build()方法生成Notification对象,并发送通知,id=1
         notifyManager.notify(1, builder.build());
     }

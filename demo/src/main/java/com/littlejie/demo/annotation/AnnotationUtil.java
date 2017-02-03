@@ -11,7 +11,30 @@ import java.util.List;
  * 处理使用注解的类，代码来自互联网，尚未理解
  * Created by littlejie on 2017/1/18.
  */
-public class ClassUtil {
+public class AnnotationUtil {
+
+
+    public static List<String> getDescriptions(List<Class<?>> classes) {
+        List<String> lstDescription = new ArrayList<>();
+        for (Class<?> clazz : classes) {
+            lstDescription.add(getDescription(clazz));
+        }
+        return lstDescription;
+    }
+
+    /**
+     * 获取 Class 的描述
+     *
+     * @param clazz
+     * @return 如果没有使用 Description 注解，则直接返回类名；否则，返回 description() 方法的值
+     */
+    public static String getDescription(Class<?> clazz) {
+        Description description = clazz.getAnnotation(Description.class);
+        if (description == null) {
+            return clazz.getSimpleName();
+        }
+        return description.description();
+    }
 
     /**
      * 查找所有使用注解的类

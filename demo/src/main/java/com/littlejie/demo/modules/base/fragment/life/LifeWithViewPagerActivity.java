@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.adapter.TabAdapter;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
  * 测试 Fragment 与 ViewPager 结合使用时的生命周期。
  * ViewPager 的加载机制会导致 Fragment 的销毁(onDestroy)与重新创建(onCreateView)
  */
+@Description(description = "与 ViewPager 使用时的生命周期")
 public class LifeWithViewPagerActivity extends BaseActivity {
 
     private TabLayout mTabLayout;

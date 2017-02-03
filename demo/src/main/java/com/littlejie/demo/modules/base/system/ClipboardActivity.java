@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.littlejie.core.util.ClipboardUtil;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.MainActivity;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by littlejie on 2017/1/6.
  */
-
+@Description(description = "剪贴板 Demo")
 public class ClipboardActivity extends Activity implements View.OnClickListener,
         ClipboardUtil.OnPrimaryClipChangedListener {
 

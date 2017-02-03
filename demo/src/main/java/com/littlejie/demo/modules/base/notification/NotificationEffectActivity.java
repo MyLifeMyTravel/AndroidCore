@@ -13,10 +13,12 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
 /**
  * 通知提示效果
  */
+@Description(description = "Notification 提示效果")
 public class NotificationEffectActivity extends Activity implements View.OnClickListener {
 
     private NotificationManager mManager;

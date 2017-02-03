@@ -9,7 +9,7 @@ import android.widget.ListView;
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.core.manager.ActivityManager;
 import com.littlejie.demo.R;
-import com.littlejie.demo.entity.ItemInfo;
+import com.littlejie.demo.annotation.AnnotationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class BaseListFragment extends BaseFragment {
 
     @BindView(R.id.lv)
     ListView mLv;
-    private ArrayAdapter<ItemInfo> mArrayAdapter;
-    protected List<ItemInfo> mLstItem;
+    private ArrayAdapter<String> mArrayAdapter;
+    protected List<Class<?>> mLstItem;
 
     @Override
     protected int getPageLayoutID() {
@@ -39,7 +39,7 @@ public class BaseListFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        mArrayAdapter = new ArrayAdapter<ItemInfo>(getContext(), android.R.layout.simple_list_item_1);
+        mArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
         mLv.setAdapter(mArrayAdapter);
     }
 
@@ -51,7 +51,7 @@ public class BaseListFragment extends BaseFragment {
                 if (mLstItem == null || mLstItem.size() == 0) {
                     return;
                 }
-                ActivityManager.startActivity(getContext(), mLstItem.get(position).getClz());
+                ActivityManager.startActivity(getContext(), mLstItem.get(position));
             }
         });
     }
@@ -62,7 +62,9 @@ public class BaseListFragment extends BaseFragment {
     }
 
     protected void notifyDataChanged() {
-        mArrayAdapter.addAll(mLstItem);
+        mArrayAdapter.addAll(AnnotationUtil.getDescriptions(mLstItem));
         mArrayAdapter.notifyDataSetChanged();
     }
+
+
 }

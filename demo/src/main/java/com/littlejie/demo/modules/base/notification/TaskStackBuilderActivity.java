@@ -11,7 +11,9 @@ import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
+@Description(description = "TaskStackBuilder 简单测试")
 public class TaskStackBuilderActivity extends Activity implements View.OnClickListener {
 
     private NotificationManager mNotificationManager;

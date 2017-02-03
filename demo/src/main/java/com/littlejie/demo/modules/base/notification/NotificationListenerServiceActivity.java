@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
+@Description(description = "NotificationListenerService 测试")
 public class NotificationListenerServiceActivity extends Activity {
 
     //此为 Settings 中的常量,不过是属于隐藏字段

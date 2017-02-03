@@ -8,9 +8,11 @@ import android.widget.Button;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
 import butterknife.BindView;
 
+@Description(description = "带进度条的Notification")
 public class ProgressNotifyActivity extends BaseActivity implements View.OnClickListener {
 
     private NotificationManager mNotificationManager;

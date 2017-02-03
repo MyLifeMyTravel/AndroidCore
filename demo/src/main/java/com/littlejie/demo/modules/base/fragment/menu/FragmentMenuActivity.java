@@ -8,6 +8,7 @@ import android.view.Menu;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.adapter.TabAdapter;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+@Description(description = "Fragment 创建菜单")
 public class FragmentMenuActivity extends BaseActivity {
 
     private static final String[] TITLES = new String[]{"menu1", "menu2", "menu3", "menu4", "menu5"};

@@ -2,7 +2,6 @@ package com.littlejie.demo.modules.base.fragment;
 
 import android.os.Bundle;
 
-import com.littlejie.demo.entity.ItemInfo;
 import com.littlejie.demo.modules.BaseListFragment;
 import com.littlejie.demo.modules.base.fragment.create.FragmentCreateListActivity;
 import com.littlejie.demo.modules.base.fragment.life.FragmentLifeListActivity;
@@ -26,10 +25,10 @@ public class DemoFragment extends BaseListFragment {
 
     @Override
     protected void process(Bundle savedInstanceState) {
-        mLstItem.add(new ItemInfo("Fragment 创建", FragmentCreateListActivity.class));
-        mLstItem.add(new ItemInfo("Fragment 生命周期", FragmentLifeListActivity.class));
-        mLstItem.add(new ItemInfo("Fragment 创建菜单", FragmentMenuActivity.class));
-        mLstItem.add(new ItemInfo("Fragment 可见性", FragmentVisibleListActivity.class));
+        mLstItem.add(FragmentCreateListActivity.class);
+        mLstItem.add(FragmentLifeListActivity.class);
+        mLstItem.add(FragmentMenuActivity.class);
+        mLstItem.add(FragmentVisibleListActivity.class);
         notifyDataChanged();
     }
 }

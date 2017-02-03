@@ -2,10 +2,9 @@ package com.littlejie.demo.modules.base.fragment.create;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
-/**
- * 静态添加 Fragment
- */
+@Description(description = "静态添加 Fragment")
 public class StaticCreateActivity extends BaseActivity {
 
     @Override

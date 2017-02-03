@@ -8,10 +8,12 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
 /**
  * Notification 样式 Demo
  */
+@Description(description = "Notification 样式")
 public class NotificationStyleActivity extends Activity implements View.OnClickListener {
 
     private NotificationManager mNotifyManager;

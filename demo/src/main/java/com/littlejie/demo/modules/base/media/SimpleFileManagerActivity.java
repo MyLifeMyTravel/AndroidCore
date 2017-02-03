@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
 
@@ -23,6 +24,7 @@ import butterknife.OnItemClick;
 /**
  * 简单文件管理器
  */
+@Description(description = "简单的文件管理器")
 public class SimpleFileManagerActivity extends BaseActivity {
 
     private static final Uri CONTENT_URI = MediaStore.Files.getContentUri("external");

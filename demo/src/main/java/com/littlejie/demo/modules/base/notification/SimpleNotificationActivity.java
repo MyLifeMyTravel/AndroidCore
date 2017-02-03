@@ -11,12 +11,14 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.MainActivity;
 
 /**
  * 为了方便,大部分通知都没设置对应的Action,即PendingIntent
  * 除了sendFlagAutoCancelNotification()方法
  */
+@Description(description = "简单的 Notification Demo")
 public class SimpleNotificationActivity extends Activity implements View.OnClickListener {
 
     //Notification.FLAG_FOREGROUND_SERVICE    //表示正在运行的服务

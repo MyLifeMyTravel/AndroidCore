@@ -6,7 +6,9 @@ import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
+@Description(description = "Fragment 生命周期")
 public class SimpleLifeActivity extends BaseActivity {
 
     private TextView mTvActivityCreated;

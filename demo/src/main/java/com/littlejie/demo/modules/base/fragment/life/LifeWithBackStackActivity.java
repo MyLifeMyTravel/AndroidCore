@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.annotation.Description;
 
 /**
  * 如果 Fragment 通过 addToBackStack() 加入回退栈
@@ -16,6 +17,7 @@ import com.littlejie.demo.R;
  * 2. 进行 popBackStack() 时不会再次调用 onAttach() 和 onCreate()
  * 3. add() 和 replace() 方法对 Fragment 的生命周期没有影响，但 add() 方法会造成 Fragment 叠加显示
  */
+@Description(description = "Fragment 添加进回退栈时的生命周期")
 public class LifeWithBackStackActivity extends BaseActivity {
 
     private TextView mTvAddToBackStackTip;

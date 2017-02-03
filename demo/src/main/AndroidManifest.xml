@@ -50,7 +50,6 @@
         <activity android:name=".modules.base.fragment.create.DynamicCreateActivity" />
 
         <!-- Notification -->
-        <activity android:name=".modules.base.notification.NotificationListActivity" />
         <activity android:name=".modules.base.notification.SimplestNotificationActivity" />
         <activity android:name=".modules.base.notification.SimpleNotificationActivity" />
         <activity android:name=".modules.base.notification.NotificationEffectActivity" />
