@@ -2,12 +2,13 @@ package com.littlejie.demo.modules.base.media;
 
 import android.os.Bundle;
 
+import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
 
 /**
  * Created by littlejie on 2017/2/3.
  */
-
+@Title(title = "多媒体")
 public class MediaDemoFragment extends BaseListFragment {
 
     public static MediaDemoFragment newInstance() {

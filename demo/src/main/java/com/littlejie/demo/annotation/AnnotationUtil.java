@@ -36,6 +36,30 @@ public class AnnotationUtil {
         return description.description();
     }
 
+    public static List<String> getTitles(List<Class<?>> classes) {
+        List<String> lstDescription = new ArrayList<>();
+        for (Class<?> clazz : classes) {
+            lstDescription.add(getDescription(clazz));
+        }
+        return lstDescription;
+    }
+
+    /**
+     * 获取 Class 的 Title 描述
+     *
+     * @param clazz
+     * @return 如果没有使用 Title 注解，则直接返回类名；否则，返回 title() 方法的值
+     */
+    public static String getTitle(Class<?> clazz) {
+        Title title = clazz.getAnnotation(Title.class);
+        if (title == null) {
+            return clazz.getSimpleName();
+        }
+        return title.title();
+    }
+
+    /*-------------以下代码来自网络--------------*/
+
     /**
      * 查找所有使用注解的类
      *

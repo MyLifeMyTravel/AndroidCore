@@ -26,7 +26,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.MainActivity">
+        <activity
+            android:name=".modules.MainActivity"
+            android:theme="@style/NoActionBarAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,6 +37,15 @@
         </activity>
 
         <!-- Android 入门 -->
+        <!-- Android 四大组件 -->
+        <!-- Activity -->
+        <activity android:name=".modules.base.component.activity.ActivityListActivity" />
+        <!-- Service -->
+        <activity android:name=".modules.base.component.service.ServiceListActivity" />
+        <!-- ContentProvider -->
+        <activity android:name=".modules.base.component.provider.ProviderListActivity" />
+        <!-- Broadcast -->
+        <activity android:name=".modules.base.component.broadcast.BroadcastListActivity" />
         <!-- Fragment 生命周期 -->
         <activity android:name=".modules.base.fragment.life.FragmentLifeListActivity" />
         <activity android:name=".modules.base.fragment.life.SimpleLifeActivity" />
@@ -86,10 +97,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <!--<data android:mimeType="image/*" />-->
-                <!--<data android:mimeType="video/*" />-->
-                <!--<data android:mimeType="audio/*" />-->
-                <!--<data android:mimeType="text/*" />-->
+                <!-- <data android:mimeType="image/*" /> -->
+                <!-- <data android:mimeType="video/*" /> -->
+                <!-- <data android:mimeType="audio/*" /> -->
+                <!-- <data android:mimeType="text/*" /> -->
                 <!-- 接受所有类型的意图 -->
                 <data android:mimeType="*/*" />
             </intent-filter>
@@ -103,7 +114,10 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
+        <service
+            android:name=".modules.base.component.service.MyService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

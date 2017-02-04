@@ -2,6 +2,7 @@ package com.littlejie.demo.modules.base.fragment;
 
 import android.os.Bundle;
 
+import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
 import com.littlejie.demo.modules.base.fragment.create.FragmentCreateListActivity;
 import com.littlejie.demo.modules.base.fragment.life.FragmentLifeListActivity;
@@ -12,6 +13,7 @@ import com.littlejie.demo.modules.base.fragment.visible.FragmentVisibleListActiv
  * Fragment Demo 展示
  * Created by littlejie on 2017/1/23.
  */
+@Title(title = "Fragment")
 public class DemoFragment extends BaseListFragment {
 
     public static DemoFragment newInstance() {
@@ -25,6 +27,7 @@ public class DemoFragment extends BaseListFragment {
 
     @Override
     protected void process(Bundle savedInstanceState) {
+        super.process(savedInstanceState);
         mLstItem.add(FragmentCreateListActivity.class);
         mLstItem.add(FragmentLifeListActivity.class);
         mLstItem.add(FragmentMenuActivity.class);

@@ -101,6 +101,16 @@ public class FileUtil {
         }
     }
 
+    /**
+     * 根据后缀获取对应的mimeType
+     *
+     * @param suffix
+     * @return
+     */
+    public static String getMimeTypeBySuffix(String suffix) {
+        return mMimeTypeMap.get(suffix);
+    }
+
     public static void write(String path, String data) {
         try {
             FileUtils.write(new File(path), data, Charset.forName("UTF-8"));

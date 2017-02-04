@@ -34,7 +34,6 @@ public class BaseListFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        mLstItem = new ArrayList<>();
     }
 
     @Override
@@ -58,7 +57,7 @@ public class BaseListFragment extends BaseFragment {
 
     @Override
     protected void process(Bundle savedInstanceState) {
-
+        mLstItem = new ArrayList<>();
     }
 
     protected void notifyDataChanged() {

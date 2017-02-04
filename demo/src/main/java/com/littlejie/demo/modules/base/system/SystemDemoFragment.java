@@ -2,12 +2,13 @@ package com.littlejie.demo.modules.base.system;
 
 import android.os.Bundle;
 
+import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
 
 /**
  * Created by littlejie on 2017/1/24.
  */
-
+@Title(title = "系统")
 public class SystemDemoFragment extends BaseListFragment {
 
     public static SystemDemoFragment newInstance() {

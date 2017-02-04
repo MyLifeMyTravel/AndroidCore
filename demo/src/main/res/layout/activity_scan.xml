@@ -8,33 +8,21 @@
         android:id="@+id/edt_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入过滤条件(以,分隔)" />
+        android:hint="请输入过滤条件" />
 
     <Button
         android:id="@+id/btn_filter_by_suffix"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="按后缀过滤,如：txt,jpg"
+        android:text="按后缀过滤,如：txt;jpg(以;分隔)"
         android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btn_filter_by_mimetype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="按文件的MimeType过滤,如：text/plain,image/jpeg"
+        android:text="按文件的MimeType过滤,如：text/plain;image/jpeg"
         android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/btn_new_file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="创建File" />
-
-    <Button
-        android:id="@+id/btn_not_new_file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="不创建File" />
 
     <ListView
         android:id="@+id/lv"

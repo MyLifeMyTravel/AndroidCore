@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.util.JsonUtil;
-import com.littlejie.core.util.SignalStrengthUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.entity.TestInfo;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
@@ -33,12 +31,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        ButterKnife.bind(this);
-        SignalStrengthUtil.init(this);
     }
 
     @Override
     protected void initView() {
+        setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -66,7 +63,7 @@ public class MainActivity extends BaseActivity {
                 List<String> list = new ArrayList<>();
                 list.add(JsonUtil.toJsonString(info));
                 list.add("abc");
-                Log.d(TAG, "switchItem: "+JsonUtil.toJsonString(list));
+                Log.d(TAG, "switchItem: " + JsonUtil.toJsonString(list));
                 return true;
             case R.id.menu_give_up:
 

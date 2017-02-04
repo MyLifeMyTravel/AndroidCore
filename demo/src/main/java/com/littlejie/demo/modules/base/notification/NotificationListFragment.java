@@ -2,12 +2,13 @@ package com.littlejie.demo.modules.base.notification;
 
 import android.os.Bundle;
 
+import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
 
 /**
  * Created by littlejie on 2017/1/23.
  */
-
+@Title(title = "通知")
 public class NotificationListFragment extends BaseListFragment {
 
     public static NotificationListFragment newInstance() {
