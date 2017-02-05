@@ -25,6 +25,7 @@ public class SystemDemoFragment extends BaseListFragment {
         super.process(savedInstanceState);
         mLstItem.add(ClipboardActivity.class);
         mLstItem.add(ShareIntentActivity.class);
+        mLstItem.add(DispatchTouchEventActivity.class);
         notifyDataChanged();
     }
 }

@@ -118,6 +118,8 @@
             android:name=".modules.base.component.service.MyService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".modules.base.system.DispatchTouchEventActivity"></activity>
     </application>
 
 </manifest>
