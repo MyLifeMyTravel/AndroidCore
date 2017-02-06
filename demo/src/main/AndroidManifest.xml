@@ -78,6 +78,7 @@
         <activity android:name=".modules.base.media.MediaObserverActivity" />
         <activity android:name=".modules.base.media.SimpleFileManagerActivity" />
         <activity android:name=".modules.base.media.MediaLibraryActivity" />
+        <activity android:name=".modules.base.media.ThumbnailsActivity"/>
 
         <!-- 系统 -->
         <!-- Android 触摸事件分发 -->

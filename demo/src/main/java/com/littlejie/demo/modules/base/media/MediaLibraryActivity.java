@@ -15,7 +15,6 @@ import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -100,9 +99,7 @@ public class MediaLibraryActivity extends BaseActivity {
 
     private List<FileInfo> getFileInfos(Set<String> files) {
         List<FileInfo> lstFile = new ArrayList<>();
-        Iterator<String> iterator = files.iterator();
-        for (; iterator.hasNext(); ) {
-            String path = iterator.next();
+        for (String path : files) {
             FileInfo info = new FileInfo();
             File file = new File(path);
             info.setPath(path);

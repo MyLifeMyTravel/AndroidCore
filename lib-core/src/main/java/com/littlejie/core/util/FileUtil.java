@@ -166,6 +166,9 @@ public class FileUtil {
             String suffix = url.substring(lastIndex);
             type = mMimeTypeMap.get(suffix);
         }
+        if (TextUtils.isEmpty(type)) {
+            type = "*/*";
+        }
         return type;
     }
 
