@@ -80,6 +80,8 @@
         <activity android:name=".modules.base.media.MediaLibraryActivity" />
 
         <!-- 系统 -->
+        <!-- Android 触摸事件分发 -->
+        <activity android:name=".modules.base.system.DispatchTouchEventActivity" />
         <activity android:name=".modules.base.receiver.BatteryReceiverActivity" />
         <activity android:name=".modules.base.system.RuntimePermissionActivity" />
         <activity android:name=".modules.base.receiver.WifiStateActivity" />
@@ -119,7 +121,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".modules.base.system.DispatchTouchEventActivity"></activity>
     </application>
 
 </manifest>

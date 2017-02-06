@@ -1,11 +1,14 @@
 package com.littlejie.core.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +21,34 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     protected final String TAG = this.getClass().getSimpleName();
+
+    protected abstract int getPageLayoutID();
+
+    protected abstract void initData();
+
+    protected abstract void initView(View view, Bundle savedInstanceState);
+
+    protected abstract void initViewListener();
+
+    protected abstract void process(Bundle savedInstanceState);
+
+    /**
+     * 创建菜单，封装解决 Fragment 与 ViewPager 使用时创建菜单不正确的问题
+     *
+     * @param menu
+     * @param inflater
+     */
+    protected void createOptionsMenu(Menu menu, MenuInflater inflater) {
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //如果当前 Fragment 在 ViewPager 中为可见状态，则让 Activity 重绘菜单
+        if (isVisibleToUser && getContext() != null) {
+            ((Activity) getContext()).invalidateOptionsMenu();
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -103,13 +134,16 @@ public abstract class BaseFragment extends Fragment {
         Log.d(TAG, "onDetach");
     }
 
-    protected abstract int getPageLayoutID();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //1.判断是否有 Parent，若无，则表明是直接 attach 在 Activity 下
+        //2.判断 getUserVisibleHint() 是否为 true，若为 true ，则表示对用户可见
+        //综合 1 、 2 ，可以判断出是否需要创建菜单
+        boolean needCreate = getParentFragment() == null || getParentFragment().getUserVisibleHint();
+        if (needCreate) {
+            createOptionsMenu(menu, inflater);
+        }
+    }
 
-    protected abstract void initData();
-
-    protected abstract void initView(View view, Bundle savedInstanceState);
-
-    protected abstract void initViewListener();
-
-    protected abstract void process(Bundle savedInstanceState);
 }

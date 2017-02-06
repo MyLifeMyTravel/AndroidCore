@@ -20,7 +20,7 @@ import butterknife.BindView;
 @Description(description = "Fragment 创建菜单")
 public class FragmentMenuActivity extends BaseActivity {
 
-    private static final String[] TITLES = new String[]{"menu1", "menu2", "menu3", "menu4", "menu5"};
+    private static final String[] TITLES = new String[]{"menu1", "menu2", "no menu", "menu3", "menu4"};
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
@@ -39,9 +39,9 @@ public class FragmentMenuActivity extends BaseActivity {
         mLstMenuFragment = new ArrayList<>();
         mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu1, TITLES[0]));
         mLstMenuFragment.add(SubMenuFragment.newInstance());
-        mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu3, TITLES[2]));
-        mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu4, TITLES[3]));
-        mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu5, TITLES[4]));
+        mLstMenuFragment.add(MenuFragment.newInstance(false));
+        mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu3, TITLES[3]));
+        mLstMenuFragment.add(MenuFragment.newInstance(R.menu.fragment_menu4, TITLES[4]));
     }
 
     @Override
