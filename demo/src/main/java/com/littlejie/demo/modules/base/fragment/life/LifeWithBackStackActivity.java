@@ -2,14 +2,15 @@ package com.littlejie.demo.modules.base.fragment.life;
 
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
-import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 如果 Fragment 通过 addToBackStack() 加入回退栈
@@ -20,9 +21,10 @@ import com.littlejie.demo.annotation.Description;
 @Description(description = "Fragment 添加进回退栈时的生命周期")
 public class LifeWithBackStackActivity extends BaseActivity {
 
-    private TextView mTvAddToBackStackTip;
-    private SwitchCompat mSwitch;
-    private Button mBtnAddToBackStack,mBtnReplcaeToBackStack;
+    @BindView(R.id.tv_add_back_stack_tip)
+    TextView mTvAddToBackStackTip;
+    @BindView(R.id.widget_switch)
+    SwitchCompat mSwitch;
     private int mCount = 1;
 
     @Override
@@ -37,42 +39,36 @@ public class LifeWithBackStackActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mTvAddToBackStackTip = (TextView) findViewById(R.id.tv_add_back_stack_tip);
-        mSwitch = (SwitchCompat) findViewById(R.id.widget_switch);
-        mBtnAddToBackStack = (Button) findViewById(R.id.btn_add_to_back_stack);
-        mBtnReplcaeToBackStack = (Button) findViewById(R.id.btn_replace_to_back_stack);
     }
 
     @Override
     protected void initViewListener() {
-        mBtnAddToBackStack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
-                if (mSwitch.isChecked()) {
-                    transaction.addToBackStack(null);
-                }
-                transaction.commit();
-            }
-        });
-        mBtnReplcaeToBackStack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
-                if (mSwitch.isChecked()) {
-                    transaction.addToBackStack(null);
-                }
-                transaction.commit();
-            }
-        });
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 updateTip(isChecked);
             }
         });
+    }
+
+    @OnClick(R.id.btn_add_to_back_stack)
+    void addToBackStack(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
+        if (mSwitch.isChecked()) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    @OnClick(R.id.btn_replace_to_back_stack)
+    void replaceToBackStack(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, LifeFragment.newInstance("Tab" + mCount++));
+        if (mSwitch.isChecked()) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
     }
 
     @Override

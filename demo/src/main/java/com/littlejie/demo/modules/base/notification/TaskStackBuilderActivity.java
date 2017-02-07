@@ -1,48 +1,46 @@
 package com.littlejie.demo.modules.base.notification;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.view.View;
 
+import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 
+import butterknife.OnClick;
+
 @Description(description = "TaskStackBuilder 简单测试")
-public class TaskStackBuilderActivity extends Activity implements View.OnClickListener {
+public class TaskStackBuilderActivity extends BaseActivity {
 
     private NotificationManager mNotificationManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_stack_builder);
+    protected int getPageLayoutID() {
+        return R.layout.activity_task_stack_builder;
+    }
 
-        findViewById(R.id.btn_regular).setOnClickListener(this);
-        findViewById(R.id.btn_special).setOnClickListener(this);
-
+    @Override
+    protected void initData() {
         // NotificationManager system service.
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_regular:
-                sendRegularNotification();
-                break;
-            case R.id.btn_special:
-                sendSpecailNotification();
-                break;
-        }
+    protected void initView() {
+
     }
 
-    private void sendRegularNotification() {
+    @Override
+    protected void initViewListener() {
+
+    }
+
+    @OnClick(R.id.btn_regular)
+    void sendRegularNotification() {
         Intent resultIntent = new Intent(this, NormalResultActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack
@@ -62,7 +60,8 @@ public class TaskStackBuilderActivity extends Activity implements View.OnClickLi
         mNotificationManager.notify(1, builder.build());
     }
 
-    private void sendSpecailNotification() {
+    @OnClick(R.id.btn_special)
+    void sendSpecialNotification() {
         // Instantiate a Builder object.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Special Activity");
@@ -86,6 +85,10 @@ public class TaskStackBuilderActivity extends Activity implements View.OnClickLi
         // Builds an anonymous Notification object from the builder, and
         // passes it to the NotificationManager
         mNotificationManager.notify(2, builder.build());
+    }
+
+    @Override
+    protected void process() {
 
     }
 }

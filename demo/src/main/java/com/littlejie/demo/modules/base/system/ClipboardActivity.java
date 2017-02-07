@@ -1,18 +1,16 @@
 package com.littlejie.demo.modules.base.system;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
+import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.util.ClipboardUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
@@ -21,36 +19,94 @@ import com.littlejie.demo.modules.MainActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * Created by littlejie on 2017/1/6.
  */
 @Description(description = "剪贴板 Demo")
-public class ClipboardActivity extends Activity implements View.OnClickListener,
-        ClipboardUtil.OnPrimaryClipChangedListener {
+public class ClipboardActivity extends BaseActivity implements ClipboardUtil.OnPrimaryClipChangedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String MIME_CONTACT = "vnd.android.cursor.dir/person";
 
-    private TextView mTvCopied;
+    @BindView(R.id.tv_copied)
+    TextView mTvCopied;
 
     private ClipboardUtil mClipboard;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clipboard);
+    protected int getPageLayoutID() {
+        return R.layout.activity_clipboard;
+    }
 
+    @Override
+    protected void initData() {
         //ClipboardUtil在Application的onCreate中调用init初始化
         mClipboard = ClipboardUtil.getInstance();
         mClipboard.addOnPrimaryClipChangedListener(this);
+    }
 
-        mTvCopied = (TextView) findViewById(R.id.tv_copied);
+    @Override
+    protected void initView() {
 
-        findViewById(R.id.btn_copy_text).setOnClickListener(this);
-        findViewById(R.id.btn_copy_rich_text).setOnClickListener(this);
-        findViewById(R.id.btn_copy_intent).setOnClickListener(this);
-        findViewById(R.id.btn_copy_uri).setOnClickListener(this);
-        findViewById(R.id.btn_copy_multiple).setOnClickListener(this);
+    }
+
+    @Override
+    protected void initViewListener() {
+
+    }
+
+    @OnClick(R.id.btn_copy_text)
+    void copyText() {
+        //普通的文本拷贝
+        mClipboard.copyText("文本拷贝", "我是文本~");
+    }
+
+    @OnClick(R.id.btn_copy_rich_text)
+    void copyRichText() {
+        //平时在浏览器网页上执行的copy就是这种，一般浏览器会使用 ClipData.newHtmlText(label, text, htmlText)往剪贴板里塞东西
+        //所以，将这段内容拷贝到诸如 Google+ 、 Gmail 等能处理富文本内容的应用能看到保留格式的内容
+        //补充：测试了 QQ浏览器 、 UC浏览器，发现他们拷贝的内容只是单纯的文本，即使用 ClipData.newPlainText(label, text) 往剪贴板里塞东西
+        mClipboard.copyHtmlText("HTML拷贝", "我是HTML",
+                "<strong style=\"margin: 0px; padding: 0px; border: 0px; color: rgb(64, 64, 64); font-family: STHeiti, 'Microsoft YaHei', Helvetica, Arial, sans-serif; font-size: 17px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 25.920001983642578px; orphans: auto; text-align: justify; text-indent: 34.560001373291016px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(235, 23, 23);\">央视</strong>");
+    }
+
+    @OnClick(R.id.btn_copy_intent)
+    void copyIntent() {
+        mClipboard.copyIntent("Intent拷贝", getOpenBrowserIntent());
+    }
+
+    @OnClick(R.id.btn_copy_uri)
+    void copyUri() {
+        mClipboard.copyUri(getContentResolver(), "Uri拷贝", Uri.parse("content://contacts/people"));
+        //mClipboard.copyUri(getContentResolver(), "Uri拷贝", Uri.parse("content://media/external"));
+    }
+
+    /**
+     * 拷贝多组数据到剪贴板
+     */
+    @OnClick(R.id.btn_copy_multiple)
+    void copyMultiple() {
+        //ClipData 目前仅能设置单个 MimeType
+        List<ClipData.Item> items = new ArrayList<>();
+        //故 ClipData.Item 的类型必须和 MimeType 设置的相符
+        //比如都是文字，都是URI或都是Intent，而不是混合各种形式。
+        ClipData.Item item1 = new ClipData.Item("text1");
+        ClipData.Item item2 = new ClipData.Item("text2");
+        ClipData.Item item3 = new ClipData.Item("text3");
+        ClipData.Item item4 = new ClipData.Item("text4");
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        mClipboard.copyMultiple("Multiple Copy", ClipDescription.MIMETYPE_TEXT_PLAIN, items);
+    }
+
+    @Override
+    protected void process() {
+
     }
 
     @Override
@@ -98,33 +154,6 @@ public class ClipboardActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_copy_text:
-                //普通的文本拷贝
-                mClipboard.copyText("文本拷贝", "我是文本~");
-                break;
-            case R.id.btn_copy_rich_text:
-                //平时在浏览器网页上执行的copy就是这种，一般浏览器会使用 ClipData.newHtmlText(label, text, htmlText)往剪贴板里塞东西
-                //所以，将这段内容拷贝到诸如 Google+ 、 Gmail 等能处理富文本内容的应用能看到保留格式的内容
-                //补充：测试了 QQ浏览器 、 UC浏览器，发现他们拷贝的内容只是单纯的文本，即使用 ClipData.newPlainText(label, text) 往剪贴板里塞东西
-                mClipboard.copyHtmlText("HTML拷贝", "我是HTML",
-                        "<strong style=\"margin: 0px; padding: 0px; border: 0px; color: rgb(64, 64, 64); font-family: STHeiti, 'Microsoft YaHei', Helvetica, Arial, sans-serif; font-size: 17px; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: 25.920001983642578px; orphans: auto; text-align: justify; text-indent: 34.560001373291016px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(235, 23, 23);\">央视</strong>");
-                break;
-            case R.id.btn_copy_intent:
-                mClipboard.copyIntent("Intent拷贝", getOpenBrowserIntent());
-                break;
-            case R.id.btn_copy_uri:
-                mClipboard.copyUri(getContentResolver(), "Uri拷贝", Uri.parse("content://contacts/people"));
-                //mClipboard.copyUri(getContentResolver(), "Uri拷贝", Uri.parse("content://media/external"));
-                break;
-            case R.id.btn_copy_multiple:
-                copyMultiple();
-                break;
-        }
-    }
-
     /**
      * 打开浏览器
      *
@@ -136,22 +165,4 @@ public class ClipboardActivity extends Activity implements View.OnClickListener,
         return intent;
     }
 
-    /**
-     * 拷贝多组数据到剪贴板
-     */
-    private void copyMultiple() {
-        //ClipData 目前仅能设置单个 MimeType
-        List<ClipData.Item> items = new ArrayList<>();
-        //故 ClipData.Item 的类型必须和 MimeType 设置的相符
-        //比如都是文字，都是URI或都是Intent，而不是混合各种形式。
-        ClipData.Item item1 = new ClipData.Item("text1");
-        ClipData.Item item2 = new ClipData.Item("text2");
-        ClipData.Item item3 = new ClipData.Item("text3");
-        ClipData.Item item4 = new ClipData.Item("text4");
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
-        mClipboard.copyMultiple("Multiple Copy", ClipDescription.MIMETYPE_TEXT_PLAIN, items);
-    }
 }

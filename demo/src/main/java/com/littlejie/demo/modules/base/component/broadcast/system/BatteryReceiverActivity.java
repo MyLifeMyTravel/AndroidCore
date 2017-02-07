@@ -1,4 +1,4 @@
-package com.littlejie.demo.modules.base.receiver;
+package com.littlejie.demo.modules.base.component.broadcast.system;
 
 import android.content.Intent;
 import android.content.IntentFilter;

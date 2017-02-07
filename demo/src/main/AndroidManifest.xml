@@ -46,6 +46,9 @@
         <activity android:name=".modules.base.component.provider.ProviderListActivity" />
         <!-- Broadcast -->
         <activity android:name=".modules.base.component.broadcast.BroadcastListActivity" />
+        <!-- 系统广播 -->
+        <activity android:name=".modules.base.component.broadcast.system.BatteryReceiverActivity" />
+        <activity android:name=".modules.base.component.broadcast.system.WifiStateActivity" />
         <!-- Fragment 生命周期 -->
         <activity android:name=".modules.base.fragment.life.FragmentLifeListActivity" />
         <activity android:name=".modules.base.fragment.life.SimpleLifeActivity" />
@@ -83,9 +86,7 @@
         <!-- 系统 -->
         <!-- Android 触摸事件分发 -->
         <activity android:name=".modules.base.system.DispatchTouchEventActivity" />
-        <activity android:name=".modules.base.receiver.BatteryReceiverActivity" />
         <activity android:name=".modules.base.system.RuntimePermissionActivity" />
-        <activity android:name=".modules.base.receiver.WifiStateActivity" />
         <activity android:name=".modules.base.system.ConnectiveActivity" />
         <activity android:name=".modules.base.system.ClipboardActivity" />
         <!-- 注册分享 -->

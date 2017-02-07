@@ -1,92 +1,55 @@
 package com.littlejie.demo.modules.base.notification;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.view.View;
 
+import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
+
+import butterknife.OnClick;
 
 /**
  * 通知提示效果
  */
 @Description(description = "Notification 提示效果")
-public class NotificationEffectActivity extends Activity implements View.OnClickListener {
+public class NotificationEffectActivity extends BaseActivity{
 
     private NotificationManager mManager;
     private Bitmap mLargeIcon;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification_effect);
+    protected int getPageLayoutID() {
+        return R.layout.activity_notification_effect;
+    }
 
-        findViewById(R.id.btn_notify_only_text).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_ring).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_vibrate).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_lights).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_mix).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_insistent).setOnClickListener(this);
-        findViewById(R.id.btn_notify_with_alert_once).setOnClickListener(this);
-        findViewById(R.id.btn_clear_notify).setOnClickListener(this);
-
+    @Override
+    protected void initData() {
         mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mLargeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mLargeIcon != null) {
-            if (!mLargeIcon.isRecycled()) {
-                mLargeIcon.recycle();
-            }
-            mLargeIcon = null;
-        }
+    protected void initView() {
+
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_notify_only_text:
-                showNotifyOnlyText();
-                break;
-            case R.id.btn_notify_with_ring:
-                showNotifyWithRing();
-                break;
-            case R.id.btn_notify_with_vibrate:
-                showNotifyWithVibrate();
-                break;
-            case R.id.btn_notify_with_lights:
-                showNotifyWithLights();
-                break;
-            case R.id.btn_notify_with_mix:
-                showNotifyWithMixed();
-                break;
-            case R.id.btn_notify_with_insistent:
-                showInsistentNotify();
-                break;
-            case R.id.btn_notify_with_alert_once:
-                showAlertOnceNotify();
-                break;
-            case R.id.btn_clear_notify:
-                clearNotify();
-                break;
-        }
+    protected void initViewListener() {
+
     }
 
     /**
      * 最普通的通知效果
      */
-    private void showNotifyOnlyText() {
+    @OnClick(R.id.btn_notify_only_text)
+    void showNotifyOnlyText() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(mLargeIcon)
@@ -99,7 +62,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
      * 展示有自定义铃声效果的通知
      * 补充:使用系统自带的铃声效果:Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
      */
-    private void showNotifyWithRing() {
+    @OnClick(R.id.btn_notify_with_ring)
+    void showNotifyWithRing() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("我是伴有铃声效果的通知")
@@ -127,7 +91,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
      * <uses-permission android:name="android.permission.VIBRATE" />
      * 补充:测试震动的时候,手机的模式一定要调成铃声+震动模式,否则你是感受不到震动的
      */
-    private void showNotifyWithVibrate() {
+    @OnClick(R.id.btn_notify_with_vibrate)
+    void showNotifyWithVibrate() {
         //震动也有两种设置方法,与设置铃声一样,在此不再赘述
         long[] vibrate = new long[]{0, 500, 1000, 1500};
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -151,7 +116,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     /**
      * 显示带有呼吸灯效果的通知,但是不知道为什么,自己这里测试没成功
      */
-    private void showNotifyWithLights() {
+    @OnClick(R.id.btn_notify_with_lights)
+    void showNotifyWithLights() {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("我是带有呼吸灯效果的通知")
@@ -179,7 +145,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
      * 显示带有默认铃声、震动、呼吸灯效果的通知
      * 如需实现自定义效果,请参考前面三个例子
      */
-    private void showNotifyWithMixed() {
+    @OnClick(R.id.btn_notify_with_mix)
+    void showNotifyWithMixed() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("我是有铃声+震动+呼吸灯效果的通知")
@@ -193,7 +160,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
      * 通知无限循环,直到用户取消或者打开通知栏(其实触摸就可以了),效果与FLAG_ONLY_ALERT_ONCE相反
      * 注:这里没有给Notification设置PendingIntent,也就是说该通知无法响应,所以只能手动取消
      */
-    private void showInsistentNotify() {
+    @OnClick(R.id.btn_notify_with_insistent)
+    void showInsistentNotify() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("我是一个死循环,除非你取消或者响应")
@@ -207,7 +175,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     /**
      * 通知只执行一次,与默认的效果一样
      */
-    private void showAlertOnceNotify() {
+    @OnClick(R.id.btn_notify_with_alert_once)
+    void showAlertOnceNotify() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("仔细看,我就执行一遍")
@@ -221,8 +190,25 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     /**
      * 清除所有通知
      */
-    private void clearNotify() {
+    @OnClick(R.id.btn_clear_notify)
+    void clearNotify() {
         mManager.cancelAll();
+    }
+
+    @Override
+    protected void process() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLargeIcon != null) {
+            if (!mLargeIcon.isRecycled()) {
+                mLargeIcon.recycle();
+            }
+            mLargeIcon = null;
+        }
     }
 
 }

@@ -1,11 +1,10 @@
 package com.littlejie.demo.modules.base.fragment.life;
 
-import android.view.View;
-import android.widget.Button;
-
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
+
+import butterknife.OnClick;
 
 /**
  * 简单测试通过 hide() 、 show() 方法时 Fragment 的回调。
@@ -13,10 +12,9 @@ import com.littlejie.demo.annotation.Description;
  * 通过 hide() 、 show() 可以发现，此时 Fragment 只改变了可见性，并不涉及生命周期的改变
  */
 @Description(description = "Fragment hide()、show()时的生命周期")
-public class LifeWithHideShowActivity extends BaseActivity implements View.OnClickListener {
+public class LifeWithHideShowActivity extends BaseActivity {
 
     private LifeFragment mFragment1, mFragment2;
-    private Button mBtnShowOneHideTwo, mBtnShowTwoHideOne;
 
     @Override
     protected int getPageLayoutID() {
@@ -31,14 +29,20 @@ public class LifeWithHideShowActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initView() {
-        mBtnShowOneHideTwo = (Button) findViewById(R.id.btn_show_one_hide_two);
-        mBtnShowTwoHideOne = (Button) findViewById(R.id.btn_show_two_hide_one);
     }
 
     @Override
     protected void initViewListener() {
-        mBtnShowOneHideTwo.setOnClickListener(this);
-        mBtnShowTwoHideOne.setOnClickListener(this);
+    }
+
+    @OnClick(R.id.btn_show_one_hide_two)
+    void showOneHideTwo() {
+        getSupportFragmentManager().beginTransaction().show(mFragment1).hide(mFragment2).commit();
+    }
+
+    @OnClick(R.id.btn_show_two_hide_one)
+    void showTwoHideOne() {
+        getSupportFragmentManager().beginTransaction().show(mFragment2).hide(mFragment1).commit();
     }
 
     @Override
@@ -48,15 +52,4 @@ public class LifeWithHideShowActivity extends BaseActivity implements View.OnCli
                 .commit();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_show_one_hide_two:
-                getSupportFragmentManager().beginTransaction().show(mFragment1).hide(mFragment2).commit();
-                break;
-            case R.id.btn_show_two_hide_one:
-                getSupportFragmentManager().beginTransaction().show(mFragment2).hide(mFragment1).commit();
-                break;
-        }
-    }
 }

@@ -3,27 +3,18 @@ package com.littlejie.demo.modules.base.notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
-import android.view.View;
-import android.widget.Button;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 
-import butterknife.BindView;
+import butterknife.OnClick;
 
 @Description(description = "带进度条的Notification")
-public class ProgressNotifyActivity extends BaseActivity implements View.OnClickListener {
+public class ProgressNotifyActivity extends BaseActivity {
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-
-    @BindView(R.id.btn_start)
-    Button mBtnStart;
-    @BindView(R.id.btn_pause)
-    Button mBtnPause;
-    @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
 
     @Override
     protected int getPageLayoutID() {
@@ -42,32 +33,10 @@ public class ProgressNotifyActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initViewListener() {
-        mBtnStart.setOnClickListener(this);
-        mBtnPause.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
     }
 
-    @Override
-    protected void process() {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_start:
-                startDownload();
-                break;
-            case R.id.btn_pause:
-
-                break;
-            case R.id.btn_cancel:
-
-                break;
-        }
-    }
-
-    private void startDownload() {
+    @OnClick(R.id.btn_start)
+    void startDownload() {
         mBuilder.setContentTitle("文件下载")
                 .setContentText("下载中...")
                 .setSmallIcon(R.mipmap.icon_fab_repair);
@@ -89,4 +58,20 @@ public class ProgressNotifyActivity extends BaseActivity implements View.OnClick
             }
         }).start();
     }
+
+    @OnClick(R.id.btn_pause)
+    void pause() {
+
+    }
+
+    @OnClick(R.id.btn_cancel)
+    void cancel() {
+
+    }
+
+    @Override
+    protected void process() {
+
+    }
+
 }

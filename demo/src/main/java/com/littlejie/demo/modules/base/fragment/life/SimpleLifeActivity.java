@@ -8,10 +8,13 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 
+import butterknife.BindView;
+
 @Description(description = "Fragment 生命周期")
 public class SimpleLifeActivity extends BaseActivity {
 
-    private TextView mTvActivityCreated;
+    @BindView(R.id.tv_activity_created)
+    TextView mTvActivityCreated;
 
     @Override
     protected int getPageLayoutID() {
@@ -25,7 +28,6 @@ public class SimpleLifeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mTvActivityCreated = (TextView) findViewById(R.id.tv_activity_created);
     }
 
     @Override
