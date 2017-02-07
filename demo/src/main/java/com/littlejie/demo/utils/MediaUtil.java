@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -19,6 +20,10 @@ import com.littlejie.demo.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 多媒体文件操作工具类
@@ -31,6 +36,10 @@ public class MediaUtil {
     //CONTENT_URI 具体使用见 MediaObserverActivity
     private static final Uri CONTENT_URI = MediaStore.Files.getContentUri("external");
     private static final String SPLIT = ";";
+    private static final String[] DOCUMENT = new String[]{".doc", ".docx", "xls", "xlsx", "ppt", "pptx"};
+    private static String DOWNLOADS = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+            + Environment.DIRECTORY_DOWNLOADS;
+    private static final File DOWNLOAD_FOLDER = new File(DOWNLOADS);
 
     private static DisplayMetrics sMetrics;
 
@@ -148,6 +157,67 @@ public class MediaUtil {
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         }
         return bitmap;
+    }
+
+    public static Set<String> getImageFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true);
+    }
+
+    public static Set<String> getAudioFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, false);
+    }
+
+    public static Set<String> getVideoFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, false);
+    }
+
+
+    public static List<String> getDownloads(Context context) {
+        return Arrays.asList(DOWNLOAD_FOLDER.list());
+    }
+
+    public static Set<String> getDocument(Context context) {
+        Cursor cursor = filterFile(context, FilterType.SUFFIX, new String[]{MediaStore.MediaColumns.DATA}, DOCUMENT);
+        if (cursor == null) {
+            return null;
+        }
+        Set<String> fileSet = new HashSet<>();
+        while (cursor.moveToNext()) {
+            String path = cursor.getString(0);
+            fileSet.add(path);
+        }
+        //关闭Cursor
+        cursor.close();
+        return fileSet;
+    }
+
+    /**
+     * @param context
+     * @param uri
+     * @param onlyReturnParent
+     * @return
+     */
+    public static Set<String> getMediaFolder(Context context, Uri uri, boolean onlyReturnParent) {
+        Set<String> fileSet = new HashSet<>();
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        while (cursor.moveToNext()) {
+            String path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+            if (onlyReturnParent) {
+                int lastIndex = path.lastIndexOf("/");
+                if (lastIndex == -1) {
+                    Log.d(TAG, "getMediaFolder: " + path);
+                    continue;
+                }
+                path = path.substring(0, lastIndex);
+            }
+            fileSet.add(path);
+        }
+        //关闭Cursor
+        cursor.close();
+        return fileSet;
     }
 
     /**
