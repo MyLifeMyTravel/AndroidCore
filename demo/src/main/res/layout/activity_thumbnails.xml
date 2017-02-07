@@ -7,6 +7,25 @@
     android:orientation="vertical"
     tools:context="com.littlejie.demo.modules.base.media.ThumbnailsActivity">
 
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radio_mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="MINI KIND" />
+
+        <RadioButton
+            android:id="@+id/radio_micro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MICRO KIND" />
+    </RadioGroup>
+
     <ImageView
         android:id="@+id/iv_thumbnail"
         android:layout_width="wrap_content"

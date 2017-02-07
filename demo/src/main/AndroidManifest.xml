@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <application
-        android:name="com.littlejie.core.base.BaseApplication"
+        android:name=".modules.DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -78,7 +78,7 @@
         <activity android:name=".modules.base.media.MediaObserverActivity" />
         <activity android:name=".modules.base.media.SimpleFileManagerActivity" />
         <activity android:name=".modules.base.media.MediaLibraryActivity" />
-        <activity android:name=".modules.base.media.ThumbnailsActivity"/>
+        <activity android:name=".modules.base.media.ThumbnailsActivity" />
 
         <!-- 系统 -->
         <!-- Android 触摸事件分发 -->
@@ -121,6 +121,13 @@
             android:name=".modules.base.component.service.MyService"
             android:enabled="true"
             android:exported="true" />
+
+        <!-- Broadcast -->
+        <receiver android:name=".modules.base.component.broadcast.StaticBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.littlejie.android.demo.static.broadcast" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -11,6 +11,7 @@ import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
+import com.littlejie.demo.utils.MediaUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,12 @@ public class FilterFileActivity extends BaseActivity {
 
     @OnClick(R.id.btn_filter_by_suffix)
     void filterFileBySuffix() {
-        startFilter(MediaDataBaseHelper.FilterType.SUFFIX);
+        startFilter(MediaUtil.FilterType.SUFFIX);
     }
 
     @OnClick(R.id.btn_filter_by_mimetype)
     void filterFileByMimeType() {
-        startFilter(MediaDataBaseHelper.FilterType.MIME_TYPE);
+        startFilter(MediaUtil.FilterType.MIME_TYPE);
     }
 
     @Override
@@ -74,8 +75,8 @@ public class FilterFileActivity extends BaseActivity {
      *
      * @param filterType 文件过滤的类型，暂时只支持根据文件后缀和文件的mimeType进行过滤
      */
-    public void startFilter(MediaDataBaseHelper.FilterType filterType) {
-        Cursor cursor = MediaDataBaseHelper.filterFile(this, filterType, PROJECTION, mEdtFilter.getText().toString());
+    public void startFilter(MediaUtil.FilterType filterType) {
+        Cursor cursor = MediaUtil.filterFile(this, filterType, PROJECTION, mEdtFilter.getText().toString());
         if (cursor == null) {
             return;
         }

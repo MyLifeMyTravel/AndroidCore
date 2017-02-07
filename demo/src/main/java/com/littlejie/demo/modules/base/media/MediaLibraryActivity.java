@@ -11,6 +11,7 @@ import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
+import com.littlejie.demo.utils.MediaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -111,11 +112,11 @@ public class MediaLibraryActivity extends BaseActivity {
     }
 
     private Set<String> filterFileBySuffix(String[] filters) {
-        return filterFile(MediaDataBaseHelper.FilterType.SUFFIX, filters);
+        return filterFile(MediaUtil.FilterType.SUFFIX, filters);
     }
 
-    private Set<String> filterFile(MediaDataBaseHelper.FilterType type, String[] filters) {
-        Cursor cursor = MediaDataBaseHelper.filterFile(this, type, null, filters);
+    private Set<String> filterFile(MediaUtil.FilterType type, String[] filters) {
+        Cursor cursor = MediaUtil.filterFile(this, type, null, filters);
         if (cursor == null) {
             return null;
         }

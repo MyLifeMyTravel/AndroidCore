@@ -1,29 +1,26 @@
 package com.littlejie.demo.modules.base.media;
 
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import com.littlejie.core.base.BaseActivity;
-import com.littlejie.core.util.FileUtil;
 import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.utils.Constant;
+import com.littlejie.demo.utils.MediaUtil;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +31,15 @@ import butterknife.OnItemClick;
 @Description(description = "Android 图片、视频 缩略图")
 public class ThumbnailsActivity extends BaseActivity {
 
+    @BindView(R.id.radio_group)
+    RadioGroup mRadioGroup;
     @BindView(R.id.iv_thumbnail)
     ImageView mIvThumbnail;
     @BindView(R.id.lv)
     ListView mLv;
 
-    private DisplayMetrics mMetrics;
     private List<String> mLstMediaPath;
+    private int mSelectPosition;
     private String mCurrentPath;
 
     @Override
@@ -50,7 +49,6 @@ public class ThumbnailsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mMetrics = getResources().getDisplayMetrics();
         mLstMediaPath = new ArrayList<>();
         mLstMediaPath.addAll(getMediaPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
         mLstMediaPath.addAll(getMediaPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI));
@@ -63,36 +61,45 @@ public class ThumbnailsActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
-
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onItemClick(mSelectPosition);
+            }
+        });
     }
 
     @OnClick(R.id.btn_save_thumbnail_2_cache)
     void saveThumbnail2Cache() {
         if (TextUtils.isEmpty(mCurrentPath)) {
             ToastUtil.showDefaultToast("请先选择图片或视频");
+            return;
         }
-        ensureCacheFolder();
-        Bitmap bitmap = getBitmapFromFile(mCurrentPath);
+        //根据缩略图类型进行缓存
+        int thumbnailType = getThumbnailType();
+        File thumbnail = MediaUtil.getThumbnail(this, mCurrentPath, Constant.CACHE_FOLDER, thumbnailType, null);
+        //测试File转Bitmap
+        Bitmap bitmap = null;
         try {
-            FileOutputStream fos = new FileOutputStream(new File(Constant.CACHE_FOLDER + "/" + Base64.encodeToString(mCurrentPath.getBytes(), Base64.NO_CLOSE)));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        } catch (IOException e) {
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(thumbnail));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        mIvThumbnail.setImageBitmap(bitmap);
     }
-
-    private void ensureCacheFolder() {
-        File cacheFolder = new File(Constant.CACHE_FOLDER);
-        if (!cacheFolder.exists()) {
-            cacheFolder.mkdirs();
-        }
-    }
-
 
     @OnItemClick(R.id.lv)
     void onItemClick(int position) {
+        mSelectPosition = position;
         mCurrentPath = mLstMediaPath.get(position);
-        mIvThumbnail.setImageBitmap(getBitmapFromSystem(mCurrentPath));
+        mIvThumbnail.setImageBitmap(getThumbnailFromSystem(mCurrentPath, getThumbnailType()));
+    }
+
+    private int getThumbnailType() {
+        //理论上，图片和视频的缩略图的kind是要分开获取的，但是源码中，两者的常量是一样，所以此处偷懒下
+        return mRadioGroup.getCheckedRadioButtonId() == R.id.radio_mini
+                ? MediaStore.Images.Thumbnails.MINI_KIND
+                : MediaStore.Images.Thumbnails.MICRO_KIND;
     }
 
     @Override
@@ -100,14 +107,14 @@ public class ThumbnailsActivity extends BaseActivity {
 //        测试两者生成缩略图时间，注意观察内存使用情况，极可能会发生ANR
 //        long start = System.currentTimeMillis();
 //        for (String path : mLstMediaPath) {
-//            getBitmapFromSystem(path);
+//            getThumbnailFromSystem(path);
 //        }
-//        Log.d(TAG, "process: getBitmapFromSystem spend = " + (System.currentTimeMillis() - start));
+//        Log.d(TAG, "process: getThumbnailFromSystem spend = " + (System.currentTimeMillis() - start));
 //        start = System.currentTimeMillis();
 //        for (String path : mLstMediaPath) {
-//            getBitmapFromFile(path);
+//            getThumbnailFromFile(path);
 //        }
-//        Log.d(TAG, "process: getBitmapFromFile spend = " + (System.currentTimeMillis() - start));
+//        Log.d(TAG, "process: getThumbnailFromFile spend = " + (System.currentTimeMillis() - start));
     }
 
 
@@ -123,64 +130,11 @@ public class ThumbnailsActivity extends BaseActivity {
         return lstPath;
     }
 
-    private Bitmap getBitmapFromSystem(String path) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ALPHA_8;
-        options.inSampleSize = 1;
-        return getBitmapFromSystem(getContentResolver(), path, MediaStore.Images.Thumbnails.MICRO_KIND, options);
+    private Bitmap getThumbnailFromSystem(String path, int kind) {
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inPreferredConfig = Bitmap.Config.ALPHA_8;
+//        options.inSampleSize = 1;
+        return MediaUtil.getThumbnailFromSystem(this, path, kind, null);
     }
 
-    private Bitmap getBitmapFromSystem(ContentResolver resolver, String path, int kind, BitmapFactory.Options options) {
-        String mimeType = FileUtil.getFileMimeType(path);
-        boolean isImage = mimeType.startsWith("image");
-        Cursor cursor = null;
-        String[] projection = new String[]{MediaStore.MediaColumns._ID};
-        String selection = MediaStore.MediaColumns.DATA + " = ?";
-        String[] selectionArg = new String[]{path};
-        Uri uri = isImage
-                ? MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                : MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        cursor = getContentResolver().query(uri, projection, selection, selectionArg, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            long id = cursor.getLong(0);
-            cursor.close();
-            return isImage
-                    ? MediaStore.Images.Thumbnails.getThumbnail(resolver, id, kind, options)
-                    : MediaStore.Video.Thumbnails.getThumbnail(resolver, id, kind, options);
-        }
-        return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-    }
-
-    //根据文件路径获取缩略图
-    private Bitmap getBitmapFromFile(String path) {
-        /**
-         * android系统中为我们提供了ThumbnailUtils工具类来获取缩略图的处理。
-         * ThumbnailUtils.createVideoThumbnail(filePath, kind)
-         *          创建视频缩略图，filePath:文件路径，kind：MINI_KIND or MICRO_KIND(缩略图大小的区别)
-         * ThumbnailUtils.extractThumbnail(bitmap, width, height)
-         *          将bitmap裁剪为指定的大小
-         * ThumbnailUtils.extractThumbnail(bitmap, width, height, options)
-         *          将bitmap裁剪为指定的大小，可以有参数BitmapFactory.Options参数
-         *
-         */
-        Bitmap bitmap = null;
-        String mimeType = FileUtil.getFileMimeType(path);
-        if (mimeType.startsWith("image")) {//若果是图片，即拍照
-            //直接通过路径利用BitmapFactory来形成bitmap
-            bitmap = BitmapFactory.decodeFile(path);
-        } else if (mimeType.startsWith("video")) {//如果是视频，即拍摄视频
-            //利用ThumbnailUtils
-            bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
-        }
-
-        //获取图片后，我们队图片进行压缩，获取指定大小
-        if (bitmap != null) {
-            //裁剪大小
-            bitmap = ThumbnailUtils.extractThumbnail(bitmap, (int) (100 * mMetrics.density), (int) (100 * mMetrics.density));
-        } else {//如果为空，采用我们的默认图片
-            bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        }
-        return bitmap;
-    }
 }
