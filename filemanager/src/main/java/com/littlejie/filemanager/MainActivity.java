@@ -1,5 +1,6 @@
 package com.littlejie.filemanager;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -72,7 +73,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void process() {
-
+        Intent intent = new Intent("com.littlejie.android.demo.static.broadcast");
+        sendBroadcast(intent);
     }
 
 }
