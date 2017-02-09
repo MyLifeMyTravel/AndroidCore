@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_binder_service"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.littlejie.demo.modules.base.component.service.BinderServiceActivity">
+
+    <Button
+        android:id="@+id/btn_bind_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bind Service" />
+</LinearLayout>

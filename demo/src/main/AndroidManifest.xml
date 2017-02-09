@@ -130,6 +130,8 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".modules.base.component.service.BinderServiceActivity" />
+        <activity android:name=".modules.base.system.thread.HandlerActivity"></activity>
     </application>
 
 </manifest>

@@ -30,7 +30,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -287,7 +291,7 @@ public class DeviceUtil {
      * @param context
      * @return
      */
-    public static String getWifiIp(Context context) {
+    public static String getWifiIP(Context context) {
         WifiInfo wifiInfo = getWifiInfo(context);
         if (wifiInfo != null) {
             int ip = wifiInfo.getIpAddress();
@@ -353,6 +357,31 @@ public class DeviceUtil {
             return mWifi.getConnectionInfo();
         }
         return null;
+    }
+
+    /**
+     * 获取手机 IP 列表
+     * 一般只有一个IPV4地址，但当手机打开热点时会有两个
+     *
+     * @return
+     */
+    public static List<String> getMobileIP() {
+        List<String> lstIP = new ArrayList<>();
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                        //if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet6Address) {
+                        lstIP.add(inetAddress.getHostAddress());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lstIP;
     }
 
     /**

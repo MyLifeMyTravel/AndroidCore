@@ -8,4 +8,11 @@ import com.littlejie.demo.modules.BaseListActivity;
  */
 @Description(description = "Service(服务) Demo")
 public class ServiceListActivity extends BaseListActivity {
+
+    @Override
+    protected void process() {
+        super.process();
+        mLstItem.add(BinderServiceActivity.class);
+        notifyDataChanged();
+    }
 }

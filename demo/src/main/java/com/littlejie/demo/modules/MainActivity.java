@@ -1,12 +1,11 @@
 package com.littlejie.demo.modules;
 
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.util.DeviceUtil;
 import com.littlejie.core.util.JsonUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.entity.TestInfo;
@@ -17,6 +16,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
+//todo 测试各种情况下的ip
+//1. wifi
+//2. 手机网络
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar_bar)
@@ -40,12 +42,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return switchItem(item.getItemId());
-            }
-        });
+//        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                return switchItem(item.getItemId());
+//            }
+//        });
     }
 
     private boolean switchItem(int id) {
@@ -85,6 +87,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void process() {
         switchItem(R.id.menu_base);
+        Log.d(TAG, "process: ip = "+ DeviceUtil.getMobileIP());
+        Log.d(TAG, "process: wifi ip = "+ DeviceUtil.getWifiIP(this));
     }
 
 }
