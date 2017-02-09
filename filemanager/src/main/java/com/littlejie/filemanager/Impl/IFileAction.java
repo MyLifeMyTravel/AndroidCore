@@ -2,6 +2,7 @@ package com.littlejie.filemanager.Impl;
 
 import com.littlejie.filemanager.entity.FileInfo;
 
+import java.io.FileFilter;
 import java.util.List;
 
 /**
@@ -15,9 +16,10 @@ public interface IFileAction {
      * 列出当前路径下的所有文件
      *
      * @param path
+     * @param filter
      * @return
      */
-    List<FileInfo> list(String path);
+    List<FileInfo> list(String path, FileFilter filter);
 
     /**
      * 创建文件夹
@@ -49,12 +51,11 @@ public interface IFileAction {
     /**
      * 重命名文件，实质为移动文件
      *
-     * @param path
-     * @param newName
-     * @param oldName
+     * @param src
+     * @param dest
      * @return
      */
-    boolean rename(String path, String newName, String oldName);
+    boolean rename(String src, String dest);
 
     /**
      * 删除文件

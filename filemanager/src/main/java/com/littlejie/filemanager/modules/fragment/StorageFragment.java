@@ -14,6 +14,7 @@ import com.littlejie.filemanager.modules.adapter.FileAdapter;
 import com.littlejie.filemanager.util.Constant;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,13 +67,13 @@ public class StorageFragment extends BaseFragment implements IFileAction {
 
     @Override
     protected void process(Bundle savedInstanceState) {
-        mAdapter.setData(list(mPath));
+        mAdapter.setData(list(mPath, null));
     }
 
     @Override
-    public List<FileInfo> list(String path) {
+    public List<FileInfo> list(String path, FileFilter filter) {
         File file = new File(path);
-        File[] files = file.listFiles();
+        File[] files = file.listFiles(filter);
         if (files == null) {
             return null;
         }
@@ -106,7 +107,7 @@ public class StorageFragment extends BaseFragment implements IFileAction {
     }
 
     @Override
-    public boolean rename(String path, String newName, String oldName) {
+    public boolean rename(String src, String dest) {
         return false;
     }
 
