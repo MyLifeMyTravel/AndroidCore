@@ -11,7 +11,7 @@ import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
 import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
-import com.littlejie.demo.utils.MediaUtil;
+import com.littlejie.core.util.MediaUtil;
 
 import java.util.ArrayList;
 import java.util.List;

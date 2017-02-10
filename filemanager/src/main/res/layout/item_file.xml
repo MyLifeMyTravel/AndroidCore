@@ -1,23 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical"
+                android:padding="@dimen/small">
+
+    <com.littlejie.core.ui.BaseImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/medium"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:defaultImage="@mipmap/ic_unknown_black_24dp"/>
+
+    <CheckBox
+        android:id="@+id/cbx_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/medium"
+        android:src="@mipmap/icon_btn_copy_light"
+        android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tv_divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/small"
+        android:layout_marginRight="@dimen/medium"
+        android:layout_marginTop="@dimen/small"
+        android:layout_toLeftOf="@+id/cbx_checked"
+        android:background="@color/divide_line"
+        android:visibility="gone"/>
 
-    <!--<TextView-->
-    <!--android:id="@+id/tv_path"-->
-    <!--android:text="@string/text_path"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_icon"
+        android:layout_alignTop="@+id/iv_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/medium"
+        android:layout_marginRight="@dimen/medium"
+        android:layout_toLeftOf="@+id/cbx_checked"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:orientation="vertical">
 
-    <!--<TextView-->
-    <!--android:id="@+id/tv_modify"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/list_item_primary"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_info"
+            style="@style/list_item_secondary"/>
+    </LinearLayout>
+
+</RelativeLayout>

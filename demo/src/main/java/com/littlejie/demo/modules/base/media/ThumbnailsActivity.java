@@ -16,7 +16,7 @@ import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.utils.Constant;
-import com.littlejie.demo.utils.MediaUtil;
+import com.littlejie.core.util.MediaUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -107,9 +107,9 @@ public class ThumbnailsActivity extends BaseActivity {
 //        测试两者生成缩略图时间，注意观察内存使用情况，极可能会发生ANR
 //        long start = System.currentTimeMillis();
 //        for (String path : mLstMediaPath) {
-//            getThumbnailFromSystem(path);
+//            getThumbnail(path);
 //        }
-//        Log.d(TAG, "process: getThumbnailFromSystem spend = " + (System.currentTimeMillis() - start));
+//        Log.d(TAG, "process: getThumbnail spend = " + (System.currentTimeMillis() - start));
 //        start = System.currentTimeMillis();
 //        for (String path : mLstMediaPath) {
 //            getThumbnailFromFile(path);
@@ -134,7 +134,7 @@ public class ThumbnailsActivity extends BaseActivity {
 //        BitmapFactory.Options options = new BitmapFactory.Options();
 //        options.inPreferredConfig = Bitmap.Config.ALPHA_8;
 //        options.inSampleSize = 1;
-        return MediaUtil.getThumbnailFromSystem(this, path, kind, null);
+        return MediaUtil.getThumbnail(this, path, kind, null);
     }
 
 }

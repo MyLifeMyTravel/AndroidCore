@@ -1,6 +1,5 @@
 package com.littlejie.filemanager;
 
-import android.content.Intent;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -58,10 +57,7 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_device:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.content_frame,
-                                        StorageFragment.newInstance(Environment.getExternalStorageDirectory().getAbsolutePath()))
-                                .commit();
+
                         break;
                 }
                 item.setChecked(true);
@@ -73,8 +69,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void process() {
-        Intent intent = new Intent("com.littlejie.android.demo.static.broadcast");
-        sendBroadcast(intent);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame,
+                        StorageFragment.newInstance(Environment.getExternalStorageDirectory().getAbsolutePath()))
+                .commit();
+//        Intent intent = new Intent("com.littlejie.android.demo.static.broadcast");
+//        sendBroadcast(intent);
     }
 
 }

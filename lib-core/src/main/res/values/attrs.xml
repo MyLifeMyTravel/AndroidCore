@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseImageView">
+        <attr name="defaultImage" format="reference"/>
+        <attr name="customImage" format="boolean"/>
+        <attr name="radius" format="dimension"/>
+        <attr name="imageSrc" format="reference"/>
+        <attr name="bitmapModel">
+            <enum name="ALPHA_8" value="1"/>
+            <enum name="RGB_565" value="3"/>
+            <enum name="ARGB_4444" value="4"/>
+            <enum name="ARGB_8888" value="5"/>
+        </attr>
+    </declare-styleable>
+</resources>

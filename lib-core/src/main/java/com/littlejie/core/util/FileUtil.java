@@ -24,6 +24,8 @@ import static org.apache.commons.io.FilenameUtils.getExtension;
 
 public class FileUtil {
 
+    //如果文件类型未知，默认返回 */* ，否则会造成没有打开对应文件的程序
+    private static final String UNKNOWN_MIME_TYPE = "*/*";
     private static final String[][] MIME_TYPE = new String[][]{
             {".3gp", "video/3gpp"},
             {".apk", "application/vnd.android.package-archive"},
@@ -161,13 +163,13 @@ public class FileUtil {
         if (TextUtils.isEmpty(type)) {
             int lastIndex = url.lastIndexOf(".");
             if (lastIndex == -1) {
-                return type;
+                return UNKNOWN_MIME_TYPE;
             }
             String suffix = url.substring(lastIndex);
             type = mMimeTypeMap.get(suffix);
         }
         if (TextUtils.isEmpty(type)) {
-            type = "*/*";
+            type = UNKNOWN_MIME_TYPE;
         }
         return type;
     }

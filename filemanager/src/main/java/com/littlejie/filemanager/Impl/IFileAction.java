@@ -1,9 +1,7 @@
-package com.littlejie.filemanager.Impl;
+package com.littlejie.filemanager.impl;
 
-import com.littlejie.filemanager.entity.FileInfo;
-
+import java.io.File;
 import java.io.FileFilter;
-import java.util.List;
 
 /**
  * 文件操作接口
@@ -19,7 +17,7 @@ public interface IFileAction {
      * @param filter
      * @return
      */
-    List<FileInfo> list(String path, FileFilter filter);
+    File[] list(String path, FileFilter filter);
 
     /**
      * 创建文件夹

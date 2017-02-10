@@ -38,7 +38,7 @@ public class HttpManager {
 
     private static final String TAG = HttpManager.class.getSimpleName();
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static DownloadManager mDownloadManager;
     private static OkHttpClient mOkHttpClient;
 

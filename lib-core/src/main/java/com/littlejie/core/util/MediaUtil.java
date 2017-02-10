@@ -1,7 +1,9 @@
-package com.littlejie.demo.utils;
+package com.littlejie.core.util;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +16,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.littlejie.core.util.FileUtil;
-import com.littlejie.demo.R;
+import com.littlejie.core.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,7 +72,7 @@ public class MediaUtil {
         }
         try {
             Log.d(TAG, "getThumbnail: get thumbnail");
-            Bitmap bitmap = getThumbnailFromSystem(context, path, kind, options);
+            Bitmap bitmap = getThumbnail(context, path, kind, options);
             if (bitmap != null) {
                 FileOutputStream fos = new FileOutputStream(cacheFile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -93,7 +94,7 @@ public class MediaUtil {
      * @return
      */
     //TODO 默认图片
-    public static Bitmap getThumbnailFromSystem(Context context, String path, int kind, BitmapFactory.Options options) {
+    public static Bitmap getThumbnail(Context context, String path, int kind, BitmapFactory.Options options) {
         String mimeType = FileUtil.getFileMimeType(path);
         boolean isImage = mimeType.startsWith("image");
         Cursor cursor = null;
@@ -113,11 +114,11 @@ public class MediaUtil {
                     ? MediaStore.Images.Thumbnails.getThumbnail(resolver, id, kind, options)
                     : MediaStore.Video.Thumbnails.getThumbnail(resolver, id, kind, options);
         }
-        return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_unknown_black_24dp);
     }
 
     /**
-     * 根据文件路径获取缩略图，由于图片缩略图是自己操作，所以性能上没有 getThumbnailFromSystem() 好
+     * 根据文件路径获取缩略图，由于图片缩略图是自己操作，所以性能上没有 getThumbnail() 好
      *
      * @param context
      * @param path    图片、视频路径
@@ -154,7 +155,7 @@ public class MediaUtil {
             //裁剪大小
             bitmap = ThumbnailUtils.extractThumbnail(bitmap, (int) (100 * sMetrics.density), (int) (100 * sMetrics.density));
         } else {//如果为空，采用我们的默认图片
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_unknown_black_24dp);
         }
         return bitmap;
     }
@@ -312,5 +313,24 @@ public class MediaUtil {
             }
         }
         return selection.toString();
+    }
+
+    /**
+     * 打开文件
+     *
+     * @param context
+     * @param path    文件路径
+     */
+    public static void openFile(Context context, String path) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(path));
+        intent.setDataAndType(uri, FileUtil.getMimeType(path));
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
