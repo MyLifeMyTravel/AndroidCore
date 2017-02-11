@@ -6,7 +6,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseFragment;
-import com.littlejie.core.util.MediaUtil;
+import com.littlejie.core.util.FileUtil;
 import com.littlejie.filemanager.R;
 import com.littlejie.filemanager.impl.IFileAction;
 import com.littlejie.filemanager.modules.adapter.FileAdapter;
@@ -76,7 +76,7 @@ public class StorageFragment extends BaseFragment implements IFileAction {
                     .addToBackStack(path)
                     .commit();
         } else {
-            MediaUtil.openFile(getContext(), path);
+            FileUtil.openFile(getContext(), path);
         }
     }
 

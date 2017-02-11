@@ -1,9 +1,7 @@
 package com.littlejie.core.util;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -315,22 +313,4 @@ public class MediaUtil {
         return selection.toString();
     }
 
-    /**
-     * 打开文件
-     *
-     * @param context
-     * @param path    文件路径
-     */
-    public static void openFile(Context context, String path) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.fromFile(new File(path));
-        intent.setDataAndType(uri, FileUtil.getMimeType(path));
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 }

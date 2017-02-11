@@ -1,11 +1,15 @@
 package com.littlejie.core.util;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
+
+import com.littlejie.core.R;
 
 import org.apache.commons.io.FileUtils;
 
@@ -201,6 +205,25 @@ public class FileUtil {
             return path;
         }
         return null;
+    }
+
+    /**
+     * 打开文件
+     *
+     * @param context
+     * @param path    文件路径
+     */
+    public static void openFile(Context context, String path) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(path));
+        intent.setDataAndType(uri, FileUtil.getMimeType(path));
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            ToastUtil.showDefaultToast(R.string.toast_not_found_open_this_file_app);
+        }
     }
 
     /**
