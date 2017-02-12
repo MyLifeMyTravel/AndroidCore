@@ -2,16 +2,16 @@ package com.littlejie.demo.modules.base.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
+import com.littlejie.demo.modules.DemoApplication;
+import com.littlejie.demo.utils.Constant;
 
 import butterknife.OnClick;
 
@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * 通知提示效果
  */
 @Description(description = "Notification 提示效果")
-public class NotificationEffectActivity extends BaseActivity{
+public class NotificationEffectActivity extends BaseActivity {
 
     private NotificationManager mManager;
     private Bitmap mLargeIcon;
@@ -31,7 +31,7 @@ public class NotificationEffectActivity extends BaseActivity{
 
     @Override
     protected void initData() {
-        mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mManager = DemoApplication.getNotificationManager();
         mLargeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
     }
 
@@ -73,7 +73,7 @@ public class NotificationEffectActivity extends BaseActivity{
                 //调用系统多媒体裤内的铃声
                 //.setSound(Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,"2"));
                 //调用自己提供的铃声
-                .setSound(Uri.parse("android.resource://com.littlejie.notification/" + R.raw.sound));
+                .setSound(Constant.NOTIFICATION_SOUND);
         //另一种设置铃声的方法
         //Notification notify = builder.build();
         //调用系统默认铃声
@@ -94,7 +94,6 @@ public class NotificationEffectActivity extends BaseActivity{
     @OnClick(R.id.btn_notify_with_vibrate)
     void showNotifyWithVibrate() {
         //震动也有两种设置方法,与设置铃声一样,在此不再赘述
-        long[] vibrate = new long[]{0, 500, 1000, 1500};
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("我是伴有震动效果的通知")
@@ -102,7 +101,8 @@ public class NotificationEffectActivity extends BaseActivity{
                 //使用系统默认的震动参数,会与自定义的冲突
                 //.setDefaults(Notification.DEFAULT_VIBRATE)
                 //自定义震动效果
-                .setVibrate(vibrate);
+                .setVibrate(Constant.VIBRATE)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
         //另一种设置震动的方法
         //Notification notify = builder.build();
         //调用系统默认震动

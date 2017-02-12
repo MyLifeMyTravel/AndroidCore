@@ -165,17 +165,30 @@ public class FileUtil {
             type = mime.getMimeTypeFromExtension(extension);
         }
         if (TextUtils.isEmpty(type)) {
-            int lastIndex = url.lastIndexOf(".");
-            if (lastIndex == -1) {
+            String suffix = getFileSuffix(url);
+            if (TextUtils.isEmpty(suffix)) {
                 return UNKNOWN_MIME_TYPE;
             }
-            String suffix = url.substring(lastIndex);
-            type = mMimeTypeMap.get(suffix);
+            return mMimeTypeMap.get(suffix);
         }
         if (TextUtils.isEmpty(type)) {
             type = UNKNOWN_MIME_TYPE;
         }
         return type;
+    }
+
+    /**
+     * 根据文件路径获取文件后缀，返回文件后缀为小写形式
+     *
+     * @param path 文件路径
+     * @return 若文件不含后缀，则返回 null
+     */
+    public static String getFileSuffix(String path) {
+        int lastIndex = path.lastIndexOf(".");
+        if (lastIndex == -1) {
+            return null;
+        }
+        return path.substring(lastIndex).toLowerCase();
     }
 
     /**

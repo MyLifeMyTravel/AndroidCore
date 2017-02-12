@@ -30,6 +30,8 @@ public class NotificationListFragment extends BaseListFragment {
         mLstItem.add(TaskStackBuilderActivity.class);
         mLstItem.add(NotificationListenerServiceActivity.class);
         mLstItem.add(ProgressNotifyActivity.class);
+        mLstItem.add(HeadsUpNotificationActivity.class);
+        mLstItem.add(CustomNotificationActivity.class);
         notifyDataChanged();
     }
 

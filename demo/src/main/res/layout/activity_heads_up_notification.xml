@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_heads_up_notification"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.littlejie.demo.modules.base.notification.HeadsUpNotificationActivity">
+
+    <Button
+        android:id="@+id/btn_heads_up_notify_with_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="高优先级+震动"/>
+
+    <Button
+        android:id="@+id/btn_heads_up_notify_with_ringtones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="高优先级+声音"/>
+</LinearLayout>

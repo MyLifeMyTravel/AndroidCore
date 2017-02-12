@@ -92,6 +92,7 @@ public class MediaUtil {
      * @return
      */
     //TODO 默认图片
+    //TODO 异步加载缩略图
     public static Bitmap getThumbnail(Context context, String path, int kind, BitmapFactory.Options options) {
         String mimeType = FileUtil.getFileMimeType(path);
         boolean isImage = mimeType.startsWith("image");
