@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FileManager</string>
+    <string name="app_name">文件管理器</string>
     <string name="nav_sub_item_more">更多</string>
     <string name="nav_menu_settings">设置</string>
     <string name="nav_menu_feedback">反馈</string>
@@ -7,5 +7,5 @@
     <string name="nav_menu_photo">图片</string>
     <string name="nav_menu_music">音乐</string>
     <string name="nav_menu_video">视频</string>
-    <string name="nav_menu_storage">设备</string>
+    <string name="nav_menu_device">设备</string>
 </resources>

@@ -7,6 +7,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/small">
 
+    <!-- adjustViewBounds 与 scaleType 可能会造成效果冲突 -->
     <com.littlejie.core.ui.BaseImageView
         android:id="@+id/iv_icon"
         android:layout_width="40dp"
@@ -14,8 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/medium"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="false"
+        android:scaleType="center"
         app:defaultImage="@mipmap/ic_unknown_black_24dp"/>
 
     <CheckBox

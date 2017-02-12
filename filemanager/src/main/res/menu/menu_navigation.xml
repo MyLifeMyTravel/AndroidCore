@@ -7,10 +7,10 @@
             android:id="@+id/menu_device"
             android:checked="true"
             android:icon="@mipmap/ic_storage_black_24dp"
-            android:title="@string/nav_menu_storage" />
+            android:title="@string/nav_menu_device" />
 
         <item
-            android:id="@+id/menu_photo"
+            android:id="@+id/menu_image"
             android:icon="@mipmap/ic_photo_library_black_24dp"
             android:title="@string/nav_menu_photo" />
 

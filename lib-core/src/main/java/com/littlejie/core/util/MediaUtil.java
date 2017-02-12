@@ -159,16 +159,28 @@ public class MediaUtil {
         return bitmap;
     }
 
-    public static Set<String> getImageFolder(Context context) {
-        return getMediaFolder(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true);
+    public static File[] getImageFiles(Context context) {
+        return getMediaFolder(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false);
     }
 
-    public static Set<String> getAudioFolder(Context context) {
+    public static File[] getAudioFiles(Context context) {
         return getMediaFolder(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, false);
     }
 
-    public static Set<String> getVideoFolder(Context context) {
+    public static File[] getVideoFiles(Context context) {
         return getMediaFolder(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, false);
+    }
+
+    public static File[] getImageFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true);
+    }
+
+    public static File[] getAudioFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, true);
+    }
+
+    public static File[] getVideoFolder(Context context) {
+        return getMediaFolder(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true);
     }
 
 
@@ -197,8 +209,8 @@ public class MediaUtil {
      * @param onlyReturnParent
      * @return
      */
-    public static Set<String> getMediaFolder(Context context, Uri uri, boolean onlyReturnParent) {
-        Set<String> fileSet = new HashSet<>();
+    private static File[] getMediaFolder(Context context, Uri uri, boolean onlyReturnParent) {
+        Set<File> fileSet = new HashSet<>();
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         if (cursor == null) {
             return null;
@@ -213,11 +225,12 @@ public class MediaUtil {
                 }
                 path = path.substring(0, lastIndex);
             }
-            fileSet.add(path);
+            fileSet.add(new File(path));
         }
         //关闭Cursor
         cursor.close();
-        return fileSet;
+        File[] array = new File[fileSet.size()];
+        return fileSet.toArray(array);
     }
 
     /**

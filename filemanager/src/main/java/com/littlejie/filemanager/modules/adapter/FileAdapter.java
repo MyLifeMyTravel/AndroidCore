@@ -22,6 +22,9 @@ import com.littlejie.filemanager.R;
 import com.littlejie.filemanager.util.Constant;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,14 +37,21 @@ import butterknife.OnClick;
 public class FileAdapter extends BaseAdapter {
 
     private static final String TAG = FileAdapter.class.getSimpleName();
+    private static Map<String, Integer> sIntegerMap = new HashMap<>();
 
     private Context mContext;
     private File[] mFiles;
+    private FileFilter mFileFilter;
     private Drawable mUnknownDrawable;
     private Drawable mFolderDrawable, mTxtDrawable;
 
     public FileAdapter(Context context) {
+        this(context, Constant.HIDDEN_FILE_FILTER);
+    }
+
+    public FileAdapter(Context context, FileFilter filter) {
         mContext = context;
+        mFileFilter = filter;
         Resources resources = context.getResources();
         int defaultColor = resources.getColor(R.color.colorPrimary);
         mUnknownDrawable = TintManager.tintDrawable(context, R.mipmap.ic_unknown_black_24dp, defaultColor);
@@ -120,7 +130,17 @@ public class FileAdapter extends BaseAdapter {
     private void showInfo(TextView info, File file) {
         String time = TimeUtil.parse2TimeDetail(file.lastModified());
         if (file.isDirectory()) {
-            info.setText(file.listFiles(Constant.HIDDEN_FILE_FILTER).length + "项 | " + time);
+            // 2017/2/12 优化此处性能，当文件夹内包含大量文件时，此处会造成GC抖动，导致UI卡顿
+            // 故此处使用 Map 对文件夹内 Item 数量进行缓存
+            int inner;
+            String path = file.getAbsolutePath();
+            if (sIntegerMap.containsKey(path)) {
+                inner = sIntegerMap.get(path);
+            } else {
+                inner = file.listFiles(mFileFilter).length;
+                sIntegerMap.put(file.getAbsolutePath(), inner);
+            }
+            info.setText(inner + "项 | " + time);
         } else {
             info.setText(SpaceUtil.getSpace(file.length()) + " | " + time);
         }
