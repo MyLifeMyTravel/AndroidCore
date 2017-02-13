@@ -1,10 +1,14 @@
 package com.littlejie.demo.modules;
 
+import android.graphics.Color;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.util.DeviceUtil;
 import com.littlejie.core.util.JsonUtil;
 import com.littlejie.demo.R;
@@ -21,10 +25,14 @@ import butterknife.BindView;
 //2. 手机网络
 public class MainActivity extends BaseActivity {
 
+    @BindView(R.id.activity_main)
+    DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar_bar)
     Toolbar mToolbar;
     @BindView(R.id.navigation_view)
     NavigationView mNavigationView;
+
+    private DrawerLayout.DrawerListener mDrawerToggle;
 
     @Override
     protected int getPageLayoutID() {
@@ -38,6 +46,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setContentInsetStartWithNavigation(0);
+        mToolbar.setNavigationIcon(TintManager.tintDrawable(this, R.mipmap.ic_menu_black_24dp, Color.WHITE));
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.app_name, R.string.app_name);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -87,8 +101,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void process() {
         switchItem(R.id.menu_base);
-        Log.d(TAG, "process: ip = "+ DeviceUtil.getMobileIP());
-        Log.d(TAG, "process: wifi ip = "+ DeviceUtil.getWifiIP(this));
+        Log.d(TAG, "process: ip = " + DeviceUtil.getMobileIP());
+        Log.d(TAG, "process: wifi ip = " + DeviceUtil.getWifiIP(this));
     }
 
 }

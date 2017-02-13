@@ -1,11 +1,14 @@
 package com.littlejie.core.base;
 
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.littlejie.core.manager.ActivityManager;
 
 import butterknife.ButterKnife;
 
@@ -22,7 +25,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //设置所有 Activity 全部为竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getPageLayoutID());
+        ActivityManager.addActivity(this);
         ButterKnife.bind(this);
         initData();
         initView();
@@ -54,6 +60,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void process();
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityManager.removeActivity(this);
+    }
+
+    /*--------------运行时权限相关，未完成----------------*/
     protected void requestPermission(final String permission, String reason, final int requestCode) {
         this.requestCode = requestCode;
         if (checkPermission(permission)) {
@@ -103,4 +116,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void processWithPermission() {
 
     }
+    /*--------------运行时权限相关，未完成----------------*/
 }

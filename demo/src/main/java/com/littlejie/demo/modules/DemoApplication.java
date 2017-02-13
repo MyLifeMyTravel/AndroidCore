@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.littlejie.core.base.BaseApplication;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by littlejie on 2017/2/6.
@@ -19,7 +20,17 @@ public class DemoApplication extends BaseApplication {
         super.onCreate();
         //通过静态广播、分享之类的 Intent 调起，都会调用 Application 的 onCreate() 方法
         Log.d(TAG, "onCreate: DemoApplication onCreate");
+        initLeakCanary();
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     public static NotificationManager getNotificationManager() {

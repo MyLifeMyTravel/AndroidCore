@@ -101,7 +101,7 @@ public class PackageAdapter extends BaseAdapter {
         @BindView(R.id.tv_app_info)
         TextView info;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }

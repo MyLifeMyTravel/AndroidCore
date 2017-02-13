@@ -41,4 +41,11 @@ public class PackageActivity extends BaseActivity {
     protected void process() {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter = null;
+        System.gc();
+    }
 }
