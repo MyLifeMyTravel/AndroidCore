@@ -3,6 +3,7 @@ package com.littlejie.filemanager.util;
 import android.os.Environment;
 
 import com.littlejie.core.util.FileUtil;
+import com.littlejie.filemanager.manager.StorageManager;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -23,10 +24,13 @@ public class Constant {
     public static final String EXTRA_PATH = "path";
     public static final String EXTRA_FILES = "files";
 
+    /*SharePrefs的key*/
+    public static final String KEY_SHOW_HIDDEN_FILE = "show_hidden_file";
+
     public static final FileFilter HIDDEN_FILE_FILTER = new FileFilter() {
         @Override
         public boolean accept(File pathname) {
-            return !pathname.isHidden();
+            return StorageManager.isShowHiddenFile() || !pathname.isHidden();
         }
     };
 
@@ -34,7 +38,8 @@ public class Constant {
         @Override
         public boolean accept(File pathname) {
             String mimeType = FileUtil.getMimeType(pathname.getAbsolutePath());
-            return !pathname.isHidden() && mimeType != null && mimeType.startsWith("image");
+            return (StorageManager.isShowHiddenFile() || !pathname.isHidden())
+                    && mimeType != null && mimeType.startsWith("image");
         }
     };
 }

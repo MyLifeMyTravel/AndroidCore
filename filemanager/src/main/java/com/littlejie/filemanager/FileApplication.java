@@ -2,6 +2,7 @@ package com.littlejie.filemanager;
 
 import com.littlejie.core.base.BaseApplication;
 import com.littlejie.core.util.ImageLoaderUtil;
+import com.littlejie.filemanager.manager.StorageManager;
 import com.littlejie.filemanager.util.Constant;
 
 /**
@@ -14,5 +15,7 @@ public class FileApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         ImageLoaderUtil.init(this, Constant.IMAGE_CACHE_DIR);
+        StorageManager.init(this);
+        StorageManager.setShowHiddenFile(true);
     }
 }

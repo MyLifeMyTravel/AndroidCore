@@ -42,6 +42,7 @@ public class FileAdapter extends BaseAdapter {
     private Context mContext;
     private File[] mFiles;
     private FileFilter mFileFilter;
+    private boolean showCheckBox;
     private Drawable mUnknownDrawable;
     private Drawable mFolderDrawable, mTxtDrawable;
 
@@ -49,9 +50,18 @@ public class FileAdapter extends BaseAdapter {
         this(context, Constant.HIDDEN_FILE_FILTER);
     }
 
+    public FileAdapter(Context context, boolean showCheckBox) {
+        this(context, showCheckBox, Constant.HIDDEN_FILE_FILTER);
+    }
+
     public FileAdapter(Context context, FileFilter filter) {
+        this(context, false, filter);
+    }
+
+    public FileAdapter(Context context, boolean showCheckBox, FileFilter filter) {
         mContext = context;
         mFileFilter = filter;
+        this.showCheckBox = showCheckBox;
         Resources resources = context.getResources();
         int defaultColor = resources.getColor(R.color.colorPrimary);
         mUnknownDrawable = TintManager.tintDrawable(context, R.mipmap.ic_unknown_black_24dp, defaultColor);
@@ -62,6 +72,10 @@ public class FileAdapter extends BaseAdapter {
     public void setData(File[] files) {
         mFiles = files;
         notifyDataSetChanged();
+    }
+
+    public void setShowCheckBox(boolean showCheckBox) {
+        this.showCheckBox = showCheckBox;
     }
 
     @Override
@@ -88,6 +102,7 @@ public class FileAdapter extends BaseAdapter {
             convertView.setTag(vh);
         }
         vh = (ViewHolder) convertView.getTag();
+        vh.checkbox.setVisibility(showCheckBox ? View.VISIBLE : View.GONE);
         File file = (File) getItem(position);
         showIcon(vh.icon, file);
         showInfo(vh.info, file);

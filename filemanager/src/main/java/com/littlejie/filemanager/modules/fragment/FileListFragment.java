@@ -1,11 +1,15 @@
 package com.littlejie.filemanager.modules.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.core.util.FileUtil;
+import com.littlejie.core.util.ToastUtil;
 import com.littlejie.filemanager.R;
 import com.littlejie.filemanager.impl.IFileAction;
 import com.littlejie.filemanager.modules.adapter.FileAdapter;
@@ -18,6 +22,7 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
 
 /**
  * Created by littlejie on 2017/2/12.
@@ -88,6 +93,22 @@ public class FileListFragment extends BaseFragment implements IFileAction {
         } else {
             FileUtil.openFile(getContext(), path);
         }
+    }
+
+    private static final String[] ACTION_FILE = {"复制", "移动", "重命名", "删除"};
+
+    @OnItemLongClick(R.id.lv_file)
+    boolean onItemLongClick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ACTION_FILE),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ToastUtil.showDefaultToast(ACTION_FILE[which]);
+                            }
+                        });
+        builder.show();
+        return true;
     }
 
     @Override

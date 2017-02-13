@@ -11,12 +11,16 @@ android {
         versionCode 1
         versionName "1.0"
 
+        //移除别的语言库，可减少200KB左右大小
+        resConfigs "zh"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
