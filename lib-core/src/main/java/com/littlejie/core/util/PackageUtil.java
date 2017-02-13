@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * 获取应用相关属性，如版本、包名
  * Created by littlejie on 2016/12/1.
@@ -15,6 +17,16 @@ import android.util.Log;
 public class PackageUtil {
 
     private static final String TAG = PackageUtil.class.getSimpleName();
+
+    /**
+     * 获取 APP 的名称
+     *
+     * @param context
+     * @return
+     */
+    public static String getAppName(Context context) {
+        return getPackageInfo(context).applicationInfo.loadLabel(context.getPackageManager()).toString();
+    }
 
     /**
      * 版本名
@@ -82,6 +94,11 @@ public class PackageUtil {
             }
         }
         return null;
+    }
+
+    public static List<PackageInfo> getAllInstallApp(Context context) {
+        PackageManager pm = context.getPackageManager();
+        return pm.getInstalledPackages(0);
     }
 
     private static PackageInfo getPackageInfo(Context context) {

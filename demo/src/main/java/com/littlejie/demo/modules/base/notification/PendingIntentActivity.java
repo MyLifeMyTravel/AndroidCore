@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
+import com.littlejie.demo.modules.DemoApplication;
 import com.littlejie.demo.utils.Constant;
 
 import butterknife.BindView;
@@ -28,6 +29,7 @@ public class PendingIntentActivity extends BaseActivity {
     protected void initData() {
         if (getIntent() != null) {
             mName = getIntent().getStringExtra(Constant.EXTRA_NAME);
+            DemoApplication.getNotificationManager().cancel(Constant.NOTIFICATION_CUSTOM);
         }
     }
 

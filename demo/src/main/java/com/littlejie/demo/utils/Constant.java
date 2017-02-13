@@ -14,6 +14,8 @@ public class Constant {
     public static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String DEMO_FOLDER = ROOT + "/AndroidDemo";
     public static final String CACHE_FOLDER = DEMO_FOLDER + "/cache";
+    //包图标缓存目录
+    public static final String PACKAGE_ICON_CACHE_FOLDER = CACHE_FOLDER + "/package_icon";
 
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_TITLE = "title";
@@ -25,4 +27,6 @@ public class Constant {
     public static final long[] VIBRATE = {0, 500, 1000, 1500};
     public static final Uri NOTIFICATION_SOUND =
             Uri.parse("android.resource://com.littlejie.notification/" + R.raw.beep);
+
+    public static final int NOTIFICATION_CUSTOM = 10;
 }

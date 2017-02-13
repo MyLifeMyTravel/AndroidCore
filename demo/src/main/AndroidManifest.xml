@@ -85,6 +85,7 @@
         <activity android:name=".modules.base.media.SimpleFileManagerActivity"/>
         <activity android:name=".modules.base.media.MediaLibraryActivity"/>
         <activity android:name=".modules.base.media.ThumbnailsActivity"/>
+        <activity android:name=".modules.base.media.FileActionActivity"/>
 
         <!-- 系统 -->
         <!-- Android 触摸事件分发 -->
@@ -92,6 +93,9 @@
         <activity android:name=".modules.base.system.RuntimePermissionActivity"/>
         <activity android:name=".modules.base.system.ConnectiveActivity"/>
         <activity android:name=".modules.base.system.ClipboardActivity"/>
+        <activity android:name=".modules.base.component.service.BinderServiceActivity"/>
+        <activity android:name=".modules.base.system.thread.HandlerActivity"/>
+        <activity android:name=".modules.base.system.PackageActivity"/>
         <!-- 注册分享 -->
         <!-- singleTask 可以防止打开多个分享页面 -->
         <activity
@@ -133,8 +137,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".modules.base.component.service.BinderServiceActivity"/>
-        <activity android:name=".modules.base.system.thread.HandlerActivity"/>
     </application>
 
 </manifest>

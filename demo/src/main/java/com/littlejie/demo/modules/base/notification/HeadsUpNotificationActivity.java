@@ -15,6 +15,8 @@ import butterknife.OnClick;
  * 0. API Level >= 21
  * 1. The user's activity is in fullscreen mode (the app uses fullScreenIntent), or
  * 2. The notification has high priority and uses ringtones or vibrations
+ * <p>
+ * 补充：高优先级+震动出现Heads-up Notification的几率比高优先级+响铃大
  */
 @Description(description = "Heads-up Notification")
 public class HeadsUpNotificationActivity extends BaseActivity {
