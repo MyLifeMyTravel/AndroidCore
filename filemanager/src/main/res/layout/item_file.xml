@@ -26,7 +26,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/medium"
-        android:src="@mipmap/icon_btn_copy_light"
         android:visibility="gone"/>
 
     <TextView

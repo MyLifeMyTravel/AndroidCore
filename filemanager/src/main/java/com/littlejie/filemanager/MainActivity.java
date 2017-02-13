@@ -22,8 +22,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-import static android.R.attr.id;
-
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.drawer_layout)
@@ -69,9 +67,9 @@ public class MainActivity extends BaseActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mDrawerLayout.closeDrawers();
                 switchItem(item.getItemId(), item.getTitle());
                 item.setChecked(true);
-                mDrawerLayout.closeDrawers();
                 return true;
             }
         });
@@ -110,7 +108,7 @@ public class MainActivity extends BaseActivity {
 
                     break;
             }
-            mFragmentMap.put(id, fragment);
+            mFragmentMap.put(menuID, fragment);
         }
         if (fragment == null) {
             return false;
