@@ -63,7 +63,7 @@ public class BaseApplication extends Application {
 
     @Override
     public void onTerminate() {
-        ActivityManager.finishAllActivities();
+        ActivityManager.removeAllActivities();
     }
 
     @Override

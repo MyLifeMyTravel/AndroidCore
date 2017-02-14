@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.littlejie.core.util.PackageUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.SharePrefsManager;
 
@@ -49,10 +50,14 @@ public class PackageAdapter extends BaseAdapter {
     private Drawable mDefaultDrawable;
 
     public PackageAdapter(Context context) {
+        this(context, PackageUtil.Filter.All);
+    }
+
+    public PackageAdapter(Context context, PackageUtil.Filter filter) {
         mContext = context;
         mDefaultDrawable = context.getResources().getDrawable(R.mipmap.ic_launcher);
         mMap = SharePrefsManager.getInstance().getPackageSelect();
-        List<PackageInfo> packageInfoList = getPackageInfos();
+        List<PackageInfo> packageInfoList = PackageUtil.getPackageInfos(context, filter);
         //直接粗暴加载，效率低
         //去掉loadIcon()、loadLabel()提高效率，结合线程使用，数据多的情况可以减少1~2s
         mPackageInfoList = convert(packageInfoList);
@@ -61,10 +66,6 @@ public class PackageAdapter extends BaseAdapter {
         //所以先通过前一步，获取到List的真正长度
         mRunnable = new PackageInfoCacheRunnable(packageInfoList);
         new Thread(mRunnable).start();
-    }
-
-    private List<PackageInfo> getPackageInfos() {
-        return mContext.getPackageManager().getInstalledPackages(0);
     }
 
     @Override
@@ -94,8 +95,8 @@ public class PackageAdapter extends BaseAdapter {
         final MyPackageInfo pInfo = mPackageInfoList.get(position);
         //可能app没有图标
         vh.icon.setImageDrawable(pInfo.getIcon() == null ? mDefaultDrawable : pInfo.getIcon());
-        vh.name.setText(pInfo.getName() + " | " + pInfo.getVersionName());
-        vh.info.setText(pInfo.getPackageName());
+        vh.name.setText(pInfo.getName());
+        vh.info.setText(pInfo.getPackageName() + " | " + pInfo.getVersionName());
         Boolean checked = mMap.get(pInfo.getPackageName());
         vh.checkBox.setChecked(checked == null ? false : checked);
         setChecked(vh.checkBox, pInfo.getPackageName());

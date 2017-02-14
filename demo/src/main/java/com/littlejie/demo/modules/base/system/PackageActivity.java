@@ -3,6 +3,7 @@ package com.littlejie.demo.modules.base.system;
 import android.widget.ListView;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.util.PackageUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.adapter.PackageAdapter;
@@ -28,7 +29,7 @@ public class PackageActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mAdapter = new PackageAdapter(this);
+        mAdapter = new PackageAdapter(this, PackageUtil.Filter.System);
         mLv.setAdapter(mAdapter);
     }
 

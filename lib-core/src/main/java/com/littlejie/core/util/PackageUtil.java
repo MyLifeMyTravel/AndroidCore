@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ import java.util.List;
 public class PackageUtil {
 
     private static final String TAG = PackageUtil.class.getSimpleName();
+
+    public enum Filter {
+        System, User, All
+    }
 
     /**
      * 获取 APP 的名称
@@ -63,12 +68,26 @@ public class PackageUtil {
         PackageManager pm = context.getPackageManager();
         try {
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
-            if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                return true;
-            }
+            return isSystemApp(ai);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    public static boolean isSystemApp(PackageInfo info) {
+        return isSystemApp(info.applicationInfo);
+    }
+
+    public static boolean isSystemApp(ApplicationInfo ai) {
+        if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0
+                || (ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isUninstall(ApplicationInfo applicationInfo) {
         return false;
     }
 
@@ -94,6 +113,32 @@ public class PackageUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * @param context
+     * @param filter
+     * @return
+     */
+    public static List<PackageInfo> getPackageInfos(Context context, Filter filter) {
+        List<PackageInfo> all = context.getPackageManager().getInstalledPackages(0);
+        if (filter == null || filter == Filter.All) {
+            return all;
+        }
+        List<PackageInfo> packageInfos = new ArrayList<>();
+        int size = all.size();
+        for (int i = 0; i < size; i++) {
+            PackageInfo packageInfo = all.get(i);
+            // 如果属于非系统程序，则添加到列表显示
+            boolean isSystemApp = isSystemApp(context, packageInfo.packageName);
+            Log.d(TAG, "getPackageInfos: isSystemApp = " + isSystemApp + ";package = " + packageInfo.packageName);
+            if ((filter == Filter.System && isSystemApp)
+                    || (filter == Filter.User && !isSystemApp)) {
+                packageInfos.add(packageInfo);
+            }
+
+        }
+        return packageInfos;
     }
 
     public static List<PackageInfo> getAllInstallApp(Context context) {
