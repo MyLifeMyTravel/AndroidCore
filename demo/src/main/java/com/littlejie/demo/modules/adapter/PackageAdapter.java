@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.littlejie.demo.R;
+import com.littlejie.demo.SharePrefsManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +42,8 @@ public class PackageAdapter extends BaseAdapter {
         }
     };
 
+    //对应包是否勾选 key:value = 包名:勾选
+    private Map<String, Boolean> mMap;
     private List<MyPackageInfo> mPackageInfoList;
     private PackageInfoCacheRunnable mRunnable;
     private Drawable mDefaultDrawable;
@@ -46,6 +51,7 @@ public class PackageAdapter extends BaseAdapter {
     public PackageAdapter(Context context) {
         mContext = context;
         mDefaultDrawable = context.getResources().getDrawable(R.mipmap.ic_launcher);
+        mMap = SharePrefsManager.getInstance().getPackageSelect();
         List<PackageInfo> packageInfoList = getPackageInfos();
         //直接粗暴加载，效率低
         //去掉loadIcon()、loadLabel()提高效率，结合线程使用，数据多的情况可以减少1~2s
@@ -85,12 +91,25 @@ public class PackageAdapter extends BaseAdapter {
             convertView.setTag(vh);
         }
         vh = (ViewHolder) convertView.getTag();
-        MyPackageInfo pInfo = mPackageInfoList.get(position);
+        final MyPackageInfo pInfo = mPackageInfoList.get(position);
         //可能app没有图标
         vh.icon.setImageDrawable(pInfo.getIcon() == null ? mDefaultDrawable : pInfo.getIcon());
         vh.name.setText(pInfo.getName() + " | " + pInfo.getVersionName());
         vh.info.setText(pInfo.getPackageName());
+        Boolean checked = mMap.get(pInfo.getPackageName());
+        vh.checkBox.setChecked(checked == null ? false : checked);
+        setChecked(vh.checkBox, pInfo.getPackageName());
         return convertView;
+    }
+
+    private void setChecked(final CheckBox checkBox, final String packageName) {
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.put(packageName, checkBox.isChecked());
+                SharePrefsManager.getInstance().setPackageSelect(mMap);
+            }
+        });
     }
 
     static class ViewHolder {
@@ -100,6 +119,8 @@ public class PackageAdapter extends BaseAdapter {
         TextView name;
         @BindView(R.id.tv_app_info)
         TextView info;
+        @BindView(R.id.cbx)
+        CheckBox checkBox;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

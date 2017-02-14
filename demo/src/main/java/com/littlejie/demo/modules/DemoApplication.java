@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.littlejie.core.base.BaseApplication;
+import com.littlejie.demo.SharePrefsManager;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -22,6 +23,7 @@ public class DemoApplication extends BaseApplication {
         Log.d(TAG, "onCreate: DemoApplication onCreate");
         initLeakCanary();
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        SharePrefsManager.getInstance().init(this);
     }
 
     private void initLeakCanary() {
