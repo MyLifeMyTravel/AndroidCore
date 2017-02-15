@@ -9,12 +9,13 @@ import android.view.View;
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.AnnotationUtil;
-import com.littlejie.demo.modules.adapter.TabAdapter;
+import com.littlejie.demo.ui.adapter.TabAdapter;
 import com.littlejie.demo.modules.base.component.ComponentDemoFragment;
 import com.littlejie.demo.modules.base.fragment.DemoFragment;
 import com.littlejie.demo.modules.base.media.MediaDemoFragment;
 import com.littlejie.demo.modules.base.notification.NotificationListFragment;
 import com.littlejie.demo.modules.base.system.SystemDemoFragment;
+import com.littlejie.demo.modules.base.ui.UIDemoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class AndroidBaseFragment extends BaseFragment {
 
     @Override
     protected void process(Bundle savedInstanceState) {
+        mFragmentList.add(UIDemoFragment.newInstance());
         mFragmentList.add(DemoFragment.newInstance());
         mFragmentList.add(ComponentDemoFragment.newInstance());
         mFragmentList.add(NotificationListFragment.newInstance());

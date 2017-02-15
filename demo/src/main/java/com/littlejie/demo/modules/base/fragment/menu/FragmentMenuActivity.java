@@ -9,7 +9,7 @@ import android.view.Menu;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
-import com.littlejie.demo.modules.adapter.TabAdapter;
+import com.littlejie.demo.ui.adapter.TabAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

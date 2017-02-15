@@ -137,6 +137,8 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".modules.base.ui.DialogActivity">
+        </activity>
     </application>
 
 </manifest>

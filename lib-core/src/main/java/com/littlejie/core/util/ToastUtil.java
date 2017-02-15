@@ -26,7 +26,7 @@ public class ToastUtil {
         mContext = context;
     }
 
-    public static void showDefaultToast(String s) {
+    public static void showDefaultToast(CharSequence s) {
         Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
     }
 

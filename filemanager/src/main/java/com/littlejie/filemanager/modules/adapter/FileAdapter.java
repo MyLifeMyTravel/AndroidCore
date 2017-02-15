@@ -148,6 +148,7 @@ public class FileAdapter extends BaseAdapter {
             if (sIntegerMap.containsKey(path)) {
                 inner = sIntegerMap.get(path);
             } else {
+                // TODO: 2017/2/15 优化第一次获取数据时的速度
                 inner = file.listFiles(mFileFilter).length;
                 sIntegerMap.put(path, inner);
             }

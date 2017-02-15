@@ -6,7 +6,7 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.util.PackageUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
-import com.littlejie.demo.modules.adapter.PackageAdapter;
+import com.littlejie.demo.ui.adapter.PackageAdapter;
 
 import butterknife.BindView;
 

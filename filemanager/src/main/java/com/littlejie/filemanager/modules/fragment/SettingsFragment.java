@@ -6,7 +6,7 @@ import android.view.View;
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.filemanager.R;
 import com.littlejie.filemanager.manager.StorageManager;
-import com.littlejie.filemanager.ui.ConfigItem;
+import com.littlejie.core.ui.ConfigItem;
 
 import butterknife.BindView;
 

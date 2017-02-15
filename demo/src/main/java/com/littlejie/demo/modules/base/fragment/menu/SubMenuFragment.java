@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.demo.R;
-import com.littlejie.demo.modules.adapter.TabAdapter;
+import com.littlejie.demo.ui.adapter.TabAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

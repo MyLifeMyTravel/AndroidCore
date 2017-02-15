@@ -10,7 +10,7 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.entity.FileInfo;
-import com.littlejie.demo.modules.adapter.SimpleFileInfoAdapter;
+import com.littlejie.demo.ui.adapter.SimpleFileInfoAdapter;
 import com.littlejie.core.util.MediaUtil;
 
 import java.util.ArrayList;

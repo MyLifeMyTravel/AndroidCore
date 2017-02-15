@@ -1,4 +1,4 @@
-package com.littlejie.filemanager.ui;
+package com.littlejie.core.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.littlejie.filemanager.R;
+import com.littlejie.core.R;
 
 /**
  * 通用设置 Item
