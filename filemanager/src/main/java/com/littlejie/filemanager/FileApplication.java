@@ -3,6 +3,7 @@ package com.littlejie.filemanager;
 import com.littlejie.core.base.BaseApplication;
 import com.littlejie.core.util.ImageLoaderUtil;
 import com.littlejie.filemanager.manager.StorageManager;
+import com.littlejie.filemanager.manager.TintDrawableManager;
 import com.littlejie.filemanager.util.Constant;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -18,7 +19,7 @@ public class FileApplication extends BaseApplication {
         initLeakCanary();
         ImageLoaderUtil.init(this, Constant.IMAGE_CACHE_DIR);
         StorageManager.init(this);
-        StorageManager.setShowHiddenFile(true);
+        TintDrawableManager.init(this);
     }
 
     private void initLeakCanary() {

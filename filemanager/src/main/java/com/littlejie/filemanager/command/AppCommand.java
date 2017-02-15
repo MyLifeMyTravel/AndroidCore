@@ -1,4 +1,4 @@
-package com.littlejie.filemanager.manager;
+package com.littlejie.filemanager.command;
 
 import com.littlejie.filemanager.impl.OnBackPressedListener;
 

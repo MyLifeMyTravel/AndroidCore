@@ -46,5 +46,6 @@ public class SharePrefsManager {
 
     void setShowHiddenFile(boolean showHiddenFile) {
         this.showHiddenFile = showHiddenFile;
+        sSharePrefs.setBoolean(Constant.KEY_SHOW_HIDDEN_FILE, showHiddenFile);
     }
 }

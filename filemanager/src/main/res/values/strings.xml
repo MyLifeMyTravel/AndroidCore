@@ -8,4 +8,5 @@
     <string name="nav_menu_music">音乐</string>
     <string name="nav_menu_video">视频</string>
     <string name="nav_menu_device">设备</string>
+    <string name="config_show_hidden_file">是否显示隐藏文件</string>
 </resources>

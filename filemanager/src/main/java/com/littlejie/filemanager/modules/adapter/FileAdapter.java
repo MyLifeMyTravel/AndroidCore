@@ -1,8 +1,6 @@
 package com.littlejie.filemanager.modules.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.ui.BaseImageView;
 import com.littlejie.core.util.FileUtil;
+import com.littlejie.core.util.MediaUtil;
 import com.littlejie.core.util.PackageUtil;
 import com.littlejie.core.util.SpaceUtil;
 import com.littlejie.core.util.TimeUtil;
 import com.littlejie.core.util.ToastUtil;
 import com.littlejie.filemanager.R;
+import com.littlejie.filemanager.manager.TintDrawableManager;
 import com.littlejie.filemanager.util.Constant;
 
 import java.io.File;
@@ -43,8 +42,6 @@ public class FileAdapter extends BaseAdapter {
     private File[] mFiles;
     private FileFilter mFileFilter;
     private boolean showCheckBox;
-    private Drawable mUnknownDrawable;
-    private Drawable mFolderDrawable, mTxtDrawable;
 
     public FileAdapter(Context context) {
         this(context, Constant.HIDDEN_FILE_FILTER);
@@ -62,11 +59,6 @@ public class FileAdapter extends BaseAdapter {
         mContext = context;
         mFileFilter = filter;
         this.showCheckBox = showCheckBox;
-        Resources resources = context.getResources();
-        int defaultColor = resources.getColor(R.color.colorPrimary);
-        mUnknownDrawable = TintManager.tintDrawable(context, R.mipmap.ic_unknown_black_24dp, defaultColor);
-        mFolderDrawable = TintManager.tintDrawable(context, R.mipmap.ic_folder_black_24dp, defaultColor);
-        mTxtDrawable = TintManager.tintDrawable(context, R.mipmap.ic_text_black_24dp, defaultColor);
     }
 
     public void setData(File[] files) {
@@ -118,25 +110,29 @@ public class FileAdapter extends BaseAdapter {
      */
     private void showIcon(BaseImageView icon, File file) {
         FileUtil.FileType mimeType = FileUtil.FileType.getFileType(file);
-        Log.d(TAG, "showIcon: file = " + file.getAbsolutePath() + "; mimeType = " + mimeType);
+        String path = file.getAbsolutePath();
+        Log.d(TAG, "showIcon: file = " + path + "; mimeType = " + mimeType);
         switch (mimeType) {
             case DIRECTORY:
-                icon.setImage(mFolderDrawable);
+                icon.setImage(TintDrawableManager.getFolderDrawable());
                 break;
             case APK:
-                icon.setImage(PackageUtil.getApkIcon(mContext, file.getAbsolutePath()));
+                icon.setImage(PackageUtil.getApkIcon(mContext, path));
                 break;
             case IMAGE:
             case VIDEO:
-                icon.setImage("file://" + file.getAbsolutePath());
+                icon.setImage("file://" + path);
                 //此处代码效率得优化
                 //icon.setImageBitmap(MediaUtil.getThumbnail(mContext, path, MediaStore.Images.Thumbnails.MICRO_KIND, null));
                 break;
+            case AUDIO:
+                icon.setImage(MediaUtil.getAlbumCover(path));
+                break;
             case TXT:
-                icon.setImage(mTxtDrawable);
+                icon.setImage(TintDrawableManager.getTxtDrawable());
                 break;
             default:
-                icon.setImage(mUnknownDrawable);
+                icon.setImage(TintDrawableManager.getUnknownDrawable());
                 break;
 
         }
@@ -153,7 +149,7 @@ public class FileAdapter extends BaseAdapter {
                 inner = sIntegerMap.get(path);
             } else {
                 inner = file.listFiles(mFileFilter).length;
-                sIntegerMap.put(file.getAbsolutePath(), inner);
+                sIntegerMap.put(path, inner);
             }
             info.setText(inner + "项 | " + time);
         } else {

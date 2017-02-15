@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
@@ -44,6 +45,22 @@ public class MediaUtil {
 
     public enum FilterType {
         SUFFIX, MIME_TYPE
+    }
+
+    /**
+     * 获取歌曲的封面信息
+     *
+     * @param file
+     * @return
+     */
+    public static Bitmap getAlbumCover(String file) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(file);
+        byte[] data = mmr.getEmbeddedPicture();
+        if (data == null || data.length == 0) {
+            return null;
+        }
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 
     /**

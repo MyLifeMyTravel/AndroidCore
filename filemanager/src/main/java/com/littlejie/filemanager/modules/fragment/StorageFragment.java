@@ -7,7 +7,7 @@ import android.view.View;
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.filemanager.R;
 import com.littlejie.filemanager.impl.OnBackPressedListener;
-import com.littlejie.filemanager.manager.AppCommand;
+import com.littlejie.filemanager.command.AppCommand;
 import com.littlejie.filemanager.util.Constant;
 
 import java.io.File;

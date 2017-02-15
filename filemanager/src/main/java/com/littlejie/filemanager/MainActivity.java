@@ -14,7 +14,8 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.base.Core;
 import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.util.MediaUtil;
-import com.littlejie.filemanager.manager.AppCommand;
+import com.littlejie.filemanager.command.AppCommand;
+import com.littlejie.filemanager.modules.fragment.SettingsFragment;
 import com.littlejie.filemanager.modules.fragment.StorageFragment;
 
 import java.util.HashMap;
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity {
                     fragment = StorageFragment.newInstance(MediaUtil.getVideoFiles(this));
                     break;
                 case R.id.menu_setting:
-
+                    fragment = SettingsFragment.newInstance();
                     break;
                 case R.id.menu_feedback:
 
