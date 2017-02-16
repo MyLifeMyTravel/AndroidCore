@@ -63,6 +63,9 @@
         <activity android:name=".modules.base.fragment.create.StaticCreateActivity"/>
         <activity android:name=".modules.base.fragment.create.DynamicCreateActivity"/>
 
+        <!-- UI -->
+        <activity android:name=".modules.base.ui.DialogActivity"/>
+
         <!-- Notification -->
         <activity android:name=".modules.base.notification.SimplestNotificationActivity"/>
         <activity android:name=".modules.base.notification.SimpleNotificationActivity"/>
@@ -89,7 +92,9 @@
 
         <!-- 系统 -->
         <!-- Android 触摸事件分发 -->
-        <activity android:name=".modules.base.system.DispatchTouchEventActivity"/>
+        <activity android:name=".modules.base.system.touch.DispatchTouchEventActivity"/>
+        <activity android:name=".modules.base.system.touch.ScrollActivity"/>
+        <activity android:name=".modules.base.system.touch.ViewMoveActivity"/>
         <activity android:name=".modules.base.system.RuntimePermissionActivity"/>
         <activity android:name=".modules.base.system.ConnectiveActivity"/>
         <activity android:name=".modules.base.system.ClipboardActivity"/>
@@ -137,8 +142,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".modules.base.ui.DialogActivity">
-        </activity>
     </application>
 
 </manifest>

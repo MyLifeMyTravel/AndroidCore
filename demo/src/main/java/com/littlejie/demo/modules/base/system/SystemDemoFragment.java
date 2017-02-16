@@ -5,6 +5,9 @@ import android.os.Bundle;
 import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
 import com.littlejie.demo.modules.base.system.thread.HandlerActivity;
+import com.littlejie.demo.modules.base.system.touch.DispatchTouchEventActivity;
+import com.littlejie.demo.modules.base.system.touch.ScrollActivity;
+import com.littlejie.demo.modules.base.system.touch.ViewMoveActivity;
 
 /**
  * Created by littlejie on 2017/1/24.
@@ -27,6 +30,8 @@ public class SystemDemoFragment extends BaseListFragment {
         mLstItem.add(ClipboardActivity.class);
         mLstItem.add(ShareIntentActivity.class);
         mLstItem.add(DispatchTouchEventActivity.class);
+        mLstItem.add(ScrollActivity.class);
+        mLstItem.add(ViewMoveActivity.class);
         mLstItem.add(PackageActivity.class);
         mLstItem.add(HandlerActivity.class);
         notifyDataChanged();

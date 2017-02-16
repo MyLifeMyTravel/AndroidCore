@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.littlejie.demo.modules.base.system.DispatchTouchEventActivity">
+    tools:context="com.littlejie.demo.modules.base.system.touch.DispatchTouchEventActivity">
 
     <com.littlejie.demo.ui.DispatchButton
         android:id="@+id/btn_dispatch_touch_event"

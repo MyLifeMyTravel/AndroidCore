@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
+import com.littlejie.demo.modules.base.system.touch.ViewMoveActivity;
 
 /**
  * Created by littlejie on 2017/2/15.
@@ -24,6 +25,7 @@ public class UIDemoFragment extends BaseListFragment {
     protected void process(Bundle savedInstanceState) {
         super.process(savedInstanceState);
         mLstItem.add(DialogActivity.class);
+        mLstItem.add(ViewMoveActivity.class);
         notifyDataChanged();
     }
 }

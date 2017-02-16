@@ -69,7 +69,7 @@ public class SingleChoiceAdapter extends BaseAdapter {
         @BindView(R.id.radio)
         RadioButton radio;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
