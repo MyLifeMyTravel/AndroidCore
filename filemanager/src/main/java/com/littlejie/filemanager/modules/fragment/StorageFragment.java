@@ -6,9 +6,9 @@ import android.view.View;
 
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.filemanager.R;
-import com.littlejie.filemanager.impl.OnBackPressedListener;
 import com.littlejie.filemanager.command.AppCommand;
-import com.littlejie.filemanager.util.Constant;
+import com.littlejie.filemanager.constant.ExtraConstant;
+import com.littlejie.filemanager.impl.OnBackPressedListener;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class StorageFragment extends BaseFragment implements OnBackPressedListen
         Bundle args = new Bundle();
 
         StorageFragment fragment = new StorageFragment();
-        args.putSerializable(Constant.EXTRA_FILES, files);
+        args.putSerializable(ExtraConstant.EXTRA_FILES, files);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +48,7 @@ public class StorageFragment extends BaseFragment implements OnBackPressedListen
     @Override
     protected void initData() {
         if (getArguments() != null) {
-            mFiles = (File[]) getArguments().getSerializable(Constant.EXTRA_FILES);
+            mFiles = (File[]) getArguments().getSerializable(ExtraConstant.EXTRA_FILES);
         }
     }
 

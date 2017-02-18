@@ -3,6 +3,7 @@ package com.littlejie.filemanager.manager;
 import android.content.Context;
 
 /**
+ * StorageManager，封装存储，屏蔽底层操作
  * Created by littlejie on 2017/2/13.
  */
 

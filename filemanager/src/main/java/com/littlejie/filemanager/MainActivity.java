@@ -12,9 +12,12 @@ import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.base.Core;
+import com.littlejie.core.manager.ActivityManager;
 import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.util.MediaUtil;
+import com.littlejie.core.util.ToastUtil;
 import com.littlejie.filemanager.command.AppCommand;
+import com.littlejie.filemanager.modules.activity.SettingActivity;
 import com.littlejie.filemanager.modules.fragment.SettingsFragment;
 import com.littlejie.filemanager.modules.fragment.StorageFragment;
 
@@ -36,6 +39,8 @@ public class MainActivity extends BaseActivity {
 
     private Fragment mCurrentFragment;
     private Map<Integer, Fragment> mFragmentMap = new HashMap<>();
+
+    private long mLastPressedTime;
 
     @Override
     protected int getPageLayoutID() {
@@ -69,7 +74,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 mDrawerLayout.closeDrawers();
-                switchItem(item.getItemId(), item.getTitle());
+                if (item.getItemId() == R.id.menu_setting) {
+                    ActivityManager.startActivity(mContext, SettingActivity.class);
+                } else {
+                    switchItem(item.getItemId(), item.getTitle());
+                }
                 item.setChecked(true);
                 return true;
             }
@@ -135,8 +144,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (!AppCommand.onBackPressed()) {
-            super.onBackPressed();
+        if (AppCommand.onBackPressed()) {
+            return;
+        }
+
+        if ((System.currentTimeMillis() - mLastPressedTime) > 2000) {
+            ToastUtil.showDefaultToast(getString(R.string.toast_one_more_press_to_exit));
+            mLastPressedTime = System.currentTimeMillis();
+        } else {
+            //强制结束进程的两种方式
+            //android.os.Process.killProcess(android.os.Process.myPid());
+            finish();
+            System.exit(0);
         }
     }
 }

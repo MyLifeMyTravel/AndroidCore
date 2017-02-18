@@ -15,10 +15,9 @@ import com.littlejie.core.util.MediaUtil;
 import com.littlejie.core.util.PackageUtil;
 import com.littlejie.core.util.SpaceUtil;
 import com.littlejie.core.util.TimeUtil;
-import com.littlejie.core.util.ToastUtil;
 import com.littlejie.filemanager.R;
+import com.littlejie.filemanager.constant.FilterConstant;
 import com.littlejie.filemanager.manager.TintDrawableManager;
-import com.littlejie.filemanager.util.Constant;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -27,7 +26,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by littlejie on 2017/1/10.
@@ -36,19 +34,21 @@ import butterknife.OnClick;
 public class FileAdapter extends BaseAdapter {
 
     private static final String TAG = FileAdapter.class.getSimpleName();
+    //缓存对应文件夹包含文件数量
     private static Map<String, Integer> sIntegerMap = new HashMap<>();
 
     private Context mContext;
     private File[] mFiles;
     private FileFilter mFileFilter;
     private boolean showCheckBox;
+    private Map<Integer, Boolean> mCheckedMap = new HashMap<>();
 
     public FileAdapter(Context context) {
-        this(context, Constant.HIDDEN_FILE_FILTER);
+        this(context, FilterConstant.HIDDEN_FILE_FILTER);
     }
 
     public FileAdapter(Context context, boolean showCheckBox) {
-        this(context, showCheckBox, Constant.HIDDEN_FILE_FILTER);
+        this(context, showCheckBox, FilterConstant.HIDDEN_FILE_FILTER);
     }
 
     public FileAdapter(Context context, FileFilter filter) {
@@ -66,8 +66,10 @@ public class FileAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setShowCheckBox(boolean showCheckBox) {
+    public void showCheckBox(boolean showCheckBox, int checkedItem) {
         this.showCheckBox = showCheckBox;
+        mCheckedMap.put(checkedItem, true);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -86,7 +88,7 @@ public class FileAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_file, parent, false);
@@ -94,12 +96,24 @@ public class FileAdapter extends BaseAdapter {
             convertView.setTag(vh);
         }
         vh = (ViewHolder) convertView.getTag();
-        vh.checkbox.setVisibility(showCheckBox ? View.VISIBLE : View.GONE);
         File file = (File) getItem(position);
+        setCheckBox(vh.checkbox, position, showCheckBox);
         showIcon(vh.icon, file);
         showInfo(vh.info, file);
         vh.name.setText(file.getName());
         return convertView;
+    }
+
+    private void setCheckBox(final CheckBox checkBox, final int position, boolean show) {
+        checkBox.setVisibility(show ? View.VISIBLE : View.GONE);
+        Boolean checked = mCheckedMap.get(position);
+        checkBox.setChecked(checked == null ? false : checked);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCheckedMap.put(position, checkBox.isChecked());
+            }
+        });
     }
 
     /**
@@ -148,7 +162,7 @@ public class FileAdapter extends BaseAdapter {
             if (sIntegerMap.containsKey(path)) {
                 inner = sIntegerMap.get(path);
             } else {
-                // TODO: 2017/2/15 优化第一次获取数据时的速度
+                // 2017/2/15 优化第一次获取数据时的速度
                 inner = file.listFiles(mFileFilter).length;
                 sIntegerMap.put(path, inner);
             }
@@ -168,12 +182,7 @@ public class FileAdapter extends BaseAdapter {
         @BindView(R.id.tv_info)
         TextView info;
 
-        @OnClick(R.id.cbx_checked)
-        void onCheckBoxClick() {
-            ToastUtil.showDefaultToast("哈哈");
-        }
-
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }

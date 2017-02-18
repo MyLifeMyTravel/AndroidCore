@@ -22,11 +22,11 @@ public interface IFileAction {
     /**
      * 创建文件夹
      *
-     * @param path   文件夹所在路径
-     * @param folder
+     * @param path 文件夹所在路径
+     * @param dir  文件夹名称
      * @return
      */
-    boolean createFolder(String path, String folder);
+    boolean mkdirs(String path, String dir);
 
     /**
      * 移动文件

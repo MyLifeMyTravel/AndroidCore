@@ -1,19 +1,17 @@
 package com.littlejie.filemanager.modules.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.littlejie.core.base.BaseFragment;
 import com.littlejie.core.util.FileUtil;
-import com.littlejie.core.util.ToastUtil;
 import com.littlejie.filemanager.R;
+import com.littlejie.filemanager.constant.ExtraConstant;
+import com.littlejie.filemanager.constant.FilterConstant;
+import com.littlejie.filemanager.constant.PathConstant;
 import com.littlejie.filemanager.impl.IFileAction;
 import com.littlejie.filemanager.modules.adapter.FileAdapter;
-import com.littlejie.filemanager.util.Constant;
 import com.littlejie.filemanager.util.CustomComparator;
 
 import java.io.File;
@@ -42,7 +40,7 @@ public class FileListFragment extends BaseFragment implements IFileAction {
         Bundle args = new Bundle();
 
         FileListFragment fragment = new FileListFragment();
-        args.putString(Constant.EXTRA_PATH, path);
+        args.putString(ExtraConstant.EXTRA_PATH, path);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +50,7 @@ public class FileListFragment extends BaseFragment implements IFileAction {
         Bundle args = new Bundle();
 
         FileListFragment fragment = new FileListFragment();
-        args.putSerializable(Constant.EXTRA_FILES, files);
+        args.putSerializable(ExtraConstant.EXTRA_FILES, files);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,8 +62,8 @@ public class FileListFragment extends BaseFragment implements IFileAction {
 
     @Override
     protected void initData() {
-        mPath = getArguments().getString(Constant.EXTRA_PATH, Constant.ROOT);
-        mFiles = (File[]) getArguments().getSerializable(Constant.EXTRA_FILES);
+        mPath = getArguments().getString(ExtraConstant.EXTRA_PATH, PathConstant.ROOT);
+        mFiles = (File[]) getArguments().getSerializable(ExtraConstant.EXTRA_FILES);
     }
 
     @Override
@@ -76,7 +74,6 @@ public class FileListFragment extends BaseFragment implements IFileAction {
 
     @Override
     protected void initViewListener() {
-
     }
 
     @OnItemClick(R.id.lv_file)
@@ -95,26 +92,32 @@ public class FileListFragment extends BaseFragment implements IFileAction {
         }
     }
 
-    private static final String[] ACTION_FILE = {"复制", "移动", "重命名", "删除"};
-
     @OnItemLongClick(R.id.lv_file)
     boolean onItemLongClick(int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                .setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ACTION_FILE),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ToastUtil.showDefaultToast(ACTION_FILE[which]);
-                            }
-                        });
-        builder.show();
+        mAdapter.showCheckBox(true, position);
         return true;
     }
+
+//    private static final String[] ACTION_FILE = {"复制", "移动", "重命名", "删除"};
+//
+//    @OnItemLongClick(R.id.lv_file)
+//    boolean onItemLongClick(int position) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+//                .setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ACTION_FILE),
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                ToastUtil.showDefaultToast(ACTION_FILE[which]);
+//                            }
+//                        });
+//        builder.show();
+//        return true;
+//    }
 
     @Override
     protected void process(Bundle savedInstanceState) {
         if (mFiles == null) {//当mFiles为空，即选择传递path进来时执行该步骤
-            mFiles = list(mPath, Constant.HIDDEN_FILE_FILTER);
+            mFiles = list(mPath, FilterConstant.HIDDEN_FILE_FILTER);
         }
         mAdapter.setData(mFiles);
     }
@@ -131,7 +134,7 @@ public class FileListFragment extends BaseFragment implements IFileAction {
     }
 
     @Override
-    public boolean createFolder(String path, String folder) {
+    public boolean mkdirs(String path, String dir) {
         return false;
     }
 

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_dialog"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.littlejie.demo.modules.base.ui.DialogActivity">
 
     <Button
@@ -15,8 +15,14 @@
         android:text="展示单选对话框"/>
 
     <Button
+        android:id="@+id/btn_show_custom_single_choice_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义单选对话框"/>
+
+    <Button
         android:id="@+id/btn_show_custom_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="展示自定义对话框"/>
+        android:text="自定义对话框"/>
 </LinearLayout>

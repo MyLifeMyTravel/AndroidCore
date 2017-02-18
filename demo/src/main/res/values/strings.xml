@@ -11,4 +11,7 @@
     <string name="menu_about">关于</string>
     <string name="menu_subtitle_catalog">目录</string>
     <string name="menu_subtitle_more">更多</string>
+
+    <string name="btn_ok">确定</string>
+    <string name="btn_cancel">取消</string>
 </resources>

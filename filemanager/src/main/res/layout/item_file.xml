@@ -16,8 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/medium"
         android:adjustViewBounds="false"
-        android:scaleType="center"
-        app:defaultImage="@mipmap/ic_unknown_black_24dp"/>
+        android:scaleType="center"/>
 
     <CheckBox
         android:id="@+id/cbx_checked"

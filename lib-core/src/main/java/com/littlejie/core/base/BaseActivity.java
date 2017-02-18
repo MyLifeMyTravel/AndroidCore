@@ -1,5 +1,6 @@
 package com.littlejie.core.base;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,10 +21,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public final String TAG = this.getClass().getSimpleName();
 
+    protected Context mContext;
     protected int requestCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
         //设置所有 Activity 全部为竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

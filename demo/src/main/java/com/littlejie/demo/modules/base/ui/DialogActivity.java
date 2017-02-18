@@ -48,8 +48,8 @@ public class DialogActivity extends BaseActivity {
                 }).show();
     }
 
-    @OnClick(R.id.btn_show_custom_dialog)
-    void showCustomDialog() {
+    @OnClick(R.id.btn_show_custom_single_choice_dialog)
+    void showCustomSingleChoiceDialog() {
         //当使用自定义Dialog时，要特别注意ListView中存在RadioButton和CheckBox的情况，默认这两者会拦截ListView的点击事件
         DialogUtil.showCustomSingleChoice(this, "自定义对话框", CHOICE_ITEMS, mCheckedItem, new DialogInterface.OnClickListener() {
             @Override
@@ -75,6 +75,11 @@ public class DialogActivity extends BaseActivity {
 //                    }
 //                })
 //                .show();
+    }
+
+    @OnClick(R.id.btn_show_custom_dialog)
+    void showCustomDialog() {
+        DialogUtil.showDialog(this, "自定义对话框", "这是自定义对话框", true, null, null, true, null, null);
     }
 
     @Override

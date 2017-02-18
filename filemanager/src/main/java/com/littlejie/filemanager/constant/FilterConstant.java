@@ -1,6 +1,4 @@
-package com.littlejie.filemanager.util;
-
-import android.os.Environment;
+package com.littlejie.filemanager.constant;
 
 import com.littlejie.core.util.FileUtil;
 import com.littlejie.filemanager.manager.StorageManager;
@@ -9,23 +7,10 @@ import java.io.File;
 import java.io.FileFilter;
 
 /**
- * Created by littlejie on 2017/1/10.
+ * Created by littlejie on 2017/2/17.
  */
 
-public class Constant {
-
-    //App 根目录
-    public static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath()
-            + "/FileManager";
-    public static final String CACHE_DIR = ROOT + "/cache";
-    public static final String IMAGE_CACHE_DIR = CACHE_DIR + "/image";
-
-    /*参数*/
-    public static final String EXTRA_PATH = "path";
-    public static final String EXTRA_FILES = "files";
-
-    /*SharePrefs的key*/
-    public static final String KEY_SHOW_HIDDEN_FILE = "show_hidden_file";
+public class FilterConstant {
 
     public static final FileFilter HIDDEN_FILE_FILTER = new FileFilter() {
         @Override
