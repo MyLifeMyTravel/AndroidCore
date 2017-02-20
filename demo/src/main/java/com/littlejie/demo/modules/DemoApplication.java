@@ -2,9 +2,11 @@ package com.littlejie.demo.modules;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.littlejie.core.base.BaseApplication;
+import com.littlejie.core.crash.CrashHandler;
 import com.littlejie.demo.SharePrefsManager;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -24,6 +26,8 @@ public class DemoApplication extends BaseApplication {
         initLeakCanary();
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         SharePrefsManager.getInstance().init(this);
+        CrashHandler.getInstance().init(Environment.getExternalStorageDirectory().getAbsolutePath()
+        +"/FileManager");
     }
 
     private void initLeakCanary() {

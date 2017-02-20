@@ -1,22 +1,20 @@
 package com.littlejie.demo.modules;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.util.DeviceUtil;
-import com.littlejie.core.util.JsonUtil;
 import com.littlejie.demo.R;
-import com.littlejie.demo.entity.TestInfo;
+import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -56,30 +54,27 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
-//        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                return switchItem(item.getItemId());
-//            }
-//        });
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mDrawerLayout = null;
+                mDrawerLayout.closeDrawers();
+                return switchItem(item.getItemId());
+            }
+        });
     }
 
     private boolean switchItem(int id) {
         switch (id) {
             case R.id.menu_base:
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.content_frame, AndroidBaseFragment.newInstance())
+                        .replace(R.id.content_frame, AndroidBaseFragment.newInstance())
                         .commit();
                 return true;
             case R.id.menu_advanced:
-                TestInfo info = new TestInfo();
-                info.setName("厉圣杰");
-                info.setPath("abc");
-                Log.d(TAG, "switchItem: " + JsonUtil.toJsonString(info));
-                List<String> list = new ArrayList<>();
-                list.add(JsonUtil.toJsonString(info));
-                list.add("abc");
-                Log.d(TAG, "switchItem: " + JsonUtil.toJsonString(list));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, AndroidAdvanceFragment.newInstance())
+                        .commit();
                 return true;
             case R.id.menu_give_up:
 

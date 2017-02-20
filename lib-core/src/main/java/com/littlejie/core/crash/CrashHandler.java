@@ -31,39 +31,39 @@ public final class CrashHandler implements UncaughtExceptionHandler {
     /**
      * mDefaultHandler
      */
-    private UncaughtExceptionHandler defaultHandler;
+    private UncaughtExceptionHandler mDefaultHandler;
 
     /**
-     * instance
+     * sInstance
      */
-    private static CrashHandler instance = new CrashHandler();
+    private static CrashHandler sInstance = new CrashHandler();
 
     /**
-     * infos
+     * mInfos
      */
-    private Map<String, String> infos = new HashMap<String, String>();
+    private Map<String, String> mInfos = new HashMap<String, String>();
 
     /**
-     * formatter
+     * mFormatter
      */
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private DateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private String path;
+    private String mPath;
 
     private CrashHandler() {
     }
 
     public static CrashHandler getInstance() {
-        if (instance == null) {
-            instance = new CrashHandler();
+        if (sInstance == null) {
+            sInstance = new CrashHandler();
         }
-        return instance;
+        return sInstance;
     }
 
     public void init(String crashFolder) {
-        this.path = crashFolder;
+        this.mPath = crashFolder;
 
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
 
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
@@ -71,7 +71,7 @@ public final class CrashHandler implements UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         handleException(ex);
-        defaultHandler.uncaughtException(thread, ex);
+        mDefaultHandler.uncaughtException(thread, ex);
     }
 
     private boolean handleException(Throwable ex) {
@@ -83,7 +83,7 @@ public final class CrashHandler implements UncaughtExceptionHandler {
         return true;
     }
 
-    public void collectDeviceInfo(Context ctx) {
+    private void collectDeviceInfo(Context ctx) {
         try {
             PackageManager pm = ctx.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(),
@@ -92,9 +92,9 @@ public final class CrashHandler implements UncaughtExceptionHandler {
                 String versionName = pi.versionName == null ? "null"
                         : pi.versionName;
                 String versionCode = pi.versionCode + "";
-                infos.put("versionName", versionName);
-                infos.put("versionCode", versionCode);
-                infos.put("crashTime", formatter.format(new Date()));
+                mInfos.put("versionName", versionName);
+                mInfos.put("versionCode", versionCode);
+                mInfos.put("crashTime", mFormatter.format(new Date()));
             }
         } catch (NameNotFoundException e) {
             Log.e(TAG, "an error occured when collect package info", e);
@@ -103,7 +103,7 @@ public final class CrashHandler implements UncaughtExceptionHandler {
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                infos.put(field.getName(), field.get(null).toString());
+                mInfos.put(field.getName(), field.get(null).toString());
                 Log.d(TAG, field.getName() + " : " + field.get(null));
             } catch (Exception e) {
                 Log.e(TAG, "an error occured when collect crash info", e);
@@ -112,12 +112,14 @@ public final class CrashHandler implements UncaughtExceptionHandler {
     }
 
     private void writeCrashInfoToFile(Throwable ex) {
-        StringBuffer sb = new StringBuffer();
-        for (Map.Entry<String, String> entry : infos.entrySet()) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : mInfos.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            sb.append(key + "=" + value + "\n");
+            sb.append(key).append("=").append(value).append("\n");
         }
+
+        sb.append("\n\n");
 
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
@@ -132,8 +134,8 @@ public final class CrashHandler implements UncaughtExceptionHandler {
         sb.append(result);
         try {
             // TODO write crash log to file
-            boolean suffix = path.endsWith("/");
-            FileUtil.write(path + (suffix ? "" : "/") + formatter.format(new Date()), result);
+            boolean suffix = mPath.endsWith("/");
+            FileUtil.write(mPath + (suffix ? "" : "/") + mFormatter.format(new Date()), sb.toString());
         } catch (Exception e) {
             Log.e(TAG, "an error occur while writing file...", e);
         }
