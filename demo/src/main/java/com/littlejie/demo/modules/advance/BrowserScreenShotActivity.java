@@ -1,5 +1,6 @@
 package com.littlejie.demo.modules.advance;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -41,7 +42,7 @@ public class BrowserScreenShotActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (getIntent() == null){
+        if (getIntent() == null) {
             return;
         }
     }
@@ -80,6 +81,11 @@ public class BrowserScreenShotActivity extends BaseActivity {
             return;
         }
         try {
+            //授权Uri的读取权限
+            //若不授权，在 Android 6.0 以上测试崩溃
+            //https://thinkandroid.wordpress.com/2012/08/07/granting-content-provider-uri-permissions/
+            //第一个参数为需要授权的apk包名
+            grantUriPermission("com.littlejie.demo", screenShot, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             //通过ContentProvider获取截屏图片的输入流
             InputStream is = getContentResolver().openInputStream(screenShot);
             mIvScreenShot.setImageBitmap(BitmapFactory.decodeStream(is));
