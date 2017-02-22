@@ -65,5 +65,4 @@ public class BaseListFragment extends BaseFragment {
         mArrayAdapter.notifyDataSetChanged();
     }
 
-
 }

@@ -1,8 +1,16 @@
 package com.littlejie.demo.ui;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.littlejie.core.util.MiscUtil;
 
 /**
  * Created by littlejie on 2017/1/18.
@@ -10,7 +18,7 @@ import android.view.View;
 
 public class CustomView extends View {
 
-    public static final int DEFAULT_SIZE = 100;
+    public static final int DEFAULT_SIZE = 400;
 
     public CustomView(Context context) {
         super(context);
@@ -23,20 +31,27 @@ public class CustomView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(measure(widthMeasureSpec), measure(heightMeasureSpec));
+        setMeasuredDimension(MiscUtil.measure(widthMeasureSpec, DEFAULT_SIZE),
+                MiscUtil.measure(heightMeasureSpec, DEFAULT_SIZE));
     }
 
-    private int measure(int measureSpec) {
-        int result = DEFAULT_SIZE;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
+    Paint mPaint = new Paint();
+    int[] colors = new int[]{Color.GREEN, Color.YELLOW, Color.RED};
+    RectF mRectF = new RectF(0, 0, 400, 400);
 
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else if (specMode == MeasureSpec.AT_MOST) {
-            result = Math.min(result, specSize);
-        }
-        return result;
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mPaint.setAntiAlias(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(20);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        SweepGradient gradient = new SweepGradient(200, 200, colors, null);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(135);
+        gradient.setLocalMatrix(matrix);
+        mPaint.setShader(gradient);
+        canvas.drawArc(mRectF, 135, 360, false, mPaint);
     }
 
     @Override

@@ -6,12 +6,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.TintManager;
-import com.littlejie.core.util.DeviceUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
@@ -57,7 +55,6 @@ public class MainActivity extends BaseActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                mDrawerLayout = null;
                 mDrawerLayout.closeDrawers();
                 return switchItem(item.getItemId());
             }
@@ -95,9 +92,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void process() {
-        switchItem(R.id.menu_base);
-        Log.d(TAG, "process: ip = " + DeviceUtil.getMobileIP());
-        Log.d(TAG, "process: wifi ip = " + DeviceUtil.getWifiIP(this));
+        switchItem(R.id.menu_advanced);
     }
 
 }

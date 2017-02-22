@@ -106,20 +106,23 @@
         <activity
             android:name=".modules.base.system.ShareIntentActivity"
             android:launchMode="singleTask">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEND"/>-->
-                <!--&lt;!&ndash; 发送多个数据 &ndash;&gt;-->
-                <!--<action android:name="android.intent.action.SEND_MULTIPLE"/>-->
 
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.SEND"/> -->
+            <!-- &lt;!&ndash; 发送多个数据 &ndash;&gt; -->
+            <!-- <action android:name="android.intent.action.SEND_MULTIPLE"/> -->
 
-                <!--&lt;!&ndash; <data android:mimeType="image/*" /> &ndash;&gt;-->
-                <!--&lt;!&ndash; <data android:mimeType="video/*" /> &ndash;&gt;-->
-                <!--&lt;!&ndash; <data android:mimeType="audio/*" /> &ndash;&gt;-->
-                <!--&lt;!&ndash; <data android:mimeType="text/*" /> &ndash;&gt;-->
-                <!--&lt;!&ndash; 接受所有类型的意图 &ndash;&gt;-->
-                <!--<data android:mimeType="*/*"/>-->
-            <!--</intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+
+
+            <!-- &lt;!&ndash; <data android:mimeType="image/*" /> &ndash;&gt; -->
+            <!-- &lt;!&ndash; <data android:mimeType="video/*" /> &ndash;&gt; -->
+            <!-- &lt;!&ndash; <data android:mimeType="audio/*" /> &ndash;&gt; -->
+            <!-- &lt;!&ndash; <data android:mimeType="text/*" /> &ndash;&gt; -->
+            <!-- &lt;!&ndash; 接受所有类型的意图 &ndash;&gt; -->
+            <!-- <data android:mimeType="*/*"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- Android 进阶 -->
@@ -159,6 +162,10 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".modules.advance.ui.CustomUIListFragment">
+        </activity>
+        <activity android:name=".modules.advance.ui.CustomUIActivity">
+        </activity>
     </application>
 
 </manifest>

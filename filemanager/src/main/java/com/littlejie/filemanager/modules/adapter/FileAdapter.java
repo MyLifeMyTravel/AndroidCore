@@ -168,7 +168,7 @@ public class FileAdapter extends BaseAdapter {
             }
             info.setText(inner + "项 | " + time);
         } else {
-            info.setText(SpaceUtil.getSpace(file.length()) + " | " + time);
+            info.setText(SpaceUtil.getSpaceWithUnit(file.length()) + " | " + time);
         }
     }
 

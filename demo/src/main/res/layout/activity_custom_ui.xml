@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_custom_ui"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.demo.modules.advance.ui.CustomUIActivity">
+
+    <com.littlejie.demo.ui.CircleProgressBar
+        android:id="@+id/circle_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:antiAlias="true"
+        app:arcWidth="@dimen/small"
+        app:bgArcColor="@color/colorAccent"
+        app:bgArcWidth="@dimen/small"
+        app:hint="截止当前已走"
+        app:hintSize="15sp"
+        app:startAngle="135"
+        app:sweepAngle="270"
+        app:unit="步"
+        app:value="10000"
+        app:maxValue="10000"
+        app:unitSize="15sp"
+        app:valueSize="25sp"/>
+</LinearLayout>
