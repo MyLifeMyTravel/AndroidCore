@@ -1,5 +1,7 @@
 package com.littlejie.demo.modules.advance.ui;
 
+import android.support.v4.content.ContextCompat;
+
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.ui.CircleProgressBar;
@@ -38,6 +40,7 @@ public class CustomUIActivity extends BaseActivity {
 
     @OnClick(R.id.circle_progress_bar)
     void click() {
+
         mCircleProgressBar.setValue(mRandom.nextFloat() * 10000);
     }
 

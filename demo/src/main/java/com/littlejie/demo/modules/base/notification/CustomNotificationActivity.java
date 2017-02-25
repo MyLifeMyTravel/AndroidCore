@@ -2,6 +2,7 @@ package com.littlejie.demo.modules.base.notification;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
@@ -63,18 +64,20 @@ public class CustomNotificationActivity extends BaseActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(Constant.VIBRATE)
-                .setContentTitle("自定义通知样式、效果")
-                .setContentText("我是自定义通知样式、效果的内容")
+//                .setContentTitle("自定义通知样式、效果")
+//                .setContentText("我是自定义通知样式、效果的内容")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(acceptPending)
+                //Android 7.0 设置了 RemoteViews 之后，就不能把 Head-up Notification 下拉扩展了
                 .setContent(remoteViews)
                 //点击通知后自动消失，但是对自定义View的点击事件无效
                 //解决办法是：在对应处理的 Activity 中 cancel()
                 .setAutoCancel(true);
-//        if (Build.VERSION.SDK_INT >= 16) {
-//            builder.setCustomBigContentView(remoteViews);
-//        }
-//        builder.setCustomContentView(remoteViews);
+        if (Build.VERSION.SDK_INT >= 16) {
+            builder.setCustomBigContentView(remoteViews);
+        } else {
+            builder.setCustomContentView(remoteViews);
+        }
         DemoApplication.getNotificationManager().notify(Constant.NOTIFICATION_CUSTOM, builder.build());
     }
 
