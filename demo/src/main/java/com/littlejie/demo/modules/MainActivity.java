@@ -6,10 +6,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.TintManager;
+import com.littlejie.core.util.RegexUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
@@ -37,6 +39,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Log.d(TAG, "initData: "+ RegexUtil.isValidName("abc"));
+        Log.d(TAG, "initData: "+RegexUtil.isValidName("a:c"));
+        Log.d(TAG, "initData: "+RegexUtil.isValidName("厉圣杰"));
+        Log.d(TAG, "initData: "+RegexUtil.isValidName("厉圣杰.txt"));
+        Log.d(TAG, "initData: "+RegexUtil.isValidName("厉圣杰。txt"));
     }
 
     @Override

@@ -31,4 +31,17 @@ public class RegexUtil {
 
         return false;
     }
+
+    /**
+     * 判断文件名是否合法
+     *
+     * @param name
+     * @return
+     */
+    public static boolean isValidName(String name) {
+        if (name == null || name.length() > 255) {
+            return false;
+        }
+        return name.matches("[^\\s\\\\/:\\*\\?\\\"<>\\|](\\x20|[^\\s\\\\/:\\*\\?\\\"<>\\|])*[^\\s\\\\/:\\*\\?\\\"<>\\|\\.]$");
+    }
 }

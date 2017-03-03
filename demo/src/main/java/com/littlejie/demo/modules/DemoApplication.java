@@ -27,7 +27,7 @@ public class DemoApplication extends BaseApplication {
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         SharePrefsManager.getInstance().init(this);
         CrashHandler.getInstance().init(Environment.getExternalStorageDirectory().getAbsolutePath()
-        +"/FileManager");
+                + "/FileManager");
     }
 
     private void initLeakCanary() {
@@ -41,5 +41,11 @@ public class DemoApplication extends BaseApplication {
 
     public static NotificationManager getNotificationManager() {
         return mNotificationManager;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        Log.d(TAG, "onTerminate: ");
     }
 }

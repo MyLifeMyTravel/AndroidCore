@@ -26,6 +26,8 @@ public class UIDemoFragment extends BaseListFragment {
         super.process(savedInstanceState);
         mLstItem.add(DialogActivity.class);
         mLstItem.add(ViewMoveActivity.class);
+        mLstItem.add(CustomTextActivity.class);
+        mLstItem.add(PorterDuffActivity.class);
         notifyDataChanged();
     }
 }

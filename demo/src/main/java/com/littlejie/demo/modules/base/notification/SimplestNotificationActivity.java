@@ -71,6 +71,7 @@ public class SimplestNotificationActivity extends BaseActivity{
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("最简单的Notification")
+                .setContentIntent(null)
                 .setContentText("只有小图标、标题、内容");
         mNotifyManager.notify(1, builder.build());
     }
