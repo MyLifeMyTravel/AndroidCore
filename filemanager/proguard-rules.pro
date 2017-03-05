@@ -17,3 +17,15 @@
 #}
 
 -dontwarn okhttp3.**
+
+#友盟混淆相关
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class com.littlejie.filemanager.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

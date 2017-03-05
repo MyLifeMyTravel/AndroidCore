@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.ButterKnife;
 
 /**
@@ -93,21 +95,17 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        MobclickAgent.onPageStart(TAG);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        MobclickAgent.onPageEnd(TAG);
     }
 
     @Override

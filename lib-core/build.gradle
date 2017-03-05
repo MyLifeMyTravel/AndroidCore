@@ -31,11 +31,13 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'commons-io:commons-io:2.5'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     //butterknife，View依赖注入。注解的View不能为private或者static
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //友盟统计分析
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

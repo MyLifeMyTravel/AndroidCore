@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.littlejie.core.manager.ActivityManager;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -62,6 +63,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initViewListener();
 
     protected abstract void process();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onDestroy() {

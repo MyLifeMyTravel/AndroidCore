@@ -8,3 +8,6 @@
 /captures
 .externalNativeBuild
 /.idea
+libs/
+src/main/res/mipmap-hdpi/
+src/main/res/mipmap-xhdpi/
