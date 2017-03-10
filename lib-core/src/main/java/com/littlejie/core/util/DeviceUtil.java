@@ -568,14 +568,8 @@ public class DeviceUtil {
             Object[] params = {};
             Object invoke = getVolumePathsMethod.invoke(storageManager, params);
             return (String[]) invoke;
-        } catch (NoSuchMethodException e1) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e1) {
             e1.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
         return null;
     }

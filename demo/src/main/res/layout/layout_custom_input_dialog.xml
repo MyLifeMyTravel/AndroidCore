@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edt_dialog_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/small"
+        android:layout_marginLeft="@dimen/normal"
+        android:layout_marginRight="@dimen/normal"
+        android:layout_marginTop="@dimen/medium"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+</LinearLayout>

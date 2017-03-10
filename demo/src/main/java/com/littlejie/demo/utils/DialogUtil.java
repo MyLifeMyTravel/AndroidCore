@@ -1,13 +1,16 @@
 package com.littlejie.demo.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -136,5 +139,87 @@ public class DialogUtil {
                 });
             }
         });
+    }
+
+    public static void showSingleChoiceDialog(Context context, CharSequence title, CharSequence[] items,
+                                              int checkedItem, final DialogInterface.OnClickListener listener) {
+        if (!checkActivityAlive(context)) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (!TextUtils.isEmpty(title)) {
+            builder.setTitle(title);
+        }
+
+        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (listener != null) {
+                    listener.onClick(dialog, which);
+                }
+            }
+        }).show();
+    }
+
+    public static void showInputDialog(Context context, int title,
+                                       CharSequence input, int start, int end, final OnInputListener listener,
+                                       int positive, int negative) {
+        showInputDialog(context, context.getString(title), input, start, end, listener,
+                context.getString(positive), context.getString(negative));
+    }
+
+    public static void showInputDialog(Context context, int title,
+                                       int input, int start, int end, final OnInputListener listener,
+                                       int positive, int negative) {
+        showInputDialog(context, context.getString(title), context.getString(input), start, end, listener,
+                context.getString(positive), context.getString(negative));
+    }
+
+    public static void showInputDialog(final Context context, CharSequence title,
+                                       CharSequence input, int start, int end, final OnInputListener listener,
+                                       CharSequence positive, CharSequence negative) {
+        if (!checkActivityAlive(context)) {
+            return;
+        }
+        final View view = LayoutInflater.from(context).inflate(R.layout.layout_custom_input_dialog, null);
+        final EditText editText = (EditText) view.findViewById(R.id.edt_dialog_input);
+        editText.setText(input);
+        editText.setSelection(start, end);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        builder.setTitle(title)
+                .setView(view)
+                .setPositiveButton(positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //强制自动隐藏软键盘
+                        if (editText.getWindowToken() != null) {
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                        }
+                        if (listener != null) {
+                            listener.onInput(editText.getText().toString());
+                        }
+                    }
+                }).setNegativeButton(negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (editText.getWindowToken() != null) {
+                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                }
+            }
+        }).show();
+        //自动显示软键盘
+        editText.requestFocus();
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private static boolean checkActivityAlive(Context context) {
+        return !(context == null ||
+                (context instanceof Activity && ((Activity) context).isDestroyed()));
+    }
+
+    public interface OnInputListener {
+        void onInput(String input);
     }
 }

@@ -53,6 +53,10 @@ public class Core {
         return mContext.getResources().getString(resId, arg1);
     }
 
+    public static String[] getStringArray(int array) {
+        return mContext.getResources().getStringArray(array);
+    }
+
     public static ClipboardUtil getClipboardManager() {
         return mClipboardManager;
     }
