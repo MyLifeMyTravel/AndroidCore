@@ -1,6 +1,7 @@
 package com.littlejie.demo.modules.base.media;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.UriPermission;
@@ -16,13 +17,16 @@ import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.utils.DialogUtil;
+import com.littlejie.demo.utils.SDCardUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,10 +39,6 @@ import butterknife.OnClick;
 public class SDCardActivity extends BaseActivity {
 
     public static final int REQUEST_DOCUMENT_TREE = 1;
-
-    //treeUri 需根据实际测试进行修改
-    //treeUri 形如 Uri.parse("content://com.android.externalstorage.documents/tree/0816-1A18%3A")
-    private Uri treeUri;
 
     @BindView(R.id.tv_content)
     TextView mTvContent;
@@ -70,12 +70,12 @@ public class SDCardActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @OnClick(R.id.btn_get_sd_card_path)
     void getSDCardPath() {
-        List<String> lstExtSDCardPath = DeviceUtil.getExtSDCardPath();
-        if (lstExtSDCardPath == null) {
+        File removableStorageDir = SDCardUtil.getRemovableStorageDir();
+        if (removableStorageDir != null) {
+            mTvContent.setText(removableStorageDir.getAbsolutePath());
+        } else {
             ToastUtil.showDefaultToast("没有发现 SD卡 路径");
-            return;
         }
-        mTvContent.setText(lstExtSDCardPath.toString());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -85,15 +85,70 @@ public class SDCardActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_DOCUMENT_TREE);
     }
 
-    @OnClick(R.id.btn_take_persist_permission)
-    void takePersistPermission() {
-        if (treeUri == null) {
-            ToastUtil.showDefaultToast("请先授予SD卡访问权限");
+    @OnClick(R.id.btn_create_document)
+    void createDocumentFile() {
+        if (!check()) {
+            openDocumentTree();
             return;
         }
-        getContentResolver().takePersistableUriPermission(treeUri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        String path = genRandomPath() + genRandomName();
+        DocumentFile file = SDCardUtil.getDocumentFile(this, path, false);
+        try {
+            SDCardUtil.write2SDCard(this, file, new StringBufferInputStream("abc"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.btn_copy_file)
+    void copyFile() {
+        if (!check()) {
+            openDocumentTree();
+            return;
+        }
+        String dest = SDCardUtil.getRemovableStorageDir().getAbsolutePath() + "/copy/beep.ogg";
+        try {
+            SDCardUtil.write2SDCard(this, dest, false, getResources().openRawResource(R.raw.beep));
+            ToastUtil.showDefaultToast("文件拷贝成功");
+        } catch (IOException e) {
+            ToastUtil.showDefaultToast("文件拷贝失败");
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.btn_delete_file)
+    void deleteFile() {
+        if (!check()) {
+            openDocumentTree();
+            return;
+        }
+//        String dest = SDCardUtil.getRemovableStorageDir().getAbsolutePath() + "/copy";
+        String dest = SDCardUtil.getRemovableStorageDir().getAbsolutePath() + "/copy/beep.ogg";
+//        String dest = SDCardUtil.getRemovableStorageDir().getAbsolutePath() + "/b.apk";
+        try {
+            //Document.delete()接口支持遍历删除
+            boolean delete = SDCardUtil.delete(this, dest, true);
+            ToastUtil.showDefaultToast("删除文件" + (delete ? "成功" : "失败"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String genRandomPath() {
+        String root = SDCardUtil.getRemovableStorageDir().getAbsolutePath();
+        String[] paths = {"/测试1", "/测试2", "/测试3/Test"};
+        Random random = new Random();
+        String path = root + paths[random.nextInt(3)];
+        Log.d(TAG, "Random path = " + path);
+        return path;
+    }
+
+    private String genRandomName() {
+        String[] names = {"/文件1.txt", "/测试2", "/test.txt"};
+        Random random = new Random();
+        String name = names[random.nextInt(3)];
+        Log.d(TAG, "Random name = " + name);
+        return name;
     }
 
     @OnClick(R.id.btn_get_persist_permissions)
@@ -125,31 +180,30 @@ public class SDCardActivity extends BaseActivity {
                                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
         });
-
-//        DialogUtil.showSingleChoiceDialog(this, );
     }
 
-    @OnClick(R.id.btn_get_storage_volumes)
-    void getStorageVolumesInfo() {
-        String[] paths = DeviceUtil.getStoragePath();
-        if (paths == null) {
-            Log.d(TAG, "getStorageVolumesInfo: paths is null");
+    @OnClick(R.id.btn_test_sdcard_access)
+    void testSDCardAccess() {
+        if (!check()) {
             return;
         }
-        for (String path : paths) {
-            Log.d(TAG, "onClick: path = " + path);
+        DocumentFile sd = DocumentFile.fromTreeUri(this, SDCardUtil.getSDCardAccessPermission(this).getUri());
+        Log.d(TAG, "onClick: sd card path = " + sd.getUri().toString()
+                + ";exists = " + sd.exists() + ";canWrite = " + sd.canWrite()
+                + ";canRead = " + sd.canRead());
+    }
+
+    private boolean check() {
+        if (!SDCardUtil.hasSDCard()) {
+            ToastUtil.showDefaultToast("您尚未安装 SD卡");
+            return false;
         }
-        List<String> lstPath = DeviceUtil.getExtSDCardPath();
-        if (lstPath == null) {
-            Log.d(TAG, "getStorageVolumesInfo: lstPath is null");
-            return;
+        UriPermission sdcardAccessPermission = SDCardUtil.getSDCardAccessPermission(this);
+        if (sdcardAccessPermission == null) {
+            ToastUtil.showDefaultToast("尚未授予 SD卡 访问权限");
+            return false;
         }
-        for (String path : lstPath) {
-            File sd = new File(path);
-            Log.d(TAG, "onClick: sd card path = " + path + ";exists = " + sd.exists() + ";canWrite = " + sd.canWrite()
-                    + ";canRead = " + sd.canRead()
-                    + ";canExecute = " + sd.canExecute());
-        }
+        return true;
     }
 
     @Override
@@ -163,28 +217,14 @@ public class SDCardActivity extends BaseActivity {
             return;
         }
 
-        treeUri = data.getData();
-        write2SDCard(treeUri);
+        //对uri申请永久授权
+        takePersistPermission(this, data.getData());
     }
 
-    private void write2SDCard(Uri treeUri) {
-        DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
-
-        // List all existing files inside picked directory
-        for (DocumentFile file : pickedDir.listFiles()) {
-            Log.d(TAG, "Found file " + file.getName() + " with size " + file.length());
-        }
-
-        try {
-            // Create a new file and write into it
-            DocumentFile newFile = pickedDir.createFile("text/plain", "My Novel");
-            OutputStream out = getContentResolver().openOutputStream(newFile.getUri());
-            if (out != null) {
-                out.write("A long time ago...".getBytes());
-                out.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void takePersistPermission(Context context, Uri uri) {
+        context.getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
     }
+
 }

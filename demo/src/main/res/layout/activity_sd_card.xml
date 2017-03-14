@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_get_all_storage_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取所有存储路径"/>
+        android:text="获取所有存储路径" />
 
     <Button
         android:id="@+id/btn_get_sd_card_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取SD卡路径"/>
+        android:text="获取SD卡路径" />
 
     <Button
         android:id="@+id/btn_open_document_tree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="进行SD卡读写权限授权"/>
+        android:text="进行SD卡读写权限授权" />
 
     <Button
-        android:id="@+id/btn_take_persist_permission"
+        android:id="@+id/btn_create_document"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="对Uri授予永久权限"/>
+        android:text="随机创建DocumentFile" />
+
+    <Button
+        android:id="@+id/btn_copy_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="将拷贝文件到SD卡" />
+
+    <Button
+        android:id="@+id/btn_delete_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除SD卡上的文件" />
 
     <Button
         android:id="@+id/btn_get_persist_permissions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取永久授权的Uri"/>
+        android:text="获取永久授权的Uri" />
 
     <Button
         android:id="@+id/btn_release_persist_permission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="释放永久授权的Uri"/>
+        android:text="释放永久授权的Uri" />
 
     <Button
-        android:id="@+id/btn_get_storage_volumes"
+        android:id="@+id/btn_test_sdcard_access"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="测试SD卡是否可写"/>
+        android:text="测试SD卡是否可写" />
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

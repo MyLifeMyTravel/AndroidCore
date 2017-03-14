@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.littlejie.core.R;
 import com.littlejie.core.util.ImageLoaderUtil;
@@ -16,7 +15,7 @@ import com.littlejie.core.util.ImageLoaderUtil;
  * Created by littlejie on 2016/12/1.
  */
 
-public class BaseImageView extends ImageView {
+public class BaseImageView extends android.support.v7.widget.AppCompatImageView {
 
     protected int mRadius = 0;
     private int mImageResId;
