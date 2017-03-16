@@ -11,7 +11,7 @@ import com.littlejie.filemanager.constant.ExtraConstant;
 import com.littlejie.filemanager.constant.FilterConstant;
 import com.littlejie.filemanager.constant.PathConstant;
 import com.littlejie.filemanager.impl.IFileAction;
-import com.littlejie.filemanager.modules.adapter.FileAdapter;
+import com.littlejie.filemanager.ui.adapter.FileAdapter;
 import com.littlejie.filemanager.util.CustomComparator;
 
 import java.io.File;

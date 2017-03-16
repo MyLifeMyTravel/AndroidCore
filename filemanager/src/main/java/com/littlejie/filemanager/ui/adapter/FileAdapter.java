@@ -1,4 +1,4 @@
-package com.littlejie.filemanager.modules.adapter;
+package com.littlejie.filemanager.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;
