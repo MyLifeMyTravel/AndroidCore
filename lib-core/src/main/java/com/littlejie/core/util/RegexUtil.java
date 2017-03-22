@@ -44,4 +44,16 @@ public class RegexUtil {
         }
         return name.matches("[^\\s\\\\/:\\*\\?\\\"<>\\|](\\x20|[^\\s\\\\/:\\*\\?\\\"<>\\|])*[^\\s\\\\/:\\*\\?\\\"<>\\|\\.]$");
     }
+
+    /**
+     * 判断URL是否合法
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isUrl(String url) {
+        Pattern pattern = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w\\- ./?%&=]*)?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(url);
+        return matcher.matches();
+    }
 }

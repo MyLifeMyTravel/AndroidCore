@@ -2,12 +2,14 @@ package com.littlejie.demo.modules;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
@@ -15,6 +17,8 @@ import com.littlejie.core.manager.TintManager;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -44,7 +48,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()
+                + "/.file");
+        Log.d(TAG, "file isHidden = " + file.isHidden());
     }
 
     @Override

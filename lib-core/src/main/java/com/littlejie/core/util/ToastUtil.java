@@ -34,13 +34,13 @@ public class ToastUtil {
         Toast.makeText(mContext, getString(resId), Toast.LENGTH_SHORT).show();
     }
 
-    public static void showCustomToast(int layout, int gravity, int duration) {
-        View customView = LayoutInflater.from(mContext).inflate(layout, null);
+    public static void showCustomToast(Context context, int layout, int gravity, int duration) {
+        View customView = LayoutInflater.from(context).inflate(layout, null);
         showCustomToast(customView, gravity, duration);
     }
 
-    public static void showCustomToast(int layout) {
-        showCustomToast(layout, Gravity.CENTER, Toast.LENGTH_SHORT);
+    public static void showCustomToast(Context context, int layout) {
+        showCustomToast(context, layout, Gravity.CENTER, Toast.LENGTH_SHORT);
     }
 
     public static void showCustomToast(View view) {
