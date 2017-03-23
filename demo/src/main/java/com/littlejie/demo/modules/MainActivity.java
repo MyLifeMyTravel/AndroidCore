@@ -2,7 +2,6 @@ package com.littlejie.demo.modules;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,11 +13,10 @@ import android.view.MenuItem;
 
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.TintManager;
+import com.littlejie.core.util.RegexUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
-
-import java.io.File;
 
 import butterknife.BindView;
 
@@ -48,9 +46,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()
-                + "/.file");
-        Log.d(TAG, "file isHidden = " + file.isHidden());
+        Log.d(TAG, "" + RegexUtil.isValidName("1"));
+        Log.d(TAG, "" + RegexUtil.isValidName("12"));
+        Log.d(TAG, "" + RegexUtil.isValidName("厉圣杰"));
+        Log.d(TAG, "" + RegexUtil.isValidName(" "));
+        Log.d(TAG, "" + RegexUtil.isValidName("/"));
+        Log.d(TAG, "" + RegexUtil.isValidName(" .abc"));
+        Log.d(TAG, "" + RegexUtil.isValidName("厉圣杰.txt"));
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.base.Core;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.DemoApplication;
@@ -68,6 +69,7 @@ public class CustomNotificationActivity extends BaseActivity {
 //                .setContentText("我是自定义通知样式、效果的内容")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(acceptPending)
+                .addAction(0, Core.getString(R.string.app_name), acceptPending)
                 //Android 7.0 设置了 RemoteViews 之后，就不能把 Head-up Notification 下拉扩展了
                 .setContent(remoteViews)
                 //点击通知后自动消失，但是对自定义View的点击事件无效
