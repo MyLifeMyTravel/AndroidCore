@@ -11,4 +11,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.littlejie.demo.modules.base.media.FileActionActivity">
 
+    <Button
+        android:id="@+id/btn_create_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建一个文件" />
 </RelativeLayout>

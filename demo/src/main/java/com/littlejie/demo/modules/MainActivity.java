@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.manager.TintManager;
 import com.littlejie.core.util.RegexUtil;
+import com.littlejie.core.util.SignalStrengthUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.modules.advance.AndroidAdvanceFragment;
 import com.littlejie.demo.modules.base.AndroidBaseFragment;
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "" + RegexUtil.isValidName("/"));
         Log.d(TAG, "" + RegexUtil.isValidName(" .abc"));
         Log.d(TAG, "" + RegexUtil.isValidName("厉圣杰.txt"));
+        SignalStrengthUtil.init(this);
     }
 
     @Override

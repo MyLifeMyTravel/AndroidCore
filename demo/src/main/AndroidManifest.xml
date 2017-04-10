@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <!-- 绑定系统通知服务 -->
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <!-- 读取手机状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".modules.DemoApplication"
