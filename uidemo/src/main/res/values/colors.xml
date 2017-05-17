@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="pink">#C353AF</color>
+    <color name="pink1">#E56CAC</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_transparent_cc">#CCFFFFFF</color><!--255*0.8透明度-->
+    <color name="white_transparent_a0">#A0FFFFFF</color><!--255*0.6透明度-->
+    <color name="white_transparent_53">#87FFFFFF</color><!--255*0.53透明度-->
+    <color name="white_transparent_30">#76FFFFFF</color><!--255*0.30透明度-->
+    <color name="white_transparent_70">#A1FFFFFF</color><!--255*0.7透明度-->
+    <color name="white_transparent_12">#1D000000</color><!--255*0.12透明度-->
+    <!--255*0.0透明度-->
+    <color name="black_transparent_87">#CC000000</color><!--255*0.8透明度-->
+    <color name="black_transparent_53">#87000000</color><!--255*0.53透明度-->
+    <color name="black_transparent_30">#76000000</color><!--255*0.30透明度-->
+    <color name="black_transparent_26">#42000000</color><!--255*0.26透明度-->
+
+    <color name="gray">#888888</color>
+    <color name="gray_transparent_87">#CCA5A5A5</color><!--255*0.8透明度-->
+</resources>

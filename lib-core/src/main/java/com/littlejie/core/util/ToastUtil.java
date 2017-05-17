@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import static com.littlejie.core.base.Core.getString;
+import com.littlejie.core.base.Core;
 
 /**
  * Toast工具类
@@ -15,7 +15,7 @@ import static com.littlejie.core.base.Core.getString;
 
 public class ToastUtil {
 
-    private static Context mContext;
+    private static Context sContext;
 
     /**
      * 建议使用 ApplicationContext 初始化
@@ -23,15 +23,15 @@ public class ToastUtil {
      * @param context
      */
     public static void init(Context context) {
-        mContext = context;
+        sContext = context;
     }
 
     public static void showDefaultToast(CharSequence s) {
-        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(sContext, s, Toast.LENGTH_SHORT).show();
     }
 
     public static void showDefaultToast(int resId) {
-        Toast.makeText(mContext, getString(resId), Toast.LENGTH_SHORT).show();
+        Toast.makeText(sContext, Core.getString(resId), Toast.LENGTH_SHORT).show();
     }
 
     public static void showCustomToast(Context context, int layout, int gravity, int duration) {

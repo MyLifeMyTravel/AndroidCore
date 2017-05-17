@@ -14,4 +14,6 @@
 
     <string name="btn_ok">确定</string>
     <string name="btn_cancel">取消</string>
+    <string name="title_base_temperature">1. 什么是基础体温？</string>
+    <string name="content_base_temperature">基础体温是24小时间周期内人体的最低温度。这个温度是人体长时间睡眠(大于6小时)醒来后，未进行任何活动时的温度。我们要根据这种不受活动影响，而只是由女性生理状态所带来的温度变化，才能给您最准确的预测结果。</string>
 </resources>

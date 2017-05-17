@@ -21,6 +21,7 @@ public class CustomUIListFragment extends BaseListFragment {
     protected void process(Bundle savedInstanceState) {
         super.process(savedInstanceState);
         mLstItem.add(CustomUIActivity.class);
+        mLstItem.add(CollapseActivity.class);
         notifyDataChanged();
     }
 }

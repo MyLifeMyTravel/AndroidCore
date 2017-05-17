@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/femometer_on_and_close_to_phone"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="13dp"
+        android:text="@string/femometer_on_tip"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/action2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_hand2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/binding_hand2"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_bind_bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/iv_hand2"
+            android:background="@drawable/binding_buletooth_small"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_device_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_hand2"
+            android:layout_alignEnd="@+id/iv_hand2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="52dp"
+            android:layout_marginEnd="14dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/binding_device_body" />
+
+        <ImageView
+            android:id="@+id/iv_device_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_device_body"
+            android:layout_alignEnd="@+id/iv_hand2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="82dp"
+            android:layout_marginEnd="14dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/binding_device_cover" />
+
+        <ImageView
+            android:id="@+id/iv_hand1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/iv_hand2"
+            android:layout_alignBottom="@+id/iv_hand2"
+            android:layout_alignStart="@+id/iv_hand2"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="77dp"
+            android:layout_marginStart="52dp"
+            android:background="@drawable/binding_hand1"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="47dp"
+            android:background="@drawable/binding_phone"
+            android:visibility="invisible" />
+    </RelativeLayout>
+</LinearLayout>

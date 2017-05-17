@@ -38,6 +38,4 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    //友盟统计分析
-    compile 'com.umeng.analytics:analytics:latest.integration'
 }

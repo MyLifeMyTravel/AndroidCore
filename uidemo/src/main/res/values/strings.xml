@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tutorial_step">
+        <item>@string/tutorial_step1</item>
+        <item>@string/tutorial_step2</item>
+        <item>@string/tutorial_step3</item>
+    </string-array>
+
+    <string-array name="tutorial_step_description">
+        <item>@string/tutorial_step1_description</item>
+        <item>@string/tutorial_step2_description</item>
+        <item>@string/tutorial_step3_description</item>
+    </string-array>
+    <string name="shop_url">https://item.m.jd.com/product/10116220775.html</string>
+    <string name="bind_bongmi_femometer">绑定您的棒米体温计</string>
+    <string name="purchase">购买硬件</string>
+    <string name="skip_this_step">没有硬件，跳过绑定</string>
+    <string name="welcome_use_femometer">欢迎使用棒米</string>
+    <string name="measure_tutorial">测量教程</string>
+    <string name="next">下一步</string>
+    <string name="finish">完成</string>
+
+    <string name="pair">绑定</string>
+    <string name="pair_success">绑定成功</string>
+    <string name="pair_failed">绑定失败</string>
+    <string name="pair_again">重新绑定</string>
+    <string name="femometer_bind_success">体温计已成功绑定！</string>
+    <string name="femometer_request_bluetooth_permission">“棒米”需要打开蓝牙，用来连接硬件设备</string>
+    <string name="search_device">正在搜索设备…</string>
+    <string name="keep_close_to_phone">请保持体温计靠近手机</string>
+    <string name="femometer_on_and_close_to_phone">棒米体温计开机并将其靠近手机</string>
+    <string name="femometer_on_tip">Tips：打开盖子，听到“滴”一声，就是开机啦～</string>
+    <string name="user_guide">产品说明</string>
+    <string name="i_know">我知道了</string>
+    <string name="tutorial_step1">放在舌根下方测量</string>
+    <string name="tutorial_step2">首次测量需要3分钟左右</string>
+    <string name="tutorial_step3">数据自动传输</string>
+    <string name="tutorial_step1_description">请将棒米基础体温计放在舌根下测量</string>
+    <string name="tutorial_step2_description">正确的测量方式和习惯会让测量变得越来越快，可让平均测温时间小于1分钟。听到滴滴滴三声，测温成功</string>
+    <string name="tutorial_step3_description">温度计可以保存300条数据，不打开APP也可以直接使用，打开APP连接上体温计后数据会自动上传哒～</string>
+    <string name="bind_failed_reason1">请检查您的体温计电池是否松动</string>
+    <string name="bind_failed_reason2">重新安装电池后，拔开盖子，依旧没有“滴”的一声？</string>
+    <string name="bind_failed_reason3">确保您的体温计靠近手机</string>
+    <string name="bind_failed_note1">拔开盖子，检查是否有“滴”的一声，如果没有，请取出电池，并重新安装。</string>
+    <string name="bind_failed_note2">这种情况，可能是由于电量不足，请联系我们的客服人员进行确认，我们会给您提供电池包邮购买券（电池型号：CR1632）。带来的不便，我们深表歉意～</string>
+    <string name="bind_failed_note3">体温计靠蓝牙和手机进行连接，如果超出蓝牙信号范围，会造成无法连接。</string>
+    <string name="back_to_home">返回首页</string>
+    <string name="connect_customer_service_to_solve_problem">如果上述方法都无法解决您的问题，您可以尝试重新下载安装APP并重启手机，或联系我们的客服人员400-1068-321</string>
+    <string name="ok">确定</string>
+    <string name="confirm_bluetooth_on">请确保您的手机蓝牙打开</string>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.littlejie.demo.modules.advance.ui.CollapseActivity">
+
+    <LinearLayout
+        android:id="@+id/inner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher" />
+
+        <com.littlejie.demo.ui.CollapseItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:collapse="true"
+            app:content="@string/content_base_temperature"
+            app:tip="棒米算法在预测时是会聪明地辨别出你的部分无效数据，所以请棒米妈妈们放心！越多的测量，棒米就会越了解你～"
+            app:title="@string/title_base_temperature" />
+
+        <com.littlejie.demo.ui.CollapseItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content="@string/content_base_temperature"
+            app:tip="棒米算法在预测时是会聪明地辨别出你的部分无效数据，所以请棒米妈妈们放心！越多的测量，棒米就会越了解你～"
+            app:title="@string/title_base_temperature" />
+
+        <com.littlejie.demo.ui.CollapseItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content="@string/content_base_temperature"
+            app:title="@string/title_base_temperature" />
+
+        <com.littlejie.demo.ui.CollapseItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:collapse="true"
+            app:content="@string/content_base_temperature"
+            app:title="@string/title_base_temperature" />
+
+        <com.littlejie.demo.ui.CollapseItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:collapse="true"
+            app:content="@string/content_base_temperature"
+            app:title="@string/title_base_temperature" />
+    </LinearLayout>
+</ScrollView>

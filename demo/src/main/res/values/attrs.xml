@@ -41,4 +41,19 @@
     <declare-styleable name="CustomTextView">
         <attr name="textSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="CollapseItem">
+        <!-- 默认是否展开 -->
+        <attr name="collapse" format="boolean" />
+        <!-- 标题 -->
+        <attr name="title" format="string|reference" />
+        <!-- 内容 -->
+        <attr name="content" format="string|reference" />
+        <!-- 提示 -->
+        <attr name="tip" format="string|reference" />
+        <!-- 折叠时的图标 -->
+        <attr name="icon_collapse" format="reference" />
+        <!-- 展开时的图标 -->
+        <!--<attr name="icon_expand" format="reference" />-->
+    </declare-styleable>
 </resources>

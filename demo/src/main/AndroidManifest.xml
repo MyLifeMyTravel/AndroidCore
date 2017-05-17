@@ -10,8 +10,8 @@
     <!-- 监听网络状态改变 -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- 读写权限 -->
-    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
-    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- 联系人读写权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -167,7 +167,8 @@
         <activity android:name=".modules.advance.ui.CustomUIListFragment" />
         <activity android:name=".modules.advance.ui.CustomUIActivity" />
         <activity android:name=".modules.base.ui.CustomTextActivity" />
-        <activity android:name=".modules.base.ui.PorterDuffActivity"></activity>
+        <activity android:name=".modules.base.ui.PorterDuffActivity" />
+        <activity android:name=".modules.advance.ui.CollapseActivity"></activity>
     </application>
 
 </manifest>
