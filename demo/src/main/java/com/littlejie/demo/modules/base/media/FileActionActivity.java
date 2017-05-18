@@ -29,14 +29,14 @@ public class FileActionActivity extends BaseActivity {
     protected void initData() {
 //        File src = new File(Constant.ROOT + "/nmdsdcid");
 //        boolean result = src.renameTo(new File(Constant.ROOT + "/tt/1"));
-//        Log.d(TAG, "initData: result = " + result);
+//        Log.d(LANGUAGE, "initData: result = " + result);
     }
 
     @Override
     protected void initView() {
 //        File src = new File(Constant.ROOT + "/tt");
 //        boolean result = src.renameTo(new File(Constant.ROOT + "/ttt/tt"));
-//        Log.d(TAG, "initView: result = " + result);
+//        Log.d(LANGUAGE, "initView: result = " + result);
     }
 
     @Override

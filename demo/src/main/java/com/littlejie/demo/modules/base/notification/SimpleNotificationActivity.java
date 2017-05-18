@@ -78,9 +78,9 @@ public class SimpleNotificationActivity extends BaseActivity {
      */
     @OnClick(R.id.btn_send_notification_with_tag)
     void sendNotificationWithTag() {
-        //发送一个 ID = 1 并且 TAG = littlejie 的 Notification
+        //发送一个 ID = 1 并且 LANGUAGE = littlejie 的 Notification
         //注意:此处发送的通知与 sendNotification() 发送的通知并不冲突
-        //因为此处的 Notification 带有 TAG
+        //因为此处的 Notification 带有 LANGUAGE
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Send Notification With Tag")
@@ -90,9 +90,9 @@ public class SimpleNotificationActivity extends BaseActivity {
 
     @OnClick(R.id.btn_remove_notification_with_tag)
     void removeNotificationWithTag() {
-        //移除一个 ID = 1 并且 TAG = littlejie 的 Notification
+        //移除一个 ID = 1 并且 LANGUAGE = littlejie 的 Notification
         //注意:此处移除的通知与 NotificationManager.cancel(int id) 移除通知并不冲突
-        //因为此处的 Notification 带有 TAG
+        //因为此处的 Notification 带有 LANGUAGE
         mNotificationManager.cancel(NOTIFICATION_TAG, DEFAULT_NOTIFICATION_ID);
     }
 

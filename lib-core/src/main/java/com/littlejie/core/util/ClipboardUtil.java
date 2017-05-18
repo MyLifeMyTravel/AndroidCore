@@ -70,11 +70,11 @@ public class ClipboardUtil {
     }
 
     private void onPrimaryClipChangedListener(ClipboardManager clipboardManager) {
-//        Log.d(TAG, clipboardManager.getPrimaryClip().toString());
+//        Log.d(LANGUAGE, clipboardManager.getPrimaryClip().toString());
 //        //此处以拷贝 Intent 为例进行处理
 //        ClipData data = clipboardManager.getPrimaryClip();
 //        String mimeType = getPrimaryClipMimeType();
-//        Log.d(TAG, "mimeType = " + mimeType);
+//        Log.d(LANGUAGE, "mimeType = " + mimeType);
 //        //一般来说，收到系统 onPrimaryClipChanged() 回调时，剪贴板一定不为空
 //        //但为了保险起见，在这边还是做了空指针判断
 //        if (data == null) {

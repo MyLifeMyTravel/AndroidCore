@@ -13,7 +13,7 @@ import com.littlejie.core.manager.ActivityManager;
 public class BaseApplication extends Application {
 
     /**
-     * TAG
+     * LANGUAGE
      */
     public static final String TAG = BaseApplication.class.getSimpleName();
 

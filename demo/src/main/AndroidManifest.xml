@@ -93,6 +93,8 @@
         <activity android:name=".modules.base.media.FileActionActivity" />
 
         <!-- 系统 -->
+        <!-- 语言切换 -->
+        <activity android:name=".modules.base.system.ChangeLanguageActivity"/>
         <!-- Android 触摸事件分发 -->
         <activity android:name=".modules.base.system.touch.DispatchTouchEventActivity" />
         <activity android:name=".modules.base.system.touch.ScrollActivity" />

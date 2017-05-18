@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void process() {
-        switchItem(R.id.menu_advanced);
+        switchItem(R.id.menu_base);
     }
 
 }

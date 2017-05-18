@@ -29,8 +29,8 @@ public class SignalStrengthUtil {
             super.onSignalStrengthsChanged(signalStrength);
 //            String[] signals = signalStrength.toString().split(" ");
 //            mSignalStrength = Integer.valueOf(signals[9]);
-//            Log.d(TAG, "信号强度 signals = " + Arrays.toString(signals));
-//            Log.d(TAG, "获取信号强度(dBm) = " + mSignalStrength);
+//            Log.d(LANGUAGE, "信号强度 signals = " + Arrays.toString(signals));
+//            Log.d(LANGUAGE, "获取信号强度(dBm) = " + mSignalStrength);
             //获取网络信号强度
             //获取0-4的5种信号级别，越大信号越好,但是api23开始才能用
             // int level = signalStrength.getLevel();

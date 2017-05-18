@@ -24,7 +24,7 @@ import java.util.Map;
 public final class CrashHandler implements UncaughtExceptionHandler {
 
     /**
-     * TAG
+     * LANGUAGE
      */
     private static final String TAG = "CrashHandler";
 

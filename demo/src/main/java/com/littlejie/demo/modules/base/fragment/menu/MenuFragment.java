@@ -95,7 +95,7 @@ public class MenuFragment extends BaseFragment {
 //        //2.判断 getUserVisibleHint() 是否为 true，若为 true ，则表示对用户可见
 //        //综合 1 、 2 ，可以判断出是否需要创建菜单
 //        boolean needCreate = getParentFragment() == null || getParentFragment().getUserVisibleHint();
-//        Log.d(TAG, "onCreateOptionsMenu: title = " + mTitle + "; needCreate = " + needCreate);
+//        Log.d(LANGUAGE, "onCreateOptionsMenu: title = " + mTitle + "; needCreate = " + needCreate);
 //        if (needCreate) {
 //            inflater.inflate(mMenuID, menu);
 //        }

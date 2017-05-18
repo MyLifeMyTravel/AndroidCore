@@ -34,6 +34,7 @@ public class SystemDemoFragment extends BaseListFragment {
         mLstItem.add(ViewMoveActivity.class);
         mLstItem.add(PackageActivity.class);
         mLstItem.add(HandlerActivity.class);
+        mLstItem.add(ChangeLanguageActivity.class);
         notifyDataChanged();
     }
 }

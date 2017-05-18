@@ -109,12 +109,12 @@ public class ThumbnailsActivity extends BaseActivity {
 //        for (String path : mLstMediaPath) {
 //            getThumbnail(path);
 //        }
-//        Log.d(TAG, "process: getThumbnail spend = " + (System.currentTimeMillis() - start));
+//        Log.d(LANGUAGE, "process: getThumbnail spend = " + (System.currentTimeMillis() - start));
 //        start = System.currentTimeMillis();
 //        for (String path : mLstMediaPath) {
 //            getThumbnailFromFile(path);
 //        }
-//        Log.d(TAG, "process: getThumbnailFromFile spend = " + (System.currentTimeMillis() - start));
+//        Log.d(LANGUAGE, "process: getThumbnailFromFile spend = " + (System.currentTimeMillis() - start));
     }
 
 

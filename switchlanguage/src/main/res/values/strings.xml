@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SwitchLanguage</string>
+    <string name="switch_to_chinese">Switch to Chinese</string>
+    <string name="switch_to_english">Switch to English</string>
+    <string name="current_language">Current Language:%s</string>
+    <string name="string_in_memory">String in memory</string>
+</resources>

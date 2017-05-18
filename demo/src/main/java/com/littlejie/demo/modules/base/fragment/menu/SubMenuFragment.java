@@ -80,7 +80,7 @@ public class SubMenuFragment extends BaseFragment {
 //
 //            @Override
 //            public void onPageSelected(int position) {
-//                Log.d(TAG, "onPageSelected: position = " + position);
+//                Log.d(LANGUAGE, "onPageSelected: position = " + position);
 //                ((Activity) getContext()).invalidateOptionsMenu();
 //            }
 //
@@ -92,7 +92,7 @@ public class SubMenuFragment extends BaseFragment {
 //        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override
 //            public void onTabSelected(TabLayout.Tab tab) {
-//                Log.d(TAG, "onTabSelected: position = " + tab.getPosition());
+//                Log.d(LANGUAGE, "onTabSelected: position = " + tab.getPosition());
 //                ((Activity) getContext()).invalidateOptionsMenu();
 //            }
 //

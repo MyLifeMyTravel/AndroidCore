@@ -61,7 +61,7 @@ public class CollapseActivity extends BaseActivity implements View.OnClickListen
     private Runnable mScrollRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.d("TAG", "scroll height = " + mScrollView.getHeight());
+            Log.d("LANGUAGE", "scroll height = " + mScrollView.getHeight());
             int off = mView.getMeasuredHeight() - mScrollView.getHeight();//判断高度
             if (off > 0) {
                 mScrollView.scrollBy(0, 30);

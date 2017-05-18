@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 public final class SharePrefsUtil {
 
     /**
-     * TAG
+     * LANGUAGE
      */
     private static final String TAG = "SharedPrefs";
 
