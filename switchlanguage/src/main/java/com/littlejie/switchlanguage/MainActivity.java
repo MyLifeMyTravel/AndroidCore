@@ -1,6 +1,7 @@
 package com.littlejie.switchlanguage;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
@@ -56,11 +57,15 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
     }
 
     @Override
     protected void process() {
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "默认语言1 = " + Locale.getDefault().getLanguage() + ";默认语言2 = " + getResources().getConfiguration().locale.getLanguage());
     }
 }
