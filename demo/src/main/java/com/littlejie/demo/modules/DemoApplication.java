@@ -2,12 +2,15 @@ package com.littlejie.demo.modules;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
 import com.littlejie.core.base.BaseApplication;
 import com.littlejie.core.crash.CrashHandler;
 import com.littlejie.demo.SharePrefsManager;
+import com.littlejie.password.OnDeblockResultListener;
+import com.littlejie.password.PasswordManager;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -28,6 +31,15 @@ public class DemoApplication extends BaseApplication {
         SharePrefsManager.getInstance().init(this);
         CrashHandler.getInstance().init(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/FileManager");
+        PasswordManager.getInstance().init(this, 0, 4, 5);
+        PasswordManager.getInstance().setOnDeblockResultListener(new OnDeblockResultListener() {
+            @Override
+            public void onDeblockResult(boolean success) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initLeakCanary() {
@@ -48,4 +60,5 @@ public class DemoApplication extends BaseApplication {
         super.onTerminate();
         Log.d(TAG, "onTerminate: ");
     }
+
 }

@@ -52,6 +52,12 @@ public class MainActivity extends BaseActivity {
         restartApplication();
     }
 
+    @OnClick(R.id.btn_jump)
+    void jump() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     private void restartApplication() {
         //切换语言信息，需要重启 Activity 才能实现
         Intent intent = new Intent(this, MainActivity.class);

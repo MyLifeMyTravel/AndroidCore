@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color">#7E67EE</color>
+    <color name="pink">#E76FAD</color>
+    <color name="keyboard_other_key">#D1D5DB</color>
+    <!--255*0.0透明度-->
+    <color name="black_transparent_87">#CC000000</color><!--255*0.8透明度-->
+    <color name="black_transparent_53">#87000000</color><!--255*0.53透明度-->
+    <color name="black_transparent_30">#76000000</color><!--255*0.30透明度-->
+</resources>

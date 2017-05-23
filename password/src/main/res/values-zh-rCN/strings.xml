@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">password</string>
+
+    <string name="set_passsword">新密码</string>
+    <string name="enter_password">输入密码</string>
+    <string name="reenter_password">再次输入密码</string>
+    <string name="password_not_match_enter_again">两次密码输入不一致，请重新输入</string>
+    <string name="more_attempts">你还可以尝试%d次</string>
+    <string name="input_password_too_many_times_and_will_relogin">如果连续5次输入错误密码，你的账户将退出。下次重新登录后，即可重新设定安全密码。</string>
+    <string name="turn_off_password">关闭密码</string>
+</resources>

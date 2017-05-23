@@ -56,4 +56,11 @@
         <!-- 展开时的图标 -->
         <!--<attr name="icon_expand" format="reference" />-->
     </declare-styleable>
+
+    <declare-styleable name="SearchImageView">
+        <attr name="interval" format="integer" />
+        <attr name="duration" format="integer" />
+        <!-- 搜索效果的动画颜色 -->
+        <attr name="searchColor" format="color|reference" />
+    </declare-styleable>
 </resources>

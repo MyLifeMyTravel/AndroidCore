@@ -22,6 +22,7 @@ public class CustomUIListFragment extends BaseListFragment {
         super.process(savedInstanceState);
         mLstItem.add(CustomUIActivity.class);
         mLstItem.add(CollapseActivity.class);
+        mLstItem.add(SearchEffectActivity.class);
         notifyDataChanged();
     }
 }

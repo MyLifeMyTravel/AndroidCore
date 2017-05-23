@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 密码长度 -->
+    <attr name="password_length" format="integer" />
+    <!-- 密码颜色 -->
+    <attr name="password_color" format="color|reference" />
+
+    <declare-styleable name="SetPwdView">
+        <attr name="password_color" />
+    </declare-styleable>
+</resources>

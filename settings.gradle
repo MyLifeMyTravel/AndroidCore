@@ -1,2 +1,2 @@
-include ':lib-core', ':lib-qrscan', ':demo', ':switchlanguage'
+include ':lib-core', ':lib-qrscan', ':demo', ':switchlanguage', ':password'
 //include ':footprint', ':lib-dialog', ':uidemo'

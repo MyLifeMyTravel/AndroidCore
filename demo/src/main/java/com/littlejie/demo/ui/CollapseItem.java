@@ -60,7 +60,7 @@ public class CollapseItem extends LinearLayout implements View.OnClickListener,
         tipView = (ViewGroup) view.findViewById(R.id.tip);
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
         tvContent = (TextView) view.findViewById(R.id.tv_content);
-        tvTip = (TextView) view.findViewById(R.id.tv_tip);
+        tvTip = (TextView) view.findViewById(R.id.tv_title);
         ivIcon = (ImageView) view.findViewById(R.id.iv_icon);
 
         if (attrs != null) {

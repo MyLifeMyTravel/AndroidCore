@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">password</string>
+    <string name="enter_password">Enter new passcode</string>
+    <string name="reenter_password">Re-enter new passcode</string>
+    <string name="password_not_match_enter_again">Passcodes did not match. Please try again.</string>
+    <string name="set_passsword">Set Passcode</string>
+    <string name="turn_off_password">Turn Passcode Off</string>
+    <string name="more_attempts">You have %d more attempts</string>
+    <string name="input_password_too_many_times_and_will_relogin">You still have 5 more attempts before being signed out. You can reset the passcode next time you sign in</string>
+</resources>
