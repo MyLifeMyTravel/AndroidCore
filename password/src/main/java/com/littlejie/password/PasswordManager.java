@@ -24,7 +24,7 @@ public class PasswordManager {
     private int passwordLength = DEFAULT_PASSWORD_LENGTH;
     private int passwordRetryTimes = DEFAULT_RETRY_TIMES;
 
-    private OnDeblockResultListener onDeblockResultListener;
+    private OnDeblockListener onDeblockResultListener;
 
     public static PasswordManager getInstance() {
         synchronized (PasswordManager.class) {
@@ -77,11 +77,11 @@ public class PasswordManager {
         }
     };
 
-    public OnDeblockResultListener getOnDeblockResultListener() {
+    public OnDeblockListener getOnDeblockResultListener() {
         return onDeblockResultListener;
     }
 
-    public void setOnDeblockResultListener(OnDeblockResultListener onDeblockResultListener) {
+    public void setOnDeblockListener(OnDeblockListener onDeblockResultListener) {
         this.onDeblockResultListener = onDeblockResultListener;
     }
 }

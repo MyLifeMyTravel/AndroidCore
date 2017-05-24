@@ -9,7 +9,8 @@ import android.util.Log;
 import com.littlejie.core.base.BaseApplication;
 import com.littlejie.core.crash.CrashHandler;
 import com.littlejie.demo.SharePrefsManager;
-import com.littlejie.password.OnDeblockResultListener;
+import com.littlejie.password.DeblockType;
+import com.littlejie.password.OnDeblockListener;
 import com.littlejie.password.PasswordManager;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -32,9 +33,9 @@ public class DemoApplication extends BaseApplication {
         CrashHandler.getInstance().init(Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/FileManager");
         PasswordManager.getInstance().init(this, 0, 4, 5);
-        PasswordManager.getInstance().setOnDeblockResultListener(new OnDeblockResultListener() {
+        PasswordManager.getInstance().setOnDeblockListener(new OnDeblockListener() {
             @Override
-            public void onDeblockResult(boolean success) {
+            public void onDeblock(DeblockType type, boolean success) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

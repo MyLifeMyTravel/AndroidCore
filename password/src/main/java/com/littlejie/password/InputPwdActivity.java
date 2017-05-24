@@ -1,7 +1,9 @@
 package com.littlejie.password;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.graphics.Rect;
+import android.os.Vibrator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +23,8 @@ public class InputPwdActivity extends BaseActivity {
     private static final int[] KEYBOARD_VALUE = Constants.KEYBOARD_VALUE;
     private static final int KEYBOARD_SIZE = KEYBOARD_VALUE.length;
 
+    private Vibrator vibrator;
+
     private LinearLayout groupPassword;
     private TextView tvTip;
     private RecyclerView recyclerView;
@@ -33,7 +37,7 @@ public class InputPwdActivity extends BaseActivity {
     private int position;
     private StringBuilder password = new StringBuilder();
 
-    private OnDeblockResultListener onDeblockResultListener;
+    private OnDeblockListener onDeblockListener;
 
     @Override
     protected int getPageLayoutID() {
@@ -44,7 +48,9 @@ public class InputPwdActivity extends BaseActivity {
     protected void initData() {
         pwdLength = PasswordManager.getInstance().getPasswordLength();
         pwdRetryTimes = PasswordManager.getInstance().getPasswordRetryTimes();
-        onDeblockResultListener = PasswordManager.getInstance().getOnDeblockResultListener();
+        onDeblockListener = PasswordManager.getInstance().getOnDeblockResultListener();
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -94,16 +100,16 @@ public class InputPwdActivity extends BaseActivity {
                 //如果密码输入完成且与设置的密码相等，则解开应用锁
                 if (position == pwdLength) {
                     if (password.toString().equals(PasswrodStorage.get(InputPwdActivity.this))) {
+                        onDeblock(true);
                         finish();
                     } else {
+                        vibrateCheckPasswordFailed();
                         animCheckPasswordFailed();
                         retryTimes++;
                         int left = pwdRetryTimes - retryTimes;
                         if (left == 0) {
+                            onDeblock(false);
                             finish();
-                            if (onDeblockResultListener != null) {
-                                onDeblockResultListener.onDeblockResult(false);
-                            }
                         }
                         clearPassword();
                         tvTip.setText(getString(R.string.more_attempts, left));
@@ -125,8 +131,16 @@ public class InputPwdActivity extends BaseActivity {
         });
     }
 
+    private void onDeblock(boolean success) {
+        if (onDeblockListener != null) {
+            onDeblockListener.onDeblock(DeblockType.DEBLOCK, success);
+        }
+    }
+
     //密码验证失败动画
     private void animCheckPasswordFailed() {
+        //Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_error_password);
+        //groupPassword.startAnimation(animation);
         ObjectAnimator animator = ObjectAnimator.ofFloat(groupPassword, "translationX", 0, -50, 0, 50, 0);
         animator.setDuration(200);
         animator.setInterpolator(new LinearInterpolator());
@@ -136,7 +150,7 @@ public class InputPwdActivity extends BaseActivity {
 
     //密码验证失败震动
     private void vibrateCheckPasswordFailed() {
-
+        vibrator.vibrate(1000);
     }
 
     private void clearPassword() {
@@ -150,6 +164,14 @@ public class InputPwdActivity extends BaseActivity {
     @Override
     protected void process() {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (vibrator != null) {
+            vibrator.cancel();
+        }
     }
 
     @Override

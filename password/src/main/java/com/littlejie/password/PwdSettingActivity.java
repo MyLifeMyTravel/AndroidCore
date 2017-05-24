@@ -91,6 +91,7 @@ public class PwdSettingActivity extends BaseActivity {
             }
         } else if (type == Constants.TYPE_CLOSE_PASSWORD) {
             if (pwd.equals(PasswrodStorage.get(this))) {
+                PasswrodStorage.clear(this);
                 finish();
             } else {
                 if (pwdRetryTime == MAX_RETRY_TIMES) {

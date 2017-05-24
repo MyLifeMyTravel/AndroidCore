@@ -1,21 +1,18 @@
 package com.littlejie.password.ui;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,7 +39,6 @@ public class SetPwdView extends LinearLayout {
     private GridAdapter adapter;
 
     private int pwdLength;
-    private int pwdColor;
     //密码，用于缓存
     private StringBuilder password;
     private OnFinishListener onFinishListener;
@@ -63,10 +59,6 @@ public class SetPwdView extends LinearLayout {
         tvDesc = (TextView) view.findViewById(R.id.tv_desc);
         gvKeyboard = (GridView) view.findViewById(R.id.gv_keyboard);
 
-        final TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.SetPwdView);
-        pwdColor = t.getColor(R.styleable.SetPwdView_password_color,
-                getResources().getColor(R.color.main_color));
-        t.recycle();
         initPassword();
         initKeyboard();
     }
@@ -76,32 +68,43 @@ public class SetPwdView extends LinearLayout {
     private void initPassword() {
         password = new StringBuilder();
         groupPassword.removeAllViews();
-        int padding = getResources().getDimensionPixelSize(R.dimen.padding);
+        int padding = getResources().getDimensionPixelSize(R.dimen.keyboard_item_margin);
+        int size = getResources().getDimensionPixelSize(R.dimen.password_size);
         for (int i = 0; i < pwdLength; i++) {
-            final TextView textView = new TextView(getContext());
+            final ImageView imageView = new ImageView(getContext());
             //设置外边距
             LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    new LinearLayout.LayoutParams(size, size);
             params.leftMargin = padding;
             params.rightMargin = padding;
-            textView.setLayoutParams(params);
+            imageView.setLayoutParams(params);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            imageView.setAdjustViewBounds(true);
+            imageView.setClickable(true);
             //设置背景
-            textView.setBackgroundResource(R.drawable.bg_password_edit);
+            setPasswordIcon(imageView, false);
+//            imageView.setImageResource(R.drawable.bg_setting_password);
             //设置字体大小
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            //imageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
             //设置最多显示字数
-            textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+            //imageView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
             //设置TextView最小字符宽度
-            textView.setMinEms(1);
+            //imageView.setMinEms(1);
             //居中显示
-            textView.setGravity(Gravity.CENTER);
+            //imageView.setGravity(Gravity.CENTER);
             //输入类型为数字密码
-            //textView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
+            //imageView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
             //        | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
-            textView.setTextColor(pwdColor);
-            groupPassword.addView(textView);
+            //imageView.setTextColor(pwdColor);
+            groupPassword.addView(imageView);
         }
+    }
+
+    //如果直接用selector会因为两张图片大小不一造成缩放
+    private void setPasswordIcon(ImageView imageView, boolean selected) {
+        imageView.setImageResource(selected
+                ? R.drawable.icon_setting_password_selected
+                : R.drawable.icon_setting_password_normal);
     }
 
     private void initKeyboard() {
@@ -114,35 +117,28 @@ public class SetPwdView extends LinearLayout {
                     if (position == 0) {
                         return;
                     }
-                    ((TextView) groupPassword.getChildAt(--position)).setText("");
+                    password.deleteCharAt(password.length() - 1);
+                    setPasswordIcon((ImageView) groupPassword.getChildAt(--position), false);
                 } else if (p != KEYBOARD_SIZE - 3) {
                     if (position == pwdLength) {//当密码已经输入完成时，直接退出处理
                         return;
                     }
                     if (position <= pwdLength - 1) {//当密码尚未输入完成时，将对应按键的数字放入密码框
-                        ((TextView) groupPassword.getChildAt(position++))
-                                .setText(String.valueOf(KEYBOARD_VALUE[p]));
+                        password.append(KEYBOARD_VALUE[p]);
+                        setPasswordIcon((ImageView) groupPassword.getChildAt(position++), true);
                     }
                     //如果密码设置完成，则进行回调
                     if (onFinishListener != null && position == pwdLength) {
-                        onFinishListener.onFinish(getPassword());
+                        onFinishListener.onFinish(password.toString());
                     }
                 }
             }
         });
     }
 
-    private String getPassword() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < pwdLength; i++) {
-            sb.append(((TextView) groupPassword.getChildAt(i)).getText());
-        }
-        return sb.toString();
-    }
-
     public void resetPassword() {
         for (int i = 0; i < pwdLength; i++) {
-            ((TextView) groupPassword.getChildAt(i)).setText("");
+            setPasswordIcon((ImageView) groupPassword.getChildAt(i), false);
         }
         position = 0;
         password = new StringBuilder();

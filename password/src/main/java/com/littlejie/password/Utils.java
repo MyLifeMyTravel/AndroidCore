@@ -1,9 +1,7 @@
 package com.littlejie.password;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.util.Log;
 
 import java.util.List;
@@ -16,17 +14,7 @@ import java.util.List;
 
 public class Utils {
 
-    public static ComponentName getTopActivity(Context context) {
-        List<PackageInfo> packages = context.getPackageManager().
-                getInstalledPackages(0);
-        ActivityManager mActivityManager;
-        mActivityManager = (ActivityManager) context.getSystemService(
-                Context.ACTIVITY_SERVICE);
-        return mActivityManager.
-                getRunningTasks(1).get(0).topActivity;
-    }
-
-    public static boolean isBackground(Context context) {
+    static boolean isBackground(Context context) {
         ActivityManager activityManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager

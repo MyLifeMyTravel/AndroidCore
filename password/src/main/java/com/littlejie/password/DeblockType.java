@@ -6,6 +6,6 @@ package com.littlejie.password;
  * Author: littlejie@bongmi.com
  */
 
-public interface OnDeblockResultListener {
-    void onDeblockResult(boolean success);
+public enum DeblockType {
+    DEBLOCK, CLOSE_LOCK
 }
