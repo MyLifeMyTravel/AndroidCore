@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.littlejie.password.storage.PasswrodStorage;
+import com.littlejie.password.storage.PasswordStorage;
 
 /**
  * Copyright (c) 2017, Bongmi
@@ -64,7 +64,7 @@ public class LockService extends Service {
         @Override
         public void onActivityResumed(Activity activity) {
             if (showLock
-                    && !TextUtils.isEmpty(PasswrodStorage.get(activity))) {
+                    && !TextUtils.isEmpty(PasswordStorage.get(activity))) {
                 Log.d(TAG, "show lock activity");
                 Intent intent = new Intent(getApplicationContext(), InputPwdActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -2,10 +2,9 @@ package com.littlejie.password;
 
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.littlejie.core.base.BaseActivity;
-import com.littlejie.password.storage.PasswrodStorage;
+import com.littlejie.password.storage.PasswordStorage;
 import com.littlejie.password.ui.SetPwdView;
 
 public class PwdSettingActivity extends BaseActivity {
@@ -32,7 +31,7 @@ public class PwdSettingActivity extends BaseActivity {
                     Constants.TYPE_SET_PASSWORD);
         }
 
-        if (!TextUtils.isEmpty(PasswrodStorage.get(this))) {
+        if (!TextUtils.isEmpty(PasswordStorage.get(this))) {
             type = Constants.TYPE_CLOSE_PASSWORD;
         }
     }
@@ -81,21 +80,19 @@ public class PwdSettingActivity extends BaseActivity {
             setPwdView.resetPassword();
         } else if (type == Constants.TYPE_REENTER_PASSWORD) {
             if (pwd.equals(password)) {
-                PasswrodStorage.save(this, password);
-                Toast.makeText(getApplicationContext(), password,
-                        Toast.LENGTH_SHORT).show();
+                PasswordStorage.save(this, password);
                 finish();
             } else {
                 setPwdView.setTip(R.string.password_not_match_enter_again);
                 setPwdView.resetPassword();
             }
         } else if (type == Constants.TYPE_CLOSE_PASSWORD) {
-            if (pwd.equals(PasswrodStorage.get(this))) {
-                PasswrodStorage.clear(this);
+            if (PasswordStorage.encryptPassword(this, pwd).equals(PasswordStorage.get(this))) {
+                PasswordStorage.clear(this);
                 finish();
             } else {
                 if (pwdRetryTime == MAX_RETRY_TIMES) {
-                    PasswrodStorage.clear(this);
+                    PasswordStorage.clear(this);
                     finish();
                     return;
                 }

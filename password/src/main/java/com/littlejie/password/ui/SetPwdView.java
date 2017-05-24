@@ -83,19 +83,6 @@ public class SetPwdView extends LinearLayout {
             imageView.setClickable(true);
             //设置背景
             setPasswordIcon(imageView, false);
-//            imageView.setImageResource(R.drawable.bg_setting_password);
-            //设置字体大小
-            //imageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-            //设置最多显示字数
-            //imageView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-            //设置TextView最小字符宽度
-            //imageView.setMinEms(1);
-            //居中显示
-            //imageView.setGravity(Gravity.CENTER);
-            //输入类型为数字密码
-            //imageView.setInputType(EditorInfo.TYPE_CLASS_NUMBER
-            //        | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);
-            //imageView.setTextColor(pwdColor);
             groupPassword.addView(imageView);
         }
     }

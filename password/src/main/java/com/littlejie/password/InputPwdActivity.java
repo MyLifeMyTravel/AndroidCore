@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
-import com.littlejie.password.storage.PasswrodStorage;
+import com.littlejie.password.storage.PasswordStorage;
 
 public class InputPwdActivity extends BaseActivity {
 
@@ -90,45 +90,53 @@ public class InputPwdActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int p) {
-                if (position == pwdLength) {//当密码已经输入完成时，直接退出处理
-                    return;
-                }
-                if (position <= pwdLength - 1) {//当密码尚未输入完成时，将对应按键的数字放入密码框
-                    password.append(KEYBOARD_VALUE[p]);
-                    groupPassword.getChildAt(position++).setSelected(true);
-                }
-                //如果密码输入完成且与设置的密码相等，则解开应用锁
-                if (position == pwdLength) {
-                    if (password.toString().equals(PasswrodStorage.get(InputPwdActivity.this))) {
-                        onDeblock(true);
-                        finish();
-                    } else {
-                        vibrateCheckPasswordFailed();
-                        animCheckPasswordFailed();
-                        retryTimes++;
-                        int left = pwdRetryTimes - retryTimes;
-                        if (left == 0) {
-                            onDeblock(false);
-                            finish();
-                        }
-                        clearPassword();
-                        tvTip.setText(getString(R.string.more_attempts, left));
-                    }
-                }
-
+                inputPassword(p);
             }
         });
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (position == 0) {
-                    return;
-                }
-                //删除最后一位数字
-                password.deleteCharAt(password.length() - 1);
-                groupPassword.getChildAt(--position).setSelected(false);
+                delPassword();
             }
         });
+    }
+
+    private void inputPassword(int p) {
+        if (position == pwdLength) {//当密码已经输入完成时，直接退出处理
+            return;
+        }
+        if (position <= pwdLength - 1) {//当密码尚未输入完成时，将对应按键的数字放入密码框
+            password.append(KEYBOARD_VALUE[p]);
+            groupPassword.getChildAt(position++).setSelected(true);
+        }
+        //如果密码输入完成且与设置的密码相等，则解开应用锁
+        if (position == pwdLength) {
+            if (PasswordStorage.encryptPassword(this, password.toString())
+                    .equals(PasswordStorage.get(InputPwdActivity.this))) {
+                onDeblock(true);
+                finish();
+            } else {
+                vibrateCheckPasswordFailed();
+                animCheckPasswordFailed();
+                retryTimes++;
+                int left = pwdRetryTimes - retryTimes;
+                if (left == 0) {
+                    onDeblock(false);
+                    finish();
+                }
+                clearPassword();
+                tvTip.setText(getString(R.string.more_attempts, left));
+            }
+        }
+    }
+
+    private void delPassword() {
+        if (position == 0) {
+            return;
+        }
+        //删除最后一位数字
+        password.deleteCharAt(password.length() - 1);
+        groupPassword.getChildAt(--position).setSelected(false);
     }
 
     private void onDeblock(boolean success) {

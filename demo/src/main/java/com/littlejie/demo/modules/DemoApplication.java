@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.littlejie.core.base.BaseApplication;
 import com.littlejie.core.crash.CrashHandler;
@@ -36,9 +37,15 @@ public class DemoApplication extends BaseApplication {
         PasswordManager.getInstance().setOnDeblockListener(new OnDeblockListener() {
             @Override
             public void onDeblock(DeblockType type, boolean success) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                if (DeblockType.DEBLOCK == type) {
+                    if (success) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "密码多次输入错误", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
