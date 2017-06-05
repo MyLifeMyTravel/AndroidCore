@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="locale_code">en-WW</string>
     <string name="switch_to_chinese">切换中文</string>
     <string name="switch_to_english">切换英文</string>
     <string name="current_language">当前语言:%s</string>

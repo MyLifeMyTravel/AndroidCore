@@ -1,9 +1,14 @@
 package com.littlejie.password;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.manager.TintManager;
 import com.littlejie.password.storage.PasswordStorage;
 import com.littlejie.password.ui.SetPwdView;
 
@@ -12,6 +17,7 @@ public class PwdSettingActivity extends BaseActivity {
     private static final int MAX_RETRY_TIMES = 5;
     private Toolbar toolbar;
     private SetPwdView setPwdView;
+    private ImageView ivLike;
 
     private int type = Constants.TYPE_SET_PASSWORD;
 
@@ -40,6 +46,7 @@ public class PwdSettingActivity extends BaseActivity {
     protected void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setPwdView = (SetPwdView) findViewById(R.id.set_password);
+        ivLike = (ImageView) findViewById(R.id.iv_like);
         setTitle();
     }
 
@@ -65,6 +72,32 @@ public class PwdSettingActivity extends BaseActivity {
                 processPasswordInput(pwd);
             }
         });
+        ivLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+                ivLike.setImageDrawable(TintManager.tintDrawable(PwdSettingActivity.this,
+                        R.drawable.icon_small_like_it_normal, getResources().getColor(R.color.main_color)));
+            }
+        });
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("测试")
+                .setCancelable(false)
+                .setMessage("测试自定义Dialog Style")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         STRING_IN_MEMORY = getString(R.string.string_in_memory);
-        LanguageUtil.init(this);
+//        LanguageUtil.init(this);
         registerActivityLifecycleCallbacks(callbacks);
     }
 

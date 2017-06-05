@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="locale_code">zh-SG</string>
+    <string name="switch_to_chinese">切换中文新加坡</string>
+    <string name="switch_to_english">切换英文新加坡</string>
+    <string name="current_language">当前语言:%s 新加坡</string>
+    <string name="string_in_memory">我是内存中的字符串 新加坡</string>
+</resources>

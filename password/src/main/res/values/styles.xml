@@ -19,4 +19,12 @@
         <!--<item name="android:windowBackground">@android:color/transparent</item>-->
         <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
+
+    <style name="SwitchCompatStyle" parent="AppTheme">
+        <item name="colorControlActivated">#4cd964</item>
+        <!-- Inactive thumb color switch关闭时的拇指按钮的颜色 -->
+        <!--<item name="colorSwitchThumbNormal">@color/main_color</item>-->
+        <!-- Inactive track color(30% transparency) switch关闭时的轨迹的颜色  30%这个颜色 -->
+        <!--<item name="android:colorForeground">#98f3a7</item>-->
+    </style>
 </resources>
