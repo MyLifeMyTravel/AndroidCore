@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_dialog"
     android:layout_width="match_parent"
@@ -12,17 +11,42 @@
         android:id="@+id/btn_show_single_choice_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="展示单选对话框"/>
+        android:text="展示单选对话框" />
 
     <Button
         android:id="@+id/btn_show_custom_single_choice_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="自定义单选对话框"/>
+        android:text="自定义单选对话框" />
 
     <Button
         android:id="@+id/btn_show_custom_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="自定义对话框"/>
+        android:text="自定义对话框" />
+
+    <!-- 验证 Dialog 点击之后是否会自动消失 -->
+    <Button
+        android:id="@+id/btn_show_cover_dialog_in_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="对话框上覆盖对话框" />
+
+    <Button
+        android:id="@+id/btn_show_cover_dialog_by_dialog_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DialogFragment上覆盖对话框" />
+
+    <Button
+        android:id="@+id/btn_show_cover_dialog_by_popup_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="在PopupWindow上显示对话框" />
+
+    <Button
+        android:id="@+id/btn_show_cover_dialog_by_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="在顶层View上显示对话框" />
 </LinearLayout>
