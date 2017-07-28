@@ -13,4 +13,8 @@
     <com.littlejie.demo.ui.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <com.littlejie.demo.ui.DynamicAddView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

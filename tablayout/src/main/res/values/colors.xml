@@ -3,17 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
-    <color name="gray">#f0f0f0</color>
 
     <color name="j06">#0de6e8</color>
     <color name="j06_alpha_30">#4d0de6e8</color>
     <color name="j09">#3cbcb7</color>
-    <color name="j15">@color/white</color>
+    <color name="white">@android:color/white</color>
     <color name="alpha_white">#A0FFFFFF</color>
-
-    <color name="main_color">@color/white</color>
-    <color name="primary_color">#E56CAC</color>
-    <color name="black_transparent_53">#87000000</color><!--255*0.53透明度-->
 </resources>

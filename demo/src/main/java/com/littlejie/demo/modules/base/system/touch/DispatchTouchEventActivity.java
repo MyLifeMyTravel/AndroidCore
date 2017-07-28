@@ -1,5 +1,6 @@
 package com.littlejie.demo.modules.base.system.touch;
 
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 
@@ -35,6 +37,8 @@ public class DispatchTouchEventActivity extends BaseActivity {
 
     }
 
+    private Rect rect = new Rect();
+
     @Override
     protected void initViewListener() {
         mBtnDispatchTouchEvent.setOnTouchListener(new View.OnTouchListener() {
@@ -48,8 +52,23 @@ public class DispatchTouchEventActivity extends BaseActivity {
                         Log.d(TAG, "onTouch: Button -- ACTION_MOVE");
                         break;
                     case MotionEvent.ACTION_UP:
+                        ToastUtil.showDefaultToast("Button Touch");
                         Log.d(TAG, "onTouch: Button -- ACTION_UP");
                         break;
+                }
+
+                v.getGlobalVisibleRect(rect);
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (event.getRawX() >= rect.left && event.getRawX() <= rect.right
+                            && event.getRawY() >= rect.top && event.getRawY() <= rect.bottom) {
+                        Log.d(TAG, "在Button范围内，eventX = " + event.getRawX() + ";eventY = " + event.getRawY()
+                                + ";viewX range = " + rect.toString());
+                        return false;
+                    } else {
+                        Log.d(TAG, "超出Button范围，eventX = " + event.getRawX() + ";eventY = " + event.getRawY()
+                                + ";view range = " + rect.toString());
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -72,8 +91,21 @@ public class DispatchTouchEventActivity extends BaseActivity {
                         Log.d(TAG, "onTouch: ImageView -- ACTION_MOVE");
                         break;
                     case MotionEvent.ACTION_UP:
+                        ToastUtil.showDefaultToast("ImageView Touch");
                         Log.d(TAG, "onTouch: ImageView -- ACTION_UP");
                         break;
+                }
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (event.getRawX() >= rect.left && event.getRawX() <= rect.right
+                            && event.getRawY() >= rect.top && event.getRawY() <= rect.bottom) {
+                        Log.d(TAG, "在ImageView范围内，eventX = " + event.getRawX() + ";eventY = " + event.getRawY()
+                                + ";viewX range = " + rect.toString());
+                        return false;
+                    } else {
+                        Log.d(TAG, "超出ImageView范围，eventX = " + event.getRawX() + ";eventY = " + event.getRawY()
+                                + ";view range = " + rect.toString());
+                        return true;
+                    }
                 }
                 return false;
             }

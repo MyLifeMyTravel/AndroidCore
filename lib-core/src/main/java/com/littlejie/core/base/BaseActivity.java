@@ -1,7 +1,6 @@
 package com.littlejie.core.base;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -29,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         super.onCreate(savedInstanceState);
         //设置所有 Activity 全部为竖屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getPageLayoutID());
         ActivityManager.addActivity(this);
         ButterKnife.bind(this);

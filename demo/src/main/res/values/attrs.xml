@@ -63,4 +63,15 @@
         <!-- 搜索效果的动画颜色 -->
         <attr name="searchColor" format="color|reference" />
     </declare-styleable>
+
+    <declare-styleable name="WeightView">
+        <!--小圆点的颜色-->
+        <attr name="small_round_color" format="color|reference"/>
+        <!--大圆点的颜色-->
+        <attr name="big_round_color" format="reference|color"/>
+        <!--刻度颜色-->
+        <attr name="scale_color" format="reference|color"/>
+        <!--刻度值颜色-->
+        <attr name="value_color" format="reference|color"/>
+    </declare-styleable>
 </resources>

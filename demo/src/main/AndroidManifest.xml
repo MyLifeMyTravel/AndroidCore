@@ -169,6 +169,7 @@
         <activity android:name=".modules.advance.ui.CustomUIListFragment" />
         <activity android:name=".modules.advance.ui.CustomUIActivity" />
         <activity android:name=".modules.base.ui.CustomTextActivity" />
+        <activity android:name=".modules.base.ui.WeightViewActivity" />
         <activity android:name=".modules.base.ui.PorterDuffActivity" />
         <activity android:name=".modules.advance.ui.CollapseActivity" />
         <activity android:name=".modules.advance.ui.SearchEffectActivity"></activity>
