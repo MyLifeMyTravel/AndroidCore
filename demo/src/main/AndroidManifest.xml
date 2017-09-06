@@ -76,7 +76,13 @@
         <activity android:name=".modules.base.notification.TaskStackBuilderActivity" />
         <activity android:name=".modules.base.notification.NotificationListenerServiceActivity" />
         <activity android:name=".modules.base.notification.ProgressNotifyActivity" />
-        <activity android:name=".modules.base.notification.NormalResultActivity" />
+        <activity
+            android:name=".modules.base.notification.NormalResultActivity"
+            android:parentActivityName=".modules.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".modules.MainActivity" />
+        </activity>
         <activity android:name=".modules.base.notification.SpecialResultActivity" />
         <activity android:name=".modules.base.notification.NotificationPriorityActivity" />
         <activity android:name=".modules.base.notification.HeadsUpNotificationActivity" />

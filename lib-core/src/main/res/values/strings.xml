@@ -1,4 +1,5 @@
 <resources>
+    <string name="base_language">en</string>
     <string name="app_name">Core</string>
     <string name="toast_not_found_open_this_file_app">没有找到打开该类型文件的应用！</string>
 </resources>

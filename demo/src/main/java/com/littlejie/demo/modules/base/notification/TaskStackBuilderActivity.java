@@ -42,6 +42,7 @@ public class TaskStackBuilderActivity extends BaseActivity {
     @OnClick(R.id.btn_regular)
     void sendRegularNotification() {
         Intent resultIntent = new Intent(this, NormalResultActivity.class);
+
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack
         stackBuilder.addParentStack(NormalResultActivity.class);
@@ -50,6 +51,8 @@ public class TaskStackBuilderActivity extends BaseActivity {
         // Gets a PendingIntent containing the entire back stack
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent resultPendingIntent =
+//                PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Regular Activity");

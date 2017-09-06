@@ -104,7 +104,7 @@ public final class SharePrefsUtil {
      * @param value
      */
     public void setInt(String field, int value) {
-        mSP.edit().putInt(field, value).commit();
+        mSP.edit().putInt(field, value).apply();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class SharePrefsUtil {
      * @param value
      */
     public void setFloat(String field, float value) {
-        mSP.edit().putFloat(field, value).commit();
+        mSP.edit().putFloat(field, value).apply();
     }
 
     /**
@@ -120,7 +120,7 @@ public final class SharePrefsUtil {
      * @param value
      */
     public void setLong(String field, long value) {
-        mSP.edit().putLong(field, value).commit();
+        mSP.edit().putLong(field, value).apply();
     }
 
     /**
@@ -128,11 +128,11 @@ public final class SharePrefsUtil {
      * @param value
      */
     public void setString(String field, String value) {
-        mSP.edit().putString(field, value).commit();
+        mSP.edit().putString(field, value).apply();
     }
 
     public void remove(String field) {
-        mSP.edit().remove(field).commit();
+        mSP.edit().remove(field).apply();
     }
 
     public boolean contains(String field) {
@@ -140,6 +140,6 @@ public final class SharePrefsUtil {
     }
 
     public void clear() {
-        mSP.edit().clear().commit();
+        mSP.edit().clear().apply();
     }
 }

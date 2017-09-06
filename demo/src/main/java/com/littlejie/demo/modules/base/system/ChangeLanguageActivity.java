@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
-import com.littlejie.core.util.LanguageUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.annotation.Title;
@@ -36,7 +35,6 @@ public class ChangeLanguageActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        tvLanguage.setText(getString(R.string.current_language, LanguageUtil.getAppLanguage(this)));
     }
 
     @Override
@@ -45,13 +43,11 @@ public class ChangeLanguageActivity extends BaseActivity {
 
     @OnClick(R.id.btn_chinese)
     void switch2Chinese() {
-        LanguageUtil.changeAppLanguage(this, "zh", "CN");
         restartApplication();
     }
 
     @OnClick(R.id.btn_english)
     void switch2English() {
-        LanguageUtil.changeAppLanguage(this, "en", "");
         restartApplication();
     }
 

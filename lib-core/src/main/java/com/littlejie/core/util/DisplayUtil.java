@@ -1,6 +1,8 @@
 package com.littlejie.core.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 /**
  * dp、sp和px相互转化的工具类
@@ -56,5 +58,17 @@ public class DisplayUtil {
     public static int sp2px(Context context, float sp) {
         float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (sp * scale + 0.5f);
+    }
+
+    public static int getScreenWidth(Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.widthPixels;
+    }
+
+    public static int getScreenHeight(Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.heightPixels;
     }
 }

@@ -91,4 +91,23 @@ public class IntentUtil {
         Intent intent = new Intent(action);
         context.startActivity(intent);
     }
+
+    public static void openNotificationSetting(Context context) {
+        openNotificationSetting(context, context.getPackageName(),
+                context.getApplicationInfo().uid);
+    }
+
+    public static void openNotificationSetting(Context context, String packageName, int uid) {
+        Intent intent = new Intent();
+        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+
+        //for Android 5-7
+        intent.putExtra("app_package", packageName);
+        intent.putExtra("app_uid", uid);
+
+        // for Android O
+        intent.putExtra("android.provider.extra.APP_PACKAGE", packageName);
+
+        context.startActivity(intent);
+    }
 }
