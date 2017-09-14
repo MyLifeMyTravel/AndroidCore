@@ -1,5 +1,7 @@
 package com.littlejie.alarm;
 
+import android.content.Intent;
+
 import com.littlejie.alarm.models.Alarm;
 import com.littlejie.core.base.BaseActivity;
 
@@ -36,7 +38,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_set_alarm)
     void setAlarm() {
-
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @OnClick(R.id.btn_set_alarm_thrity_seconds_later)

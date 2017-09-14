@@ -44,4 +44,16 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
+    <style name="ProgressBarTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorAccent">@color/j06</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <!--<style name="ProgressBar" parent="Widget.AppCompat.ProgressBar">-->
+        <!--<item name="colorAccent">@color/primary_color</item>-->
+        <!--<item name="colorPrimary">@color/primary_color</item>-->
+        <!--<item name="colorPrimaryDark">@color/primary_color</item>-->
+    <!--</style>-->
 </resources>

@@ -179,6 +179,9 @@
         <activity android:name=".modules.base.ui.PorterDuffActivity" />
         <activity android:name=".modules.advance.ui.CollapseActivity" />
         <activity android:name=".modules.advance.ui.SearchEffectActivity"></activity>
+        <activity
+            android:name=".modules.base.ui.ProgressBarActivity"
+            android:theme="@style/ProgressBarTheme" />
     </application>
 
 </manifest>
