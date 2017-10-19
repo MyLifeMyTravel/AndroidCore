@@ -182,6 +182,9 @@
         <activity
             android:name=".modules.base.ui.ProgressBarActivity"
             android:theme="@style/ProgressBarTheme" />
+        <activity android:name=".modules.base.system.WindowManagerActivity" />
+        <activity android:name=".modules.base.system.touch.ImageTouchActivity" />
+        <activity android:name=".modules.base.ui.ResizeViewPagerActivity" />
     </application>
 
 </manifest>

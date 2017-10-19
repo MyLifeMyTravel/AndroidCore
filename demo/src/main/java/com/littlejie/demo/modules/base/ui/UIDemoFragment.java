@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.littlejie.demo.annotation.Title;
 import com.littlejie.demo.modules.BaseListFragment;
+import com.littlejie.demo.modules.base.system.touch.ImageTouchActivity;
 import com.littlejie.demo.modules.base.system.touch.ViewMoveActivity;
 
 /**
@@ -26,10 +27,12 @@ public class UIDemoFragment extends BaseListFragment {
         super.process(savedInstanceState);
         mLstItem.add(DialogActivity.class);
         mLstItem.add(ViewMoveActivity.class);
+        mLstItem.add(ImageTouchActivity.class);
         mLstItem.add(CustomTextActivity.class);
         mLstItem.add(ProgressBarActivity.class);
         mLstItem.add(WeightViewActivity.class);
         mLstItem.add(PorterDuffActivity.class);
+        mLstItem.add(ResizeViewPagerActivity.class);
         notifyDataChanged();
     }
 }
