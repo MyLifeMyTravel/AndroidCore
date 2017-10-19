@@ -33,6 +33,7 @@ public class UIDemoFragment extends BaseListFragment {
         mLstItem.add(WeightViewActivity.class);
         mLstItem.add(PorterDuffActivity.class);
         mLstItem.add(ResizeViewPagerActivity.class);
+        mLstItem.add(ExpandableRecyclerActivity.class);
         notifyDataChanged();
     }
 }

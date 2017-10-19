@@ -178,13 +178,14 @@
         <activity android:name=".modules.base.ui.WeightViewActivity" />
         <activity android:name=".modules.base.ui.PorterDuffActivity" />
         <activity android:name=".modules.advance.ui.CollapseActivity" />
-        <activity android:name=".modules.advance.ui.SearchEffectActivity"></activity>
+        <activity android:name=".modules.advance.ui.SearchEffectActivity"/>
         <activity
             android:name=".modules.base.ui.ProgressBarActivity"
             android:theme="@style/ProgressBarTheme" />
         <activity android:name=".modules.base.system.WindowManagerActivity" />
         <activity android:name=".modules.base.system.touch.ImageTouchActivity" />
         <activity android:name=".modules.base.ui.ResizeViewPagerActivity" />
+        <activity android:name=".modules.base.ui.ExpandableRecyclerActivity" />
     </application>
 
 </manifest>
