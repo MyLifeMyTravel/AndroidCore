@@ -1,18 +1,21 @@
 package com.littlejie.demo.modules.base.ui;
 
+import android.animation.ObjectAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.ui.adapter.ExpandableRecyclerAdapter;
+import com.littlejie.core.ui.adapter.ExpandableRecyclerAdapter.Item;
+import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
-import com.littlejie.demo.ui.adapter.ExpandableRecyclerAdapter;
-import com.littlejie.demo.ui.adapter.ExpandableRecyclerAdapter.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +70,21 @@ public class ExpandableRecyclerActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
+        mAdapter.setOnCollapseAnimatorListener(new ExpandableRecyclerAdapter.OnCollapseAnimatorListener() {
+            @Override
+            public void onCollapseAnimatorStart(ExpandableRecyclerAdapter.BaseViewHolder holder, boolean isCollapse) {
+                ParentViewHolder viewHolder = (ParentViewHolder) holder;
+                int start = isCollapse ? -180 : 0;
+                int end = isCollapse ? 0 : -180;
+                ObjectAnimator animator = ObjectAnimator.ofFloat(viewHolder.mIvArrow, "rotation", start, end);
+                animator.setDuration(isCollapse ? mAdapter.getItemAddDuration() : mAdapter.getItemRemoveDuration());
+                animator.start();
+            }
 
+            @Override
+            public void onCollapseAnimatorFinish(ExpandableRecyclerAdapter.BaseViewHolder holder, boolean isCollapse) {
+            }
+        });
     }
 
     @Override
@@ -103,6 +120,8 @@ public class ExpandableRecyclerActivity extends BaseActivity {
 
         @BindView(R.id.tv_parent)
         TextView mTvParent;
+        @BindView(R.id.iv_arrow)
+        ImageView mIvArrow;
 
         public ParentViewHolder(View itemView) {
             super(itemView);
@@ -139,14 +158,15 @@ public class ExpandableRecyclerActivity extends BaseActivity {
         }
 
         @Override
-        protected void bindParentViewHolder(BaseViewHolder holder, final int position, ParentInfo parent) {
+        protected void bindParentViewHolder(final BaseViewHolder holder, Item item, ParentInfo parent, final int position) {
             Log.d(TAG, "bindParentViewHolder " + position);
             final ParentViewHolder viewHolder = (ParentViewHolder) holder;
             viewHolder.mTvParent.setText(parent.getParent());
+            viewHolder.mIvArrow.setRotation(item.isCollapse() ? -180 : 0);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    collapse(position);
+                    collapse(holder, position);
                 }
             });
         }

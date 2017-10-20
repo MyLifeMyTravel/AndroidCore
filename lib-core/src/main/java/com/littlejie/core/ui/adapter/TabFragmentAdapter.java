@@ -1,4 +1,4 @@
-package com.littlejie.core.adapter;
+package com.littlejie.core.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

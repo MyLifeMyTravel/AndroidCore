@@ -1,5 +1,6 @@
-package com.littlejie.demo.ui.adapter;
+package com.littlejie.core.ui.adapter;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,11 @@ public abstract class ExpandableRecyclerAdapter<K, V>
     private static final int TYPE_CHILD = 2;
 
     private List<Item<K, V>> mItemList;
+    private long mItemAddDuration;
+    private long mItemRemoveDuration;
+
+    private OnCollapseAnimatorListener mOnCollapseAnimatorListener;
+    private Handler mHandler = new Handler();
 
     public void setItemList(List<Item<K, V>> itemList) {
         mItemList = itemList;
@@ -29,12 +35,26 @@ public abstract class ExpandableRecyclerAdapter<K, V>
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder,viewType = " + getViewTypeString(viewType));
+        initItemAnimatorDuration(parent);
         if (viewType == TYPE_PARENT) {
             return inflateParentViewHolder(parent, viewType);
         } else if (viewType == TYPE_CHILD) {
             return inflateChildViewHolder(parent, viewType);
         }
         return null;
+    }
+
+    private void initItemAnimatorDuration(ViewGroup parent) {
+        if (mItemAddDuration != 0 && mItemRemoveDuration != 0) {
+            return;
+        }
+        if (!(parent instanceof RecyclerView)) {
+            return;
+        }
+        RecyclerView recyclerView = (RecyclerView) parent;
+        mItemAddDuration = recyclerView.getItemAnimator().getAddDuration();
+        mItemRemoveDuration = recyclerView.getItemAnimator().getRemoveDuration();
+        Log.d(TAG, "mItemAddDuration = " + mItemAddDuration + ";mItemRemoveDuration = " + mItemRemoveDuration);
     }
 
     protected abstract BaseViewHolder inflateParentViewHolder(ViewGroup parent, int viewType);
@@ -48,7 +68,7 @@ public abstract class ExpandableRecyclerAdapter<K, V>
                 + ";viewType is " + getViewTypeString(viewType));
         int parentPosition = getParentPosition(position);
         if (viewType == TYPE_PARENT) {
-            bindParentViewHolder(holder, parentPosition, getParent(position));
+            bindParentViewHolder(holder, mItemList.get(parentPosition), getParent(position), parentPosition);
         } else if (viewType == TYPE_CHILD) {
             bindChildViewHolder(holder, mItemList.get(parentPosition), getChild(position));
         }
@@ -61,10 +81,11 @@ public abstract class ExpandableRecyclerAdapter<K, V>
 
     /**
      * @param holder
-     * @param position 父Item的位置，排除子Item
+     * @param item     item数据
      * @param parent   父Item 的数据
+     * @param position 父Item的位置，排除子Item
      */
-    protected abstract void bindParentViewHolder(BaseViewHolder holder, int position, K parent);
+    protected abstract void bindParentViewHolder(BaseViewHolder holder, Item item, K parent, int position);
 
     /**
      * @param holder
@@ -72,6 +93,35 @@ public abstract class ExpandableRecyclerAdapter<K, V>
      * @param child  子Item 的数据
      */
     protected abstract void bindChildViewHolder(BaseViewHolder holder, Item item, V child);
+
+    @Override
+    public int getItemCount() {
+        int parentCount = mItemList.size();
+        int childCount = 0;
+        for (Item wrapper : mItemList) {
+            if (!wrapper.isCollapse()) {
+                childCount += wrapper.getChildList().size();
+            }
+        }
+        return parentCount + childCount;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int count = 0;
+        for (Item wrapper : mItemList) {
+            if (count++ == position) {
+                return TYPE_PARENT;
+            }
+            if (!wrapper.isCollapse()) {
+                count += wrapper.getChildList().size();
+            }
+            if (position < count) {
+                return TYPE_CHILD;
+            }
+        }
+        return TYPE_PARENT;
+    }
 
     private int getParentPosition(int position) {
         int start = 0;
@@ -109,17 +159,32 @@ public abstract class ExpandableRecyclerAdapter<K, V>
         return item.getChildList().get(getChildPositionInParent(position));
     }
 
-    public void collapse(int position) {
+    public void collapse(BaseViewHolder holder, int position) {
         Item<K, V> item = mItemList.get(position);
         int childCount = item.getChildList().size();
         int start = getCountByParentPosition(position) + 1;
-        Log.d(TAG, "collapse,parent item = " + position + ";start = " + start + ";childCount = " + childCount);
-        if (!item.isCollapse()) {
-            notifyItemRangeRemoved(start, childCount);
-        } else {
+        Log.d(TAG, "collapse,parent item = " + position
+                + ";start = " + start + ";childCount = " + childCount);
+        if (item.isCollapse()) {
             notifyItemRangeInserted(start, childCount);
+        } else {
+            notifyItemRangeRemoved(start, childCount);
         }
+        notifyCollapseAnimator(holder, mItemRemoveDuration, item.isCollapse());
         item.setCollapse(!item.isCollapse());
+    }
+
+    private void notifyCollapseAnimator(final BaseViewHolder holder, long delay, final boolean isCollapse) {
+        if (mOnCollapseAnimatorListener == null) {
+            return;
+        }
+        mOnCollapseAnimatorListener.onCollapseAnimatorStart(holder, isCollapse);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mOnCollapseAnimatorListener.onCollapseAnimatorFinish(holder, !isCollapse);
+            }
+        }, delay);
     }
 
     private int getCountByParentPosition(int position) {
@@ -134,33 +199,32 @@ public abstract class ExpandableRecyclerAdapter<K, V>
         return count;
     }
 
-    @Override
-    public int getItemCount() {
-        int parentCount = mItemList.size();
-        int childCount = 0;
-        for (Item wrapper : mItemList) {
-            if (!wrapper.isCollapse()) {
-                childCount += wrapper.getChildList().size();
-            }
-        }
-        return parentCount + childCount;
+    public void setOnCollapseAnimatorListener(OnCollapseAnimatorListener onCollapseAnimatorListener) {
+        mOnCollapseAnimatorListener = onCollapseAnimatorListener;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        int count = 0;
-        for (Item wrapper : mItemList) {
-            if (count++ == position) {
-                return TYPE_PARENT;
-            }
-            if (!wrapper.isCollapse()) {
-                count += wrapper.getChildList().size();
-            }
-            if (position < count) {
-                return TYPE_CHILD;
-            }
-        }
-        return TYPE_PARENT;
+    public interface OnCollapseAnimatorListener {
+        /**
+         * 折叠、展开动画开始
+         *
+         * @param isCollapse false表示展开，true表示折叠
+         */
+        void onCollapseAnimatorStart(BaseViewHolder holder, boolean isCollapse);
+
+        /**
+         * 折叠、展开动画结束
+         *
+         * @param isCollapse false表示已经折叠，true表示已经展开
+         */
+        void onCollapseAnimatorFinish(BaseViewHolder holder, boolean isCollapse);
+    }
+
+    public long getItemAddDuration() {
+        return mItemAddDuration;
+    }
+
+    public long getItemRemoveDuration() {
+        return mItemRemoveDuration;
     }
 
     public static class Item<K, V> {
