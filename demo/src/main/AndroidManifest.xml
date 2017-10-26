@@ -186,6 +186,7 @@
         <activity android:name=".modules.base.system.touch.ImageTouchActivity" />
         <activity android:name=".modules.base.ui.ResizeViewPagerActivity" />
         <activity android:name=".modules.base.ui.ExpandableRecyclerActivity" />
+        <activity android:name=".modules.base.ui.NestedScrollingActivity" />
     </application>
 
 </manifest>

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.core.ui.adapter.ExpandableRecyclerAdapter;
 import com.littlejie.core.ui.adapter.ExpandableRecyclerAdapter.Item;
-import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 
