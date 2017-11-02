@@ -35,6 +35,8 @@ public class UIDemoFragment extends BaseListFragment {
         mLstItem.add(ResizeViewPagerActivity.class);
         mLstItem.add(ExpandableRecyclerActivity.class);
         mLstItem.add(NestedScrollingActivity.class);
+        mLstItem.add(ScrollExpandActivity.class);
+        mLstItem.add(LottieActivity.class);
         notifyDataChanged();
     }
 

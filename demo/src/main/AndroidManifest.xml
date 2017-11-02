@@ -187,6 +187,8 @@
         <activity android:name=".modules.base.ui.ResizeViewPagerActivity" />
         <activity android:name=".modules.base.ui.ExpandableRecyclerActivity" />
         <activity android:name=".modules.base.ui.NestedScrollingActivity" />
+        <activity android:name=".modules.base.ui.ScrollExpandActivity" />
+        <activity android:name=".modules.base.ui.LottieActivity" />
     </application>
 
 </manifest>
