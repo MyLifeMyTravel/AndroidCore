@@ -1,9 +1,12 @@
 package com.littlejie.demo.modules.base.ui;
 
+import android.os.Handler;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
+import com.littlejie.demo.ui.SearchDeviceImageView;
 
 import butterknife.BindView;
 
@@ -13,8 +16,13 @@ import butterknife.BindView;
 @Description(description = "Lottie 动画")
 public class LottieActivity extends BaseActivity {
 
-    @BindView(R.id.iv_search_ble)
-    LottieAnimationView lottieAnimationView;
+//    @BindView(R.id.iv_search_ble)
+//    LottieAnimationView lottieAnimationView;
+
+//    @BindView(R.id.iv_search_ble)
+//    SearchDeviceImageView ivSearch;
+
+    private Handler handler = new Handler();
 
     @Override
     protected int getPageLayoutID() {
@@ -28,7 +36,7 @@ public class LottieActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        lottieAnimationView.playAnimation();
+//        lottieAnimationView.playAnimation();
     }
 
     @Override
@@ -39,5 +47,23 @@ public class LottieActivity extends BaseActivity {
     @Override
     protected void process() {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //延迟动画，不然会出现重叠，原因未知
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ivSearch.start();
+//            }
+//        }, 100);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        ivSearch.stop();
     }
 }

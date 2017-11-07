@@ -57,21 +57,28 @@
         <!--<attr name="icon_expand" format="reference" />-->
     </declare-styleable>
 
+    <attr name="interval" format="integer" />
+    <attr name="duration" format="integer" />
     <declare-styleable name="SearchImageView">
-        <attr name="interval" format="integer" />
-        <attr name="duration" format="integer" />
+        <attr name="interval" />
+        <attr name="duration" />
         <!-- 搜索效果的动画颜色 -->
         <attr name="searchColor" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="WeightView">
         <!--小圆点的颜色-->
-        <attr name="small_round_color" format="color|reference"/>
+        <attr name="small_round_color" format="color|reference" />
         <!--大圆点的颜色-->
-        <attr name="big_round_color" format="reference|color"/>
+        <attr name="big_round_color" format="reference|color" />
         <!--刻度颜色-->
-        <attr name="scale_color" format="reference|color"/>
+        <attr name="scale_color" format="reference|color" />
         <!--刻度值颜色-->
-        <attr name="value_color" format="reference|color"/>
+        <attr name="value_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchDeviceImageView">
+        <attr name="interval" />
+        <attr name="duration" />
     </declare-styleable>
 </resources>

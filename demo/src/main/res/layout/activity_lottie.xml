@@ -4,13 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.airbnb.lottie.LottieAnimationView
+    <!--<com.airbnb.lottie.LottieAnimationView-->
+    <!--android:id="@+id/iv_search_ble"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--app:lottie_fileName="bind_scaning.json"-->
+    <!--app:lottie_imageAssetsFolder="images/bind_scaning"-->
+    <!--app:lottie_loop="true" />-->
+
+    <!--<com.littlejie.demo.ui.SearchDeviceImageView-->
+    <!--android:id="@+id/iv_search_ble"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_marginTop="80dp"-->
+    <!--android:padding="40dp"-->
+    <!--android:src="@drawable/binding_device_search"-->
+    <!--app:duration="1400"-->
+    <!--app:interval="500" />-->
+
+    <com.littlejie.demo.ui.SearchDeviceImageView2
         android:id="@+id/iv_search_ble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:lottie_fileName="bind_scaning.json"
-        app:lottie_imageAssetsFolder="images/bind_scaning"
-        app:lottie_loop="true" />
+        android:layout_margin="40dp" />
 
 </LinearLayout>
