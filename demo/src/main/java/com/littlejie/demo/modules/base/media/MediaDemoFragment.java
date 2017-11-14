@@ -30,6 +30,8 @@ public class MediaDemoFragment extends BaseListFragment {
         mLstItem.add(MediaLibraryActivity.class);
         mLstItem.add(ThumbnailsActivity.class);
         mLstItem.add(FileActionActivity.class);
+        mLstItem.add(TakePhotoActivity.class);
+        mLstItem.add(SystemGalleryActivity.class);
         notifyDataChanged();
     }
 }
