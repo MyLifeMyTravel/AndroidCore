@@ -38,6 +38,7 @@ public class UIDemoFragment extends BaseListFragment {
         mLstItem.add(ScrollExpandActivity.class);
         mLstItem.add(LottieActivity.class);
         mLstItem.add(LayoutTransitionAnimatorActivity.class);
+        mLstItem.add(SurfaceViewActivity.class);
         notifyDataChanged();
     }
 

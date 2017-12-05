@@ -10,8 +10,8 @@
     <!-- 监听网络状态改变 -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- 读写权限 -->
-     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 联系人读写权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -202,7 +202,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
+
         <activity android:name=".modules.base.media.SystemGalleryActivity" />
+        <activity
+            android:name=".modules.base.media.CameraActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".modules.base.media.Camera2Activity" />
+        <activity android:name=".modules.base.ui.SurfaceViewActivity" />
     </application>
 
 </manifest>
