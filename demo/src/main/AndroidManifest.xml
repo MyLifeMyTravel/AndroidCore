@@ -208,8 +208,12 @@
             android:name=".modules.base.media.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".modules.base.media.Camera2Activity" />
+        <activity
+            android:name=".modules.base.media.Camera2Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".modules.base.ui.SurfaceViewActivity" />
+        <activity android:name=".modules.base.ui.SimplePathActivity"></activity>
     </application>
 
 </manifest>

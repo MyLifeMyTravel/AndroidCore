@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".modules.base.media.CameraActivity">
 
-    <com.littlejie.demo.modules.base.media.view.CameraSurfaceView
+    <com.littlejie.demo.modules.base.media.view.Camera1SurfaceView
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

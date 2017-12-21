@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.littlejie.core.util.ToastUtil;
+import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +22,16 @@ import java.util.List;
  * Created by littlejie on 2017/12/4.
  */
 
-public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class Camera1SurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final String TAG = CameraSurfaceView.class.getSimpleName();
+    private static final String TAG = Camera1SurfaceView.class.getSimpleName();
     //自动对焦区域
     private static final int AUTO_FOCUS_AREA = 300;
 
     private Camera mCamera;
+    private OnImageDataListener mOnImageDataListener;
 
-    public CameraSurfaceView(Context context, AttributeSet attrs) {
+    public Camera1SurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -61,6 +63,24 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
             //旋转90度，API<14、API>=14&API<24、API>24
             mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(holder);
+
+            int width = getWidth();
+            int height = getHeight();
+            Camera.Parameters parameters = mCamera.getParameters();
+            Point previewResolution =
+                    findBestSize(parameters.getSupportedPreviewSizes(), new Point(width, height));
+            Point pictureResolution =
+                    findBestSize(parameters.getSupportedPictureSizes(), new Point(width, height));
+
+            Log.i(TAG, "preview size: " + previewResolution.x + "|" + previewResolution.y);
+            Log.i(TAG, "picture size: " + pictureResolution.x + "|" + pictureResolution.y);
+
+            //设置预览尺寸
+            parameters.setPreviewSize(previewResolution.x, previewResolution.y);
+            //设置图片尺寸
+            parameters.setPictureSize(pictureResolution.x, pictureResolution.y);
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            mCamera.setParameters(parameters);
             mCamera.startPreview();
         } catch (Exception e) {
             Log.d(TAG, "Throw exception while open camera.Exception message : " + e.getMessage());
@@ -71,25 +91,6 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.d(TAG, "surfaceChanged");
-        if (!checkCameraOpen()) {
-            return;
-        }
-        Camera.Parameters parameters = mCamera.getParameters();
-        Point previewResolution =
-                findBestSize(parameters.getSupportedPreviewSizes(), new Point(width, height));
-        Point pictureResolution =
-                findBestSize(parameters.getSupportedPictureSizes(), new Point(width, height));
-
-        Log.i(TAG, "preview size: " + previewResolution.x + "|" + previewResolution.y);
-        Log.i(TAG, "picture size: " + pictureResolution.x + "|" + pictureResolution.y);
-
-        //设置预览尺寸
-        parameters.setPreviewSize(previewResolution.x, previewResolution.y);
-        //设置图片尺寸
-        parameters.setPictureSize(pictureResolution.x, pictureResolution.y);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        mCamera.setParameters(parameters);
-        //doAutoFocus(mScreenWidth / 2, mScreenHeight / 2);
     }
 
     @Override
@@ -227,14 +228,22 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     /**
      * 封装 Camera 对象的 takePicture 方法
-     *
-     * @param pictureCallback
      */
-    public void takePicture(Camera.PictureCallback pictureCallback) {
+    public void takePicture() {
         if (!checkCameraOpen()) {
             return;
         }
-        mCamera.takePicture(null, null, pictureCallback);
+        mCamera.takePicture(null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(final byte[] data, final Camera camera) {
+                if (mOnImageDataListener != null) {
+                    mOnImageDataListener.onImageData(data);
+                }
+            }
+        });
     }
 
+    public void setOnImageDataListener(final OnImageDataListener onImageDataListener) {
+        mOnImageDataListener = onImageDataListener;
+    }
 }
