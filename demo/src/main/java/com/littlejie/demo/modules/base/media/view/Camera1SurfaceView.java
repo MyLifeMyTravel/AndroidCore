@@ -61,6 +61,8 @@ public class Camera1SurfaceView extends SurfaceView implements SurfaceHolder.Cal
         try {
             mCamera = Camera.open();
             //旋转90度，API<14、API>=14&API<24、API>24
+            //Activity为横屏情况下，不用设置。
+            //竖屏情况下顺时针旋转90才能正常显示
             mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(holder);
 

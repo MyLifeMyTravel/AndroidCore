@@ -51,6 +51,8 @@ import java.util.Arrays;
 public class Camera2SurfaceView extends TextureView implements TextureView.SurfaceTextureListener {
 
     private static final String TAG = Camera2SurfaceView.class.getSimpleName();
+    private static final String TAG_CAPTURE = "Capture";
+
     /**
      * Conversion from screen rotation to JPEG orientation.
      */
@@ -168,13 +170,16 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         private void process(CaptureResult result) {
             switch (mState) {
                 case STATE_PREVIEW: {
+                    Log.w(TAG_CAPTURE, "STATE_PREVIEW");
                     // We have nothing to do when the camera preview is working normally.
                     break;
                 }
                 case STATE_WAITING_LOCK: {
+                    Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK");
                     // 等待锁定的状态，某些设备完成锁定后 CONTROL_AF_STATE 可能为 null
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                     if (afState == null) {
+                        Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK:captureStillPicture");
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
                             CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
@@ -183,10 +188,12 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null ||
                                 aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
+                            Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK->STATE_PICTURE_TAKEN");
                             // 若果自动曝光良好，将状态置为可拍照，并执行拍照
                             mState = STATE_PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
+                            Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK:runPrecaptureSequence");
                             // 以上状态都不满足，执行预拍照
                             runPrecaptureSequence();
                         }
@@ -194,19 +201,22 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
                     break;
                 }
                 case STATE_WAITING_PRECAPTURE: {
+                    Log.w(TAG_CAPTURE, "STATE_WAITING_PRECAPTURE");
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null ||
-                            aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
-                            aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
+                            aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
+                        Log.w(TAG_CAPTURE, "STATE_WAITING_PRECAPTURE->STATE_WAITING_NON_PRECAPTURE");
                         mState = STATE_WAITING_NON_PRECAPTURE;
                     }
                     break;
                 }
                 case STATE_WAITING_NON_PRECAPTURE: {
+                    Log.w(TAG_CAPTURE, "STATE_WAITING_NON_PRECAPTURE");
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
+                        Log.w(TAG_CAPTURE, "STATE_WAITING_NON_PRECAPTURE->STATE_PICTURE_TAKEN");
                         mState = STATE_PICTURE_TAKEN;
                         captureStillPicture();
                     }
@@ -316,6 +326,7 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         }
         //设置相机参数
         setupCameraParameter(width, height);
+        configureTransform(width, height);
         //打开相机
         try {
             mCameraManager.openCamera(CAMERA_ID, mStateCallback, mCameraHandler);
@@ -386,8 +397,6 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
                                 // Auto focus should be continuous for camera preview.
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                                // Flash is automatically enabled when necessary.
-                                // setAutoFlash(mPreviewRequestBuilder);
 
                                 mPreviewRequest = mPreviewRequestBuilder.build();
                                 // 开启预览，预览数据通过 mCaptureCallback 回调出来
@@ -420,6 +429,7 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
             }
 
             mSensorOrientation = mCameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            Log.d(TAG, "mSensorOrientation = " + mSensorOrientation);
 
             Size displaySize = new Size(width, height);
 
@@ -557,12 +567,12 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
             // Use the same AE and AF modes as the preview.
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            // setAutoFlash(captureBuilder);
 
             // 获取手机方向
             int rotation = ((Activity) getContext()).getWindowManager().getDefaultDisplay().getRotation();
             // 根据设备方向计算设置照片的方向
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
+            Log.d(TAG, "orientation = " + getOrientation(rotation));
 
             mCameraCaptureSession.stopRepeating();
             mCameraCaptureSession.abortCaptures();
@@ -626,11 +636,10 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
 
         final Rect sensorArraySize = mCameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
 
-        //TODO: here I just flip x,y, but this needs to correspond with the sensor orientation (via SENSOR_ORIENTATION)
         final int y = (int) ((event.getX() / (float) getWidth()) * (float) sensorArraySize.height());
         final int x = (int) ((event.getY() / (float) getHeight()) * (float) sensorArraySize.width());
-        final int halfTouchWidth = 150; //(int)motionEvent.getTouchMajor(); //TODO: this doesn't represent actual touch size in pixel. Values range in [3, 10]...
-        final int halfTouchHeight = 150; //(int)motionEvent.getTouchMinor();
+        final int halfTouchWidth = 150;
+        final int halfTouchHeight = 150;
         MeteringRectangle focusAreaTouch = new MeteringRectangle(Math.max(x - halfTouchWidth, 0),
                 Math.max(y - halfTouchHeight, 0),
                 halfTouchWidth * 2,
@@ -669,8 +678,8 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
             Log.d(TAG, "Manual AF success: " + result);
-            mManualFocusEngaged = false;
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            mManualFocusEngaged = false;
             unlockFocus();
         }
 
