@@ -10,7 +10,7 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
-import com.littlejie.demo.modules.base.media.view.Camera2SurfaceView;
+import com.littlejie.demo.modules.base.media.view.Camera2TextureView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 public class Camera2Activity extends BaseActivity {
 
     @BindView(R.id.surface_view)
-    Camera2SurfaceView mSurfaceView;
+    Camera2TextureView mSurfaceView;
     @BindView(R.id.iv_photo)
     ImageView mIvPhoto;
     @BindView(R.id.btn_take_photo)
@@ -53,7 +53,6 @@ public class Camera2Activity extends BaseActivity {
                     mBtnTakePhoto.setText("预览");
                     //将 data 数据转换成 Bitmap
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 3;
                     mIvPhoto.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length, options));
                 }
                 Log.d(TAG, "spend time = " + (System.currentTimeMillis() - currentTimeInMills));

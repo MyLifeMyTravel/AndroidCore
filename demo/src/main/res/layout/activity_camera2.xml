@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".modules.base.media.Camera2Activity">
 
-    <com.littlejie.demo.modules.base.media.view.Camera2SurfaceView
+    <com.littlejie.demo.modules.base.media.view.Camera2TextureView
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

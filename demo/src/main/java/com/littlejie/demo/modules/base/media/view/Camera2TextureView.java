@@ -42,16 +42,15 @@ import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Camera2 Api 实现的相机
- * Created by littlejie on 2017/12/6.
+ * Created by littlejie on 2017/12/22.
  */
-@TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
-public class Camera2SurfaceView extends TextureView implements TextureView.SurfaceTextureListener {
 
-    private static final String TAG = Camera2SurfaceView.class.getSimpleName();
-    private static final String TAG_CAPTURE = "Capture";
+@TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
+public class Camera2TextureView extends TextureView implements TextureView.SurfaceTextureListener {
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -64,6 +63,11 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
+
+    /**
+     * Tag for the {@link Log}.
+     */
+    private static final String TAG = "Camera2BasicFragment";
 
     /**
      * Camera state: Showing camera preview.
@@ -105,258 +109,36 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
     //拍照或预览是，调用CameraCaptureSession需要一个CaptureRequest对象
     private CaptureRequest mPreviewRequest;
     private CaptureRequest.Builder mPreviewRequestBuilder;
-
-    private final CameraCaptureSession.CaptureCallback mCaptureCallback = new CameraCaptureSession.CaptureCallback() {
-
-        @Override
-        public void onCaptureStarted(@NonNull final CameraCaptureSession session,
-                                     @NonNull final CaptureRequest request,
-                                     final long timestamp, final long frameNumber) {
-            //拍照时快门声音或拍照时动画
-            super.onCaptureStarted(session, request, timestamp, frameNumber);
-            Log.d(TAG, "onCaptureStarted");
-        }
-
-        @Override
-        public void onCaptureProgressed(@NonNull final CameraCaptureSession session,
-                                        @NonNull final CaptureRequest request,
-                                        @NonNull final CaptureResult partialResult) {
-            super.onCaptureProgressed(session, request, partialResult);
-            Log.d(TAG, "onCaptureProgressed");
-            process(partialResult);
-        }
-
-        @Override
-        public void onCaptureCompleted(@NonNull final CameraCaptureSession session,
-                                       @NonNull final CaptureRequest request,
-                                       @NonNull final TotalCaptureResult result) {
-            //拍照结束时回调
-            //TotalCaptureResult包含拍照过程中所有CaptureRequest
-            super.onCaptureCompleted(session, request, result);
-            Log.d(TAG, "onCaptureCompleted");
-            process(result);
-        }
-
-        @Override
-        public void onCaptureFailed(@NonNull final CameraCaptureSession session,
-                                    @NonNull final CaptureRequest request,
-                                    @NonNull final CaptureFailure failure) {
-            super.onCaptureFailed(session, request, failure);
-            Log.d(TAG, "onCaptureFailed");
-        }
-
-        @Override
-        public void onCaptureSequenceCompleted(@NonNull final CameraCaptureSession session,
-                                               final int sequenceId, final long frameNumber) {
-            super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
-            Log.d(TAG, "onCaptureSequenceCompleted");
-        }
-
-        @Override
-        public void onCaptureSequenceAborted(@NonNull final CameraCaptureSession session,
-                                             final int sequenceId) {
-            super.onCaptureSequenceAborted(session, sequenceId);
-            Log.d(TAG, "onCaptureSequenceAborted");
-        }
-
-        @Override
-        public void onCaptureBufferLost(@NonNull final CameraCaptureSession session,
-                                        @NonNull final CaptureRequest request,
-                                        @NonNull final Surface target, final long frameNumber) {
-            super.onCaptureBufferLost(session, request, target, frameNumber);
-            Log.d(TAG, "onCaptureBufferLost");
-        }
-
-        private void process(CaptureResult result) {
-            switch (mState) {
-                case STATE_PREVIEW: {
-                    Log.w(TAG_CAPTURE, "STATE_PREVIEW");
-                    // We have nothing to do when the camera preview is working normally.
-                    break;
-                }
-                case STATE_WAITING_LOCK: {
-                    Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK");
-                    // 等待锁定的状态，某些设备完成锁定后 CONTROL_AF_STATE 可能为 null
-                    Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    if (afState == null) {
-                        Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK:captureStillPicture");
-                        captureStillPicture();
-                    } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
-                        // 如果焦点已经锁定，不管是否对焦成功，检查 CONTROL_AE_STATE
-                        // 某些设备可能为空
-                        Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                        if (aeState == null ||
-                                aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
-                            Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK->STATE_PICTURE_TAKEN");
-                            // 若果自动曝光良好，将状态置为可拍照，并执行拍照
-                            mState = STATE_PICTURE_TAKEN;
-                            captureStillPicture();
-                        } else {
-                            Log.w(TAG_CAPTURE, "STATE_WAITING_LOCK:runPrecaptureSequence");
-                            // 以上状态都不满足，执行预拍照
-                            runPrecaptureSequence();
-                        }
-                    }
-                    break;
-                }
-                case STATE_WAITING_PRECAPTURE: {
-                    Log.w(TAG_CAPTURE, "STATE_WAITING_PRECAPTURE");
-                    // CONTROL_AE_STATE can be null on some devices
-                    Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                    if (aeState == null ||
-                            aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
-                        Log.w(TAG_CAPTURE, "STATE_WAITING_PRECAPTURE->STATE_WAITING_NON_PRECAPTURE");
-                        mState = STATE_WAITING_NON_PRECAPTURE;
-                    }
-                    break;
-                }
-                case STATE_WAITING_NON_PRECAPTURE: {
-                    Log.w(TAG_CAPTURE, "STATE_WAITING_NON_PRECAPTURE");
-                    // CONTROL_AE_STATE can be null on some devices
-                    Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                    if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
-                        Log.w(TAG_CAPTURE, "STATE_WAITING_NON_PRECAPTURE->STATE_PICTURE_TAKEN");
-                        mState = STATE_PICTURE_TAKEN;
-                        captureStillPicture();
-                    }
-                    break;
-                }
-            }
-        }
-    };
-
-    private ImageReader mImageReader;
-    //线程名称
-    private static final String THREAD_CAMERA2 = "Camera2";
-    //后台线程，用于处理Camera相关的数据处理，防止阻塞UI线程
-    private Handler mCameraHandler;
-    //主线程
-    private Handler mMainHandler;
-    /**
-     * Orientation of the camera sensor
-     */
-    private int mSensorOrientation;
-
+    //最佳预览尺寸
     private Size mPreviewSize;
-    private OnImageDataListener mOnImageDataListener;
-    private int mState = STATE_PREVIEW;
-
-    public Camera2SurfaceView(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    private void init(Context context) {
-        mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-        //初始化Camera线程
-        HandlerThread thread = new HandlerThread(THREAD_CAMERA2);
-        thread.start();
-        mCameraHandler = new Handler(thread.getLooper());
-        //初始化主线程
-        mMainHandler = new Handler(Looper.getMainLooper());
-
-        setKeepScreenOn(true);
-        setSurfaceTextureListener(this);
-    }
-
-    @Override
-    public void onSurfaceTextureAvailable(final SurfaceTexture surface,
-                                          final int width, final int height) {
-        //打开相机
-        openCamera(width, height);
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(final SurfaceTexture surface,
-                                            final int width, final int height) {
-        //预览方向改变时，执行转换操作
-        configureTransform(width, height);
-    }
 
     /**
-     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
-     * This method should be called after the camera preview size is determined in
-     * setUpCameraOutputs and also the size of `mTextureView` is fixed.
-     *
-     * @param viewWidth  The width of `mTextureView`
-     * @param viewHeight The height of `mTextureView`
+     * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
      */
-    private void configureTransform(int viewWidth, int viewHeight) {
-        Activity activity = (Activity) getContext();
-        if (null == mPreviewSize || null == activity) {
-            return;
-        }
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        Matrix matrix = new Matrix();
-        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
-        float centerX = viewRect.centerX();
-        float centerY = viewRect.centerY();
-        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
-            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
-            float scale = Math.max(
-                    (float) viewHeight / mPreviewSize.getHeight(),
-                    (float) viewWidth / mPreviewSize.getWidth());
-            matrix.postScale(scale, scale, centerX, centerY);
-            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
-        } else if (Surface.ROTATION_180 == rotation) {
-            matrix.postRotate(180, centerX, centerY);
-        }
-        setTransform(matrix);
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
-
-    }
-
-    private void openCamera(int width, int height) {
-        //检查相机权限, 如果没有权限则请求权限
-        //此处不做过多处理，由外部Activity去做权限请求
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        //设置相机参数
-        setupCameraParameter(width, height);
-        configureTransform(width, height);
-        //打开相机
-        try {
-            mCameraManager.openCamera(CAMERA_ID, mStateCallback, mCameraHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //相机状态回调
     private final CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
+
         @Override
-        public void onOpened(@NonNull final CameraDevice camera) {
-            Log.d(TAG, "camera opened");
-            mCameraDevice = camera;
+        public void onOpened(@NonNull CameraDevice cameraDevice) {
+            // This method is called when the camera is opened.  We start camera preview here.
+            mCameraOpenCloseLock.release();
+            mCameraDevice = cameraDevice;
             createCameraPreviewSession();
         }
 
         @Override
-        public void onDisconnected(@NonNull final CameraDevice camera) {
-            Log.d(TAG, "camera disconnected");
-            camera.close();
+        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
             mCameraDevice = null;
         }
 
         @Override
-        public void onError(@NonNull final CameraDevice camera, final int error) {
-            Log.d(TAG, "camera error，code = " + error);
-            camera.close();
+        public void onError(@NonNull CameraDevice cameraDevice, int error) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
             mCameraDevice = null;
         }
+
     };
 
     private void createCameraPreviewSession() {
@@ -402,6 +184,8 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
                                 // 开启预览，预览数据通过 mCaptureCallback 回调出来
                                 mCameraCaptureSession.setRepeatingRequest(mPreviewRequest,
                                         mCaptureCallback, mCameraHandler);
+                                //CameraRequestSession创建完毕后进行一次自动对焦
+                                doAutoFocus(getWidth() / 2, getHeight() / 2);
                             } catch (CameraAccessException e) {
                                 e.printStackTrace();
                             }
@@ -415,6 +199,219 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private ImageReader mImageReader;
+    /**
+     * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
+     * still image is ready to be saved.
+     */
+    private final ImageReader.OnImageAvailableListener mOnImageAvailableListener
+            = new ImageReader.OnImageAvailableListener() {
+
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            Log.d(TAG, "onImageAvailable()");
+            Image image = reader.acquireNextImage();
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            final byte[] bytes = new byte[buffer.remaining()];
+            buffer.get(bytes);
+            //此处不要调用reader.close()，否则会收不到该回调
+            image.close();
+            if (mOnImageDataListener != null) {
+                mMainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mOnImageDataListener.onImageData(bytes);
+                    }
+                });
+            }
+        }
+
+    };
+
+    /**
+     * The current state of camera state for taking pictures.
+     *
+     * @see #mCaptureCallback
+     */
+    private int mState = STATE_PREVIEW;
+
+    /**
+     * A {@link Semaphore} to prevent the app from exiting before closing the camera.
+     */
+    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
+
+    /**
+     * Orientation of the camera sensor
+     */
+    private int mSensorOrientation;
+
+    /**
+     * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
+     */
+    private CameraCaptureSession.CaptureCallback mCaptureCallback
+            = new CameraCaptureSession.CaptureCallback() {
+
+        private void process(CaptureResult result) {
+            switch (mState) {
+                case STATE_PREVIEW: {
+                    // We have nothing to do when the camera preview is working normally.
+                    break;
+                }
+                case STATE_WAITING_LOCK: {
+                    Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
+                    if (afState == null) {
+                        captureStillPicture();
+                    } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
+                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
+                        // CONTROL_AE_STATE can be null on some devices
+                        Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                        if (aeState == null ||
+                                aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
+                            mState = STATE_PICTURE_TAKEN;
+                            captureStillPicture();
+                        } else {
+                            runPrecaptureSequence();
+                        }
+                    }
+                    break;
+                }
+                case STATE_WAITING_PRECAPTURE: {
+                    // CONTROL_AE_STATE can be null on some devices
+                    Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                    if (aeState == null ||
+                            aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
+                            aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
+                        mState = STATE_WAITING_NON_PRECAPTURE;
+                    }
+                    break;
+                }
+                case STATE_WAITING_NON_PRECAPTURE: {
+                    // CONTROL_AE_STATE can be null on some devices
+                    Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                    if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
+                        mState = STATE_PICTURE_TAKEN;
+                        captureStillPicture();
+                    }
+                    break;
+                }
+            }
+        }
+
+        @Override
+        public void onCaptureProgressed(@NonNull CameraCaptureSession session,
+                                        @NonNull CaptureRequest request,
+                                        @NonNull CaptureResult partialResult) {
+            process(partialResult);
+        }
+
+        @Override
+        public void onCaptureCompleted(@NonNull CameraCaptureSession session,
+                                       @NonNull CaptureRequest request,
+                                       @NonNull TotalCaptureResult result) {
+            process(result);
+        }
+
+    };
+
+    //线程名称
+    private static final String THREAD_CAMERA2 = "Camera2";
+    //后台线程，用于处理Camera相关的数据处理，防止阻塞UI线程
+    private Handler mCameraHandler;
+    //主线程
+    private Handler mMainHandler;
+    private OnImageDataListener mOnImageDataListener;
+    private Activity mActivity;
+
+    public Camera2TextureView(final Context context, final AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    private void init(Context context) {
+        mActivity = (Activity) getContext();
+        mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+        //初始化Camera线程
+        HandlerThread thread = new HandlerThread(THREAD_CAMERA2);
+        thread.start();
+        mCameraHandler = new Handler(thread.getLooper());
+        //初始化主线程
+        mMainHandler = new Handler(Looper.getMainLooper());
+
+        setKeepScreenOn(true);
+        setSurfaceTextureListener(this);
+    }
+
+    @Override
+    public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+        openCamera(width, height);
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
+        configureTransform(width, height);
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
+        return true;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
+
+    }
+
+    private void openCamera(int width, int height) {
+        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        setupCameraParameter(width, height);
+        configureTransform(width, height);
+        try {
+            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+                throw new RuntimeException("Time out waiting to lock camera opening.");
+            }
+            mCameraManager.openCamera(CAMERA_ID, mStateCallback, mCameraHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
+        }
+    }
+
+    /**
+     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
+     * This method should be called after the camera preview size is determined in
+     * setUpCameraOutputs and also the size of `mTextureView` is fixed.
+     *
+     * @param viewWidth  The width of `mTextureView`
+     * @param viewHeight The height of `mTextureView`
+     */
+    private void configureTransform(int viewWidth, int viewHeight) {
+        if (null == mPreviewSize || null == mActivity) {
+            return;
+        }
+        int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
+        Matrix matrix = new Matrix();
+        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
+        float centerX = viewRect.centerX();
+        float centerY = viewRect.centerY();
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
+            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
+            float scale = Math.max(
+                    (float) viewHeight / mPreviewSize.getHeight(),
+                    (float) viewWidth / mPreviewSize.getWidth());
+            matrix.postScale(scale, scale, centerX, centerY);
+            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+        } else if (Surface.ROTATION_180 == rotation) {
+            matrix.postRotate(180, centerX, centerY);
+        }
+        setTransform(matrix);
     }
 
     private void setupCameraParameter(int width, int height) {
@@ -433,13 +430,16 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
 
             Size displaySize = new Size(width, height);
 
-            Size largest = findBestSize(map.getOutputSizes(ImageFormat.JPEG), displaySize);
-            mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
+            //根据预览尺寸选择合适的拍照尺寸
+            Size pictureSize = findBestSize(map.getOutputSizes(ImageFormat.JPEG), displaySize);
+            Log.d(TAG, "picture size:" + pictureSize.toString());
+            mImageReader = ImageReader.newInstance(pictureSize.getWidth(), pictureSize.getHeight(),
                     ImageFormat.JPEG, /*maxImages*/2);
             mImageReader.setOnImageAvailableListener(
                     mOnImageAvailableListener, mCameraHandler);
 
-            mPreviewSize = findBestSize(map.getOutputSizes(SurfaceTexture.class), displaySize);
+            //找出跟拍照最佳的预览尺寸
+            mPreviewSize = findBestPreviewSize(map.getOutputSizes(SurfaceTexture.class), pictureSize);
             Log.d(TAG, "preview size: " + mPreviewSize.toString());
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -471,6 +471,7 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
                 bestY = newY;
                 diff = newDiff;
             }
+            Log.d(TAG, "size = " + size.toString() + ";diff = " + diff);
         }
 
         if (bestX > 0 && bestY > 0) {
@@ -482,37 +483,41 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         }
     }
 
-    private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
-        @Override
-        public void onImageAvailable(final ImageReader reader) {
-            Log.d(TAG, "onImageAvailable()");
-            Image image = reader.acquireNextImage();
-            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-            final byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-            //此处不要调用reader.close()，否则会收不到该回调
-            image.close();
-            if (mOnImageDataListener != null) {
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mOnImageDataListener.onImageData(bytes);
-                    }
-                });
+    private Size findBestPreviewSize(Size[] sizes, Size resolution) {
+        float ratio = getRatio(resolution);
+        float diff = Float.MAX_VALUE;
+        Size bestPreviewSize = sizes[0];
+        for (Size size : sizes) {
+            float sizeRatio = getRatio(size);
+            float ratioDiff = Math.abs(sizeRatio - ratio);
+            if (ratioDiff == 0) {
+                bestPreviewSize = size;
+                break;
+            } else if (ratioDiff < diff) {
+                diff = ratioDiff;
+                bestPreviewSize = size;
             }
         }
-    };
+        return bestPreviewSize;
+    }
 
-    public void setOnImageDataListener(final OnImageDataListener onImageDataListener) {
-        mOnImageDataListener = onImageDataListener;
+    private float getRatio(Size size) {
+        if (size.getWidth() > size.getHeight()) {
+            return 1.0f * size.getHeight() / size.getWidth();
+        } else {
+            return 1.0f * size.getWidth() / size.getHeight();
+        }
+    }
+
+    /**
+     * Initiate a still image capture.
+     */
+    public void takePicture() {
+        lockFocus();
     }
 
     public void takePreview() {
         unlockFocus();
-    }
-
-    public void takePicture() {
-        lockFocus();
     }
 
     /**
@@ -556,7 +561,8 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
      */
     private void captureStillPicture() {
         try {
-            if (mCameraDevice == null) {
+            final Activity activity = (Activity) getContext();
+            if (null == activity || null == mCameraDevice) {
                 return;
             }
             // This is the CaptureRequest.Builder that we use to take a picture.
@@ -568,36 +574,14 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
-            // 获取手机方向
-            int rotation = ((Activity) getContext()).getWindowManager().getDefaultDisplay().getRotation();
-            // 根据设备方向计算设置照片的方向
+            // Orientation
+            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
             Log.d(TAG, "orientation = " + getOrientation(rotation));
 
             mCameraCaptureSession.stopRepeating();
             mCameraCaptureSession.abortCaptures();
             mCameraCaptureSession.capture(captureBuilder.build(), null, null);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Unlock the focus. This method should be called when still image capture sequence is
-     * finished.
-     */
-    private void unlockFocus() {
-        try {
-            // Reset the auto-focus trigger
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            //setAutoFlash(mPreviewRequestBuilder);
-            mCameraCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mCameraHandler);
-            // After this, the camera will go back to the normal state of preview.
-            mState = STATE_PREVIEW;
-            mCameraCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback,
-                    mCameraHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -617,6 +601,26 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         return (ORIENTATIONS.get(rotation) + mSensorOrientation + 270) % 360;
     }
 
+    /**
+     * Unlock the focus. This method should be called when still image capture sequence is
+     * finished.
+     */
+    private void unlockFocus() {
+        try {
+            // Reset the auto-focus trigger
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+            mCameraCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
+                    mCameraHandler);
+            // After this, the camera will go back to the normal state of preview.
+            mState = STATE_PREVIEW;
+            mCameraCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback,
+                    mCameraHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean isPreviewing() {
         return mState == STATE_PREVIEW;
     }
@@ -629,6 +633,14 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         if (actionMasked != MotionEvent.ACTION_DOWN) {
             return false;
         }
+        if (doAutoFocus(event.getX(), event.getY())) {
+            return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    private boolean doAutoFocus(float touchX, float touchY) {
         if (mManualFocusEngaged) {
             Log.d(TAG, "Manual focus already engaged");
             return true;
@@ -636,8 +648,8 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
 
         final Rect sensorArraySize = mCameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
 
-        final int y = (int) ((event.getX() / (float) getWidth()) * (float) sensorArraySize.height());
-        final int x = (int) ((event.getY() / (float) getHeight()) * (float) sensorArraySize.width());
+        final int y = (int) ((touchX / (float) getWidth()) * (float) sensorArraySize.height());
+        final int x = (int) ((touchY / (float) getHeight()) * (float) sensorArraySize.width());
         final int halfTouchWidth = 150;
         final int halfTouchHeight = 150;
         MeteringRectangle focusAreaTouch = new MeteringRectangle(Math.max(x - halfTouchWidth, 0),
@@ -669,8 +681,7 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-
-        return super.onTouchEvent(event);
+        return false;
     }
 
     private final CameraCaptureSession.CaptureCallback mTouchFocusCallback = new CameraCaptureSession.CaptureCallback() {
@@ -697,5 +708,9 @@ public class Camera2SurfaceView extends TextureView implements TextureView.Surfa
             return false;
         }
         return mCameraCharacteristics.get(CameraCharacteristics.CONTROL_MAX_REGIONS_AF) >= 1;
+    }
+
+    public void setOnImageDataListener(final OnImageDataListener onImageDataListener) {
+        mOnImageDataListener = onImageDataListener;
     }
 }

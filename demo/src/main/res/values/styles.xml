@@ -51,9 +51,13 @@
         <item name="colorPrimary">@color/white</item>
     </style>
 
+    <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
     <!--<style name="ProgressBar" parent="Widget.AppCompat.ProgressBar">-->
-        <!--<item name="colorAccent">@color/primary_color</item>-->
-        <!--<item name="colorPrimary">@color/primary_color</item>-->
-        <!--<item name="colorPrimaryDark">@color/primary_color</item>-->
+    <!--<item name="colorAccent">@color/primary_color</item>-->
+    <!--<item name="colorPrimary">@color/primary_color</item>-->
+    <!--<item name="colorPrimaryDark">@color/primary_color</item>-->
     <!--</style>-->
 </resources>

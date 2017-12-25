@@ -11,7 +11,7 @@ import com.littlejie.core.base.BaseActivity;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
 import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
-import com.littlejie.demo.modules.base.media.view.Camera1SurfaceView;
+import com.littlejie.demo.modules.base.media.view.Camera1TextureView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,7 +20,7 @@ import butterknife.OnClick;
 public class CameraActivity extends BaseActivity {
 
     @BindView(R.id.surface_view)
-    Camera1SurfaceView mSurfaceView;
+    Camera1TextureView mSurfaceView;
     @BindView(R.id.iv_photo)
     ImageView mIvPhoto;
     @BindView(R.id.btn_take_photo)

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".modules.base.media.CameraActivity">
 
-    <com.littlejie.demo.modules.base.media.view.Camera1SurfaceView
+    <com.littlejie.demo.modules.base.media.view.Camera1TextureView
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -15,6 +15,7 @@
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitXY"
         android:visibility="gone" />
 
     <Button

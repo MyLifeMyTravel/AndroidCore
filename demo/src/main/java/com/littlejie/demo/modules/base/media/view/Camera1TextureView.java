@@ -1,5 +1,6 @@
 package com.littlejie.demo.modules.base.media.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.littlejie.core.util.DisplayUtil;
 import com.littlejie.core.util.ToastUtil;
 import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
 
@@ -22,16 +24,16 @@ import java.util.List;
  * Created by littlejie on 2017/12/4.
  */
 
-public class Camera1SurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final String TAG = Camera1SurfaceView.class.getSimpleName();
+    private static final String TAG = Camera1TextureView.class.getSimpleName();
     //自动对焦区域
     private static final int AUTO_FOCUS_AREA = 300;
 
     private Camera mCamera;
     private OnImageDataListener mOnImageDataListener;
 
-    public Camera1SurfaceView(Context context, AttributeSet attrs) {
+    public Camera1TextureView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -84,6 +86,8 @@ public class Camera1SurfaceView extends SurfaceView implements SurfaceHolder.Cal
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             mCamera.setParameters(parameters);
             mCamera.startPreview();
+            //自动对焦
+            doAutoFocus(DisplayUtil.getScreenWidth((Activity) getContext()) / 2, DisplayUtil.getScreenHeight((Activity) getContext()) / 2);
         } catch (Exception e) {
             Log.d(TAG, "Throw exception while open camera.Exception message : " + e.getMessage());
             e.printStackTrace();

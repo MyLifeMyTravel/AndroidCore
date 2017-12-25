@@ -206,11 +206,11 @@
         <activity
             android:name=".modules.base.media.CameraActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".modules.base.media.Camera2Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/FullScreen" />
         <activity android:name=".modules.base.ui.SurfaceViewActivity" />
         <activity android:name=".modules.base.ui.SimplePathActivity"></activity>
     </application>
