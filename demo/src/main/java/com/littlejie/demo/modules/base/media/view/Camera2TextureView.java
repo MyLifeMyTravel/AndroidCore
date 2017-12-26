@@ -38,8 +38,6 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
-
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.Semaphore;
@@ -50,7 +48,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
-public class Camera2TextureView extends TextureView implements TextureView.SurfaceTextureListener {
+public class Camera2TextureView extends TextureView implements TextureView.SurfaceTextureListener, CameraTextureView.CameraInterface {
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -222,7 +220,7 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mOnImageDataListener.onImageData(bytes);
+                        mOnImageDataListener.onImageData(bytes, 0);
                     }
                 });
             }
@@ -319,10 +317,16 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
     private static final String THREAD_CAMERA2 = "Camera2";
     //后台线程，用于处理Camera相关的数据处理，防止阻塞UI线程
     private Handler mCameraHandler;
+    private HandlerThread mCameraHandlerThread;
     //主线程
     private Handler mMainHandler;
-    private OnImageDataListener mOnImageDataListener;
+    private CameraTextureView.OnImageDataListener mOnImageDataListener;
+    private Rect mFocusArea;
     private Activity mActivity;
+
+    public Camera2TextureView(final Context context) {
+        this(context, null);
+    }
 
     public Camera2TextureView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -333,9 +337,9 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
         mActivity = (Activity) getContext();
         mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         //初始化Camera线程
-        HandlerThread thread = new HandlerThread(THREAD_CAMERA2);
-        thread.start();
-        mCameraHandler = new Handler(thread.getLooper());
+        mCameraHandlerThread = new HandlerThread(THREAD_CAMERA2);
+        mCameraHandlerThread.start();
+        mCameraHandler = new Handler(mCameraHandlerThread.getLooper());
         //初始化主线程
         mMainHandler = new Handler(Looper.getMainLooper());
 
@@ -355,6 +359,8 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
 
     @Override
     public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
+        closeCamera();
+        stopBackgroundThread();
         return true;
     }
 
@@ -379,6 +385,45 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
             e.printStackTrace();
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
+        }
+    }
+
+    /**
+     * Closes the current {@link CameraDevice}.
+     */
+    private void closeCamera() {
+        try {
+            mCameraOpenCloseLock.acquire();
+            if (null != mCameraCaptureSession) {
+                mCameraCaptureSession.close();
+                mCameraCaptureSession = null;
+            }
+            if (null != mCameraDevice) {
+                mCameraDevice.close();
+                mCameraDevice = null;
+            }
+            if (null != mImageReader) {
+                mImageReader.close();
+                mImageReader = null;
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
+        } finally {
+            mCameraOpenCloseLock.release();
+        }
+    }
+
+    /**
+     * Stops the background thread and its {@link Handler}.
+     */
+    private void stopBackgroundThread() {
+        mCameraHandlerThread.quitSafely();
+        try {
+            mCameraHandlerThread.join();
+            mCameraHandlerThread = null;
+            mCameraHandler = null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -510,17 +555,6 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
     }
 
     /**
-     * Initiate a still image capture.
-     */
-    public void takePicture() {
-        lockFocus();
-    }
-
-    public void takePreview() {
-        unlockFocus();
-    }
-
-    /**
      * Lock the focus as the first step for a still image capture.
      */
     private void lockFocus() {
@@ -621,8 +655,32 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
         }
     }
 
+    @Override
     public boolean isPreviewing() {
         return mState == STATE_PREVIEW;
+    }
+
+    @Override
+    public void setOnImageDataListener(final CameraTextureView.OnImageDataListener onImageDataListener) {
+        mOnImageDataListener = onImageDataListener;
+    }
+
+    @Override
+    public void setFocusArea(final Rect focusArea) {
+        mFocusArea = focusArea;
+    }
+
+    /**
+     * Initiate a still image capture.
+     */
+    @Override
+    public void takePicture() {
+        lockFocus();
+    }
+
+    @Override
+    public void takePreview() {
+        unlockFocus();
     }
 
     private boolean mManualFocusEngaged;
@@ -644,6 +702,10 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
         if (mManualFocusEngaged) {
             Log.d(TAG, "Manual focus already engaged");
             return true;
+        }
+
+        if (mFocusArea != null && (touchY < mFocusArea.top || touchY > mFocusArea.bottom)) {
+            touchY = (mFocusArea.top + mFocusArea.bottom) / 2;
         }
 
         final Rect sensorArraySize = mCameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
@@ -708,9 +770,5 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
             return false;
         }
         return mCameraCharacteristics.get(CameraCharacteristics.CONTROL_MAX_REGIONS_AF) >= 1;
-    }
-
-    public void setOnImageDataListener(final OnImageDataListener onImageDataListener) {
-        mOnImageDataListener = onImageDataListener;
     }
 }

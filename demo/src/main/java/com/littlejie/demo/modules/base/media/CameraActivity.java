@@ -1,17 +1,15 @@
 package com.littlejie.demo.modules.base.media;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 
 import com.littlejie.core.base.BaseActivity;
+import com.littlejie.core.util.DisplayUtil;
 import com.littlejie.demo.R;
 import com.littlejie.demo.annotation.Description;
-import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
-import com.littlejie.demo.modules.base.media.view.Camera1TextureView;
+import com.littlejie.demo.modules.base.media.view.CameraTextureView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,12 +17,12 @@ import butterknife.OnClick;
 @Description(description = "使用 Camera 实现预览")
 public class CameraActivity extends BaseActivity {
 
-    @BindView(R.id.surface_view)
-    Camera1TextureView mSurfaceView;
-    @BindView(R.id.iv_photo)
-    ImageView mIvPhoto;
+    @BindView(R.id.content_frame)
+    FrameLayout mFrameLayout;
     @BindView(R.id.btn_take_photo)
     Button mBtnTakePhoto;
+
+    private CameraTextureView.CameraInterface mCameraInterface;
 
     @Override
     protected int getPageLayoutID() {
@@ -33,40 +31,37 @@ public class CameraActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        Rect focusArea = new Rect(0, DisplayUtil.getScreenHeight(this) / 4
+                , DisplayUtil.getScreenWidth(this), DisplayUtil.getScreenHeight(this) * 3 / 4);
+        CameraTextureView cameraTextureView = new CameraTextureView.Builder(this)
+                .setFocusArea(focusArea)
+                .setOnImageDataListener(new CameraTextureView.OnImageDataListener() {
+                    @Override
+                    public void onImageData(final byte[] data, final int rotateDegree) {
+                        mBtnTakePhoto.setText("预览");
+                    }
+                })
+                .create();
+        mCameraInterface = cameraTextureView.getCameraInterface();
     }
 
     @Override
     protected void initView() {
+        mFrameLayout.addView((View) mCameraInterface);
     }
 
     @Override
     protected void initViewListener() {
-        mSurfaceView.setOnImageDataListener(new OnImageDataListener() {
-            @Override
-            public void onImageData(final byte[] data) {
-                mSurfaceView.setVisibility(View.GONE);
-                mIvPhoto.setVisibility(View.VISIBLE);
-                mBtnTakePhoto.setText("预览");
-                //将 data 数据转换成 Bitmap
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                //将 Bitmap 旋转 90 度
-                Matrix matrix = new Matrix();
-                matrix.setRotate(90);
-                mIvPhoto.setImageBitmap(Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), matrix, true));
-            }
-        });
+
     }
 
     @OnClick(R.id.btn_take_photo)
     void takePhoto() {
-        if (mIvPhoto.getVisibility() == View.VISIBLE) {
-            mSurfaceView.setVisibility(View.VISIBLE);
-            mIvPhoto.setVisibility(View.GONE);
+        if (!mCameraInterface.isPreviewing()) {
+            mCameraInterface.takePreview();
             mBtnTakePhoto.setText("拍照");
         } else {
-            mSurfaceView.takePicture();
+            mCameraInterface.takePicture();
         }
     }
 

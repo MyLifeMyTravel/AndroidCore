@@ -6,17 +6,10 @@
     android:orientation="vertical"
     tools:context=".modules.base.media.CameraActivity">
 
-    <com.littlejie.demo.modules.base.media.view.Camera1TextureView
-        android:id="@+id/surface_view"
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/iv_photo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_take_photo"

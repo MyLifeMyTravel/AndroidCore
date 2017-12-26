@@ -3,19 +3,17 @@ package com.littlejie.demo.modules.base.media.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.TextureView;
 
 import com.littlejie.core.util.DisplayUtil;
 import com.littlejie.core.util.ToastUtil;
-import com.littlejie.demo.modules.base.media.interfaces.OnImageDataListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,37 +22,56 @@ import java.util.List;
  * Created by littlejie on 2017/12/4.
  */
 
-public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Callback {
+public class Camera1TextureView extends TextureView implements TextureView.SurfaceTextureListener, CameraTextureView.CameraInterface {
 
     private static final String TAG = Camera1TextureView.class.getSimpleName();
     //自动对焦区域
     private static final int AUTO_FOCUS_AREA = 300;
 
+    private boolean isPreviewing = false;
     private Camera mCamera;
-    private OnImageDataListener mOnImageDataListener;
+    private CameraTextureView.OnImageDataListener mOnImageDataListener;
+    private Point mPreviewSize;
+    private Rect mFocusArea;
+
+    public Camera1TextureView(final Context context) {
+        this(context, null);
+    }
 
     public Camera1TextureView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    private void init() {
-        SurfaceHolder holder = getHolder();
         //设置屏幕常亮
-        holder.setKeepScreenOn(true);
-        //设置 Surface 上预期的显示的 PixelFormat
-        holder.setFormat(PixelFormat.RGBA_8888);
-        holder.addCallback(this);
+        setKeepScreenOn(true);
+        setSurfaceTextureListener(this);
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        Log.d(TAG, "surfaceCreated");
-        //初始化相机
-        initCamera(holder);
+    public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+        initCamera(surface);
     }
 
-    private void initCamera(SurfaceHolder holder) {
+    @Override
+    public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
+        Log.d(TAG, "onSurfaceTextureDestroyed");
+        if (checkCameraOpen()) {
+            stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
+        }
+        return true;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
+
+    }
+
+    private void initCamera(SurfaceTexture surface) {
         //判断系统是否支持拍照
         if (!getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             Log.d(TAG, "system not support camera.");
@@ -66,47 +83,31 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
             //Activity为横屏情况下，不用设置。
             //竖屏情况下顺时针旋转90才能正常显示
             mCamera.setDisplayOrientation(90);
-            mCamera.setPreviewDisplay(holder);
+            mCamera.setPreviewTexture(surface);
 
             int width = getWidth();
             int height = getHeight();
             Camera.Parameters parameters = mCamera.getParameters();
-            Point previewResolution =
+            mPreviewSize =
                     findBestSize(parameters.getSupportedPreviewSizes(), new Point(width, height));
             Point pictureResolution =
                     findBestSize(parameters.getSupportedPictureSizes(), new Point(width, height));
 
-            Log.i(TAG, "preview size: " + previewResolution.x + "|" + previewResolution.y);
+            Log.i(TAG, "preview size: " + mPreviewSize.x + "|" + mPreviewSize.y);
             Log.i(TAG, "picture size: " + pictureResolution.x + "|" + pictureResolution.y);
 
             //设置预览尺寸
-            parameters.setPreviewSize(previewResolution.x, previewResolution.y);
+            parameters.setPreviewSize(mPreviewSize.x, mPreviewSize.y);
             //设置图片尺寸
             parameters.setPictureSize(pictureResolution.x, pictureResolution.y);
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             mCamera.setParameters(parameters);
-            mCamera.startPreview();
+            startPreview();
             //自动对焦
             doAutoFocus(DisplayUtil.getScreenWidth((Activity) getContext()) / 2, DisplayUtil.getScreenHeight((Activity) getContext()) / 2);
         } catch (Exception e) {
             Log.d(TAG, "Throw exception while open camera.Exception message : " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.d(TAG, "surfaceChanged");
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.d(TAG, "surfaceDestroyed");
-        if (checkCameraOpen()) {
-            mCamera.stopPreview();
-            mCamera.setPreviewCallback(null);
-            mCamera.release();
-            mCamera = null;
         }
     }
 
@@ -170,6 +171,10 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
         }
         mCamera.cancelAutoFocus();
 
+        if (mFocusArea != null && (y < mFocusArea.top || y > mFocusArea.bottom)) {
+            y = (mFocusArea.top + mFocusArea.bottom) / 2;
+        }
+
         Rect rect = calculateFocusArea(x, y);
         Log.d(TAG, "focus rect: " + rect.top + "|" + rect.bottom + "|"
                 + rect.left + "|" + rect.right + "|");
@@ -186,7 +191,7 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
 
         try {
             mCamera.setParameters(parameters);
-            mCamera.startPreview();
+            startPreview();
             mCamera.autoFocus(new Camera.AutoFocusCallback() {
                 @Override
                 public void onAutoFocus(boolean success, Camera camera) {
@@ -200,7 +205,7 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
                             parameters.setFocusAreas(null);
                         }
                         camera.setParameters(parameters);
-                        camera.startPreview();
+                        startPreview();
                     }
                 }
             });
@@ -232,9 +237,31 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
         return result;
     }
 
+    private void startPreview() {
+        if (!checkCameraOpen()) {
+            return;
+        }
+        mCamera.startPreview();
+        isPreviewing = true;
+    }
+
+    private void stopPreview() {
+        if (!checkCameraOpen()) {
+            return;
+        }
+        mCamera.stopPreview();
+        isPreviewing = false;
+    }
+
+    @Override
+    public boolean isPreviewing() {
+        return isPreviewing;
+    }
+
     /**
      * 封装 Camera 对象的 takePicture 方法
      */
+    @Override
     public void takePicture() {
         if (!checkCameraOpen()) {
             return;
@@ -242,14 +269,30 @@ public class Camera1TextureView extends SurfaceView implements SurfaceHolder.Cal
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(final byte[] data, final Camera camera) {
+                stopPreview();
                 if (mOnImageDataListener != null) {
-                    mOnImageDataListener.onImageData(data);
+                    mOnImageDataListener.onImageData(data, 90);
                 }
             }
         });
     }
 
-    public void setOnImageDataListener(final OnImageDataListener onImageDataListener) {
+    @Override
+    public void takePreview() {
+        if (!checkCameraOpen()) {
+            return;
+        }
+        startPreview();
+    }
+
+    @Override
+    public void setOnImageDataListener(final CameraTextureView.OnImageDataListener onImageDataListener) {
         mOnImageDataListener = onImageDataListener;
     }
+
+    @Override
+    public void setFocusArea(final Rect focusArea) {
+        mFocusArea = focusArea;
+    }
+
 }
