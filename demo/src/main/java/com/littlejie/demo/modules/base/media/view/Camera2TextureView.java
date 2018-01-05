@@ -687,6 +687,10 @@ public class Camera2TextureView extends TextureView implements TextureView.Surfa
 
     @Override
     public boolean onTouchEvent(final MotionEvent event) {
+        //非预览状态下取消触摸对焦
+        if (mState != STATE_PREVIEW) {
+            return super.onTouchEvent(event);
+        }
         final int actionMasked = event.getActionMasked();
         if (actionMasked != MotionEvent.ACTION_DOWN) {
             return false;
